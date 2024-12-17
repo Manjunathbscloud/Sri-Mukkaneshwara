@@ -1,19 +1,17 @@
-function validateLogin(event) {
+function validateCode(event) {
     event.preventDefault();
     
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const accessCode = document.getElementById('accessCode').value;
     
-    // Replace these with your desired credentials
-    const validUsername = 'admin';
-    const validPassword = 'secure123';
+    // Replace this with your desired access code
+    const validCode = 'Banakar';
     
-    if (username === validUsername && password === validPassword) {
+    if (accessCode === validCode) {
         // Store authentication status
         sessionStorage.setItem('isAuthenticated', 'true');
         // Redirect to loans page
         window.location.href = 'loans.html';
     } else {
-        alert('Invalid credentials. Please try again.');
+        alert('Invalid access code. Please try again.');
     }
 }
