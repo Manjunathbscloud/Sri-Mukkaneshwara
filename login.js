@@ -11,8 +11,10 @@ function validateCode(event) {
             // Store authentication status
             sessionStorage.setItem('isAuthenticated', 'true');
             console.log('Authentication successful');
-            // Redirect to loans page
-            window.location.href = 'loans.html';
+            // Get the intended destination from URL parameters, or default to accounts.html
+            const urlParams = new URLSearchParams(window.location.search);
+            const destination = urlParams.get('redirect') || 'accounts.html';
+            window.location.href = destination;
         } catch (error) {
             console.error('Error during authentication:', error);
             alert('An error occurred during authentication. Please try again.');
