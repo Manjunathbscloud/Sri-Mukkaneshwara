@@ -80,46 +80,6 @@ h3 {
     line-height: 1.6;
 }
 
-.member-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-    background-color: white;
-}
-
-.member-table th,
-.member-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
-    color: #333;
-    background-color: white;
-}
-
-.member-table th {
-    background-color: #2c3e50;
-    color: white;
-    font-weight: bold;
-}
-
-.member-table tr:nth-child(even) {
-    background-color: #f8f9fa;
-}
-
-.member-table tr:hover {
-    background-color: #e9ecef;
-}
-
-.rules-list {
-    list-style-type: disc;
-    padding-left: 20px;
-}
-
-.rules-list li {
-    margin-bottom: 10px;
-    line-height: 1.5;
-}
-
 .login-form {
     max-width: 400px;
     margin: 2rem auto;
@@ -157,18 +117,41 @@ button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-footer {
-    background-color: #2c3e50;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+.dropdown {
+    position: relative;
+    display: inline-block;
 }
 
-.mt-4 {
-    margin-top: 2rem;
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #2c3e50;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.dropdown-content li {
+    display: block;
+    margin: 0;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #34495e;
+    border-radius: 4px;
 }
 
 .feature-list {
@@ -188,12 +171,14 @@ footer {
     color: #2c3e50;
 }
 
-.info-card table {
+footer {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
     width: 100%;
-    margin: 1rem 0;
-    background-color: white;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 @media (max-width: 768px) {
