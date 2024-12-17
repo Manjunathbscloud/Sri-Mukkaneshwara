@@ -9,12 +9,21 @@
 <body>
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="login.html" class="protected-link">Accounts</a></li>
+                <li><a href="meetings.html">Meetings</a></li>
+                <li><a href="rules.html">Rules</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
         <section class="login-form">
             <h2>Access Required</h2>
-            <p>Please enter the access code to view loans section</p>
+            <p>Please enter the access code to view accounts section</p>
             <form id="loginForm" onsubmit="return validateCode(event)">
                 <div class="form-group">
                     <label for="accessCode">Access Code:</label>
