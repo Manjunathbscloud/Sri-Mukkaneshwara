@@ -1,0 +1,164 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 1rem 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 1rem;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #34495e;
+}
+
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    margin-bottom: 100px;
+}
+
+section {
+    margin-bottom: 3rem;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #2c3e50;
+}
+
+h3 {
+    color: #34495e;
+    margin: 1rem 0;
+}
+
+.info-card {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+}
+
+.info-card ul {
+    list-style-position: inside;
+    margin-left: 1rem;
+}
+
+.info-card ul ul {
+    margin-left: 2rem;
+    margin-top: 0.5rem;
+}
+
+.info-card li {
+    margin-bottom: 0.5rem;
+}
+
+footer {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    nav ul li {
+        display: block;
+        margin: 0.5rem 0;
+    }
+    
+    main {
+        padding: 0 1rem;
+    }
+} 
+
+.member-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.member-table th,
+.member-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.member-table th {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.member-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.member-table tr:hover {
+    background-color: #e9ecef;
+} 
+
+.mt-4 {
+    margin-top: 2rem;
+}
+
+.info-card ul li {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+}
+
+.info-card table {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.info-card table th {
+    text-align: left;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    width: 40%;
+}
+
+.info-card table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #dee2e6;
+} 
