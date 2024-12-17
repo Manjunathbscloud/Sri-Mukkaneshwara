@@ -11,10 +11,8 @@ function validateCode(event) {
             // Store authentication status
             sessionStorage.setItem('isAuthenticated', 'true');
             console.log('Authentication successful');
-            // Get the intended destination from URL parameters, or default to accounts.html
-            const urlParams = new URLSearchParams(window.location.search);
-            const destination = urlParams.get('redirect') || 'accounts.html';
-            window.location.href = destination;
+            // Redirect to accounts page
+            window.location.href = 'accounts.html';
         } catch (error) {
             console.error('Error during authentication:', error);
             alert('An error occurred during authentication. Please try again.');
