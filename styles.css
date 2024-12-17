@@ -80,6 +80,34 @@ h3 {
     line-height: 1.6;
 }
 
+.member-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: white;
+}
+
+.member-table th,
+.member-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.member-table th {
+    background-color: #2c3e50;
+    color: white;
+    font-weight: bold;
+}
+
+.member-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.member-table tr:hover {
+    background-color: #e9ecef;
+}
+
 .login-form {
     max-width: 400px;
     margin: 2rem auto;
@@ -169,6 +197,10 @@ button[type="submit"]:hover {
     position: absolute;
     left: -1.5rem;
     color: #2c3e50;
+}
+
+.mt-4 {
+    margin-top: 2rem;
 }
 
 footer {
