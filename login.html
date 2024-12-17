@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sri Mukkanneshwara Associate</title>
+    <title>Access - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,18 +13,14 @@
 
     <main>
         <section class="login-form">
-            <h2>Login Required</h2>
-            <p>Please login to access the Loans section</p>
-            <form id="loginForm" onsubmit="return validateLogin(event)">
+            <h2>Access Required</h2>
+            <p>Please enter the access code to view loans section</p>
+            <form id="loginForm" onsubmit="return validateCode(event)">
                 <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
+                    <label for="accessCode">Access Code:</label>
+                    <input type="password" id="accessCode" name="accessCode" required>
                 </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit">Login</button>
+                <button type="submit">Submit</button>
             </form>
         </section>
     </main>
