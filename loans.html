@@ -8,7 +8,6 @@
 </head>
 <body>
     <script>
-        // Check authentication before showing content
         if (!sessionStorage.getItem('isAuthenticated')) {
             window.location.href = 'login.html';
         }
@@ -62,17 +61,17 @@
                     <li>Interest is calculated on monthly basis</li>
                     <li>Repayment terms are flexible</li>
                 </ul>
+
+                <div class="section-navigation">
+                    <a href="deposits.html" class="nav-button">
+                        <span class="nav-icon">💳</span>
+                        <span class="nav-text">View Deposits Section</span>
+                        <span class="nav-arrow">←</span>
+                    </a>
+                </div>
             </div>
         </section>
     </main>
-
-    <div class="section-navigation">
-        <a href="deposits.html" class="nav-button">
-            <span class="nav-icon">💳</span>
-            <span class="nav-text">View Deposits Section</span>
-            <span class="nav-arrow">←</span>
-        </a>
-    </div>
 
     <footer>
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
