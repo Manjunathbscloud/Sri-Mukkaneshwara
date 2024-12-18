@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Year Deposits (2021-2022) - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <script>
+        if (!sessionStorage.getItem('isAuthenticated')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <header>
+        <h1>Sri Mukkanneshwara Associate</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="login.html">Accounts</a></li>
+                <li><a href="meetings.html">Meetings</a></li>
+                <li><a href="rules.html">Rules</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="deposits-2021">
+            <h2>First Year Deposits (2021-2022)</h2>
+            <div class="info-card">
+                <a href="deposits.html" class="back-link">← Back to Deposits Overview</a>
+                
+                <h3 class="mt-4">First Year History (2021-2022)</h3>
+                <div class="history-summary">
+                    <p>In the inaugural year, the association established its financial foundation as follows:</p>
+                    <ul class="feature-list">
+                        <li>Initial contribution: Each member deposited ₹5,000 in February 2021</li>
+                        <li>Regular monthly deposits: ₹1,000 per member from March 2021 to January 2022</li>
+                        <li>Special consideration: The President was exempted from December 2021 deposit</li>
+                        <li>Additional income: Earned ₹8,700 through interest</li>
+                        <li>Annual expenses: ₹5,600 spent on year-end meeting</li>
+                    </ul>
+                </div>
+
+                <h3 class="mt-4">Detailed First Year Summary</h3>
+                <table class="member-table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Details</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Initial Contribution</td>
+                            <td>February 2021 (₹5,000 × 7 members)</td>
+                            <td>₹35,000</td>
+                        </tr>
+                        <tr>
+                            <td>Monthly Deposits</td>
+                            <td>March 2021 - November 2021 (₹1,000 × 7 members × 9 months)</td>
+                            <td>₹63,000</td>
+                        </tr>
+                        <tr>
+                            <td>December 2021</td>
+                            <td>6 members (President exempt)</td>
+                            <td>₹6,000</td>
+                        </tr>
+                        <tr>
+                            <td>January 2022</td>
+                            <td>All 7 members</td>
+                            <td>₹7,000</td>
+                        </tr>
+                        <tr>
+                            <td>Interest Earned</td>
+                            <td>Total interest for the year</td>
+                            <td>₹8,700</td>
+                        </tr>
+                        <tr>
+                            <td>Annual Meeting Expense</td>
+                            <td>Year-end meeting cost</td>
+                            <td>-₹5,600</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Total Balance</td>
+                            <td>End of First Year</td>
+                            <td>₹114,100</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
+    </footer>
+</body>
+</html>
