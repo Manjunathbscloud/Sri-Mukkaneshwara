@@ -410,99 +410,47 @@ footer {
     margin-left: 1rem;
 }
 
-/* Deposits Page Specific Styles */
-.deposits-section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.top-nav-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-bottom: 2rem;
-}
-
-.top-nav-bar h2 {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #2c3e50;
-    margin: 0;
-    border-bottom: none;
-}
-
-.top-nav-bar h2 i {
-    color: #3498db;
-}
-
-.year-links {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-}
-
-.year-link {
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem;
-    background-color: white;
-    border-radius: 10px;
-    text-decoration: none;
-    color: inherit;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.year-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-.year-link .year {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-bottom: 0.5rem;
-}
-
-.year-link .details {
-    color: #666;
+/* Status badges */
+.status-clear {
+    background-color: #e8f8f5;
+    color: #27ae60;
+    padding: 4px 12px;
+    border-radius: 20px;
     font-size: 0.9rem;
+    font-weight: 500;
 }
 
-.summary-card {
-    background-color: white;
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin-top: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.status-active {
+    background-color: #edf7ff;
+    color: #3498db;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 768px) {
-    .deposits-section {
-        padding: 1rem;
-    }
+/* Table specific styles */
+.member-table th {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem;
+    text-align: left;
+}
 
-    .top-nav-bar {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem;
-    }
+.member-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
 
-    .nav-button {
-        width: 100%;
-        justify-content: center;
-    }
+.member-table tr:hover {
+    background-color: #f8f9fa;
+}
 
-    .year-links {
-        grid-template-columns: 1fr;
-    }
+.total-row {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.total-row td {
+    border-top: 2px solid #dee2e6;
 }

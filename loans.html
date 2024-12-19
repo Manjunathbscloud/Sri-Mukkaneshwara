@@ -8,12 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <script>
-        if (!sessionStorage.getItem('isAuthenticated')) {
-            window.location.href = 'login.html';
-        }
-    </script>
-
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
         <nav>
@@ -28,42 +22,19 @@
     </header>
 
     <main>
-        <section id="loans" class="loans-section">
-            <div class="section-header">
+        <section class="loans-section">
+            <!-- Top Navigation Bar -->
+            <div class="top-nav-bar">
                 <h2><i class="fas fa-hand-holding-usd"></i> Loan List 2024-25</h2>
                 <a href="deposits.html" class="nav-button">
-                    <i class="fas fa-wallet nav-icon"></i>
+                    <i class="fas fa-piggy-bank nav-icon"></i>
                     <span class="nav-text">View Deposits</span>
                     <i class="fas fa-arrow-right nav-arrow"></i>
                 </a>
             </div>
 
-            <div class="loan-summary-card">
-                <div class="summary-item">
-                    <i class="fas fa-users"></i>
-                    <div class="summary-details">
-                        <h4>Active Borrowers</h4>
-                        <p>7</p>
-                    </div>
-                </div>
-                <div class="summary-item">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <div class="summary-details">
-                        <h4>Total Loan Amount</h4>
-                        <p>₹6,80,000</p>
-                    </div>
-                </div>
-                <div class="summary-item">
-                    <i class="fas fa-chart-line"></i>
-                    <div class="summary-details">
-                        <h4>Total Interest Collected</h4>
-                        <p>₹57,300</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="loan-table-container">
-                <table class="loan-table">
+            <div class="info-card">
+                <table class="member-table">
                     <thead>
                         <tr>
                             <th>Loan Taken by</th>
