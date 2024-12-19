@@ -410,25 +410,3 @@ footer {
     margin-left: 1rem;
 }
 
-.rules-list {
-    padding-left: 2rem;
-    margin-top: 1.5rem;
-}
-
-.rules-list li {
-    margin-bottom: 1rem;
-    line-height: 1.8;
-    color: #2c3e50;
-}
-
-.rules-list li::marker {
-    color: #2c3e50;
-    font-weight: bold;
-}
-
-.info-card h4 {
-    color: #34495e;
-    margin: 1rem 0;
-    font-size: 1.2rem;
-    text-align: center;
-}
