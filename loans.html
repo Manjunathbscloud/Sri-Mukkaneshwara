@@ -5,14 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loans - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <script>
-        if (!sessionStorage.getItem('isAuthenticated')) {
-            window.location.href = 'login.html';
-        }
-    </script>
-
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
         <nav>
@@ -27,48 +22,166 @@
     </header>
 
     <main>
-        <section id="loans">
-            <h2>Loan Information</h2>
+        <section class="loans-section">
+            <div class="top-nav-bar">
+                <a href="deposits.html" class="nav-button">
+                    <i class="fas fa-arrow-left nav-arrow"></i>
+                    <i class="fas fa-piggy-bank nav-icon"></i>
+                    <span class="nav-text">View Deposits</span>
+                </a>
+                <h2><i class="fas fa-hand-holding-usd"></i> Loan Lists</h2>
+            </div>
+
             <div class="info-card">
-                <h3>Interest Rate Structure</h3>
+                <h3>Loan List 2024-25</h3>
                 <table class="member-table">
                     <thead>
                         <tr>
-                            <th>Description</th>
-                            <th>Rate</th>
+                            <th>Loan ID</th>
+                            <th>Loan Taken by</th>
+                            <th>From</th>
+                            <th>Amount (₹)</th>
+                            <th>Interest (₹)</th>
+                            <th>Renewal Month</th>
+                            <th>Status</th>
+                            <th>Total Amount Paid (₹)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Interest Rate</td>
-                            <td>₹1.50 per ₹100 per month</td>
+                            <td><span class="loan-id">SMA-24-001</span></td>
+                            <td>Santosh</td>
+                            <td>Apr-24</td>
+                            <td>30,000</td>
+                            <td>450</td>
+                            <td>May-24</td>
+                            <td><span class="status-clear">Clear</span></td>
+                            <td>450</td>
                         </tr>
                         <tr>
-                            <td>Percentage Rate</td>
-                            <td>1.5% per month</td>
+                            <td><span class="loan-id">SMA-24-002</span></td>
+                            <td>Pratap</td>
+                            <td>Apr-24</td>
+                            <td>1,40,000</td>
+                            <td>2,100</td>
+                            <td>Jun-25</td>
+                            <td><span class="status-active">Active</span></td>
+                            <td>14,700</td>
                         </tr>
                         <tr>
-                            <td>Annual Rate</td>
-                            <td>18% per year</td>
+                            <td><span class="loan-id">SMA-24-003</span></td>
+                            <td>Manjunath</td>
+                            <td>Apr-24</td>
+                            <td>1,00,000</td>
+                            <td>1,500</td>
+                            <td>Dec-24</td>
+                            <td><span class="status-active">Active</span></td>
+                            <td>10,500</td>
+                        </tr>
+                        <tr>
+                            <td><span class="loan-id">SMA-24-004</span></td>
+                            <td>Pratap</td>
+                            <td>Apr-24</td>
+                            <td>50,000</td>
+                            <td>750</td>
+                            <td>Dec-24</td>
+                            <td><span class="status-active">Active</span></td>
+                            <td>5,250</td>
+                        </tr>
+                        <tr>
+                            <td><span class="loan-id">SMA-24-005</span></td>
+                            <td>Pradeep</td>
+                            <td>Apr-24</td>
+                            <td>1,00,000</td>
+                            <td>1,500</td>
+                            <td>Mar-25</td>
+                            <td><span class="status-active">Active</span></td>
+                            <td>10,500</td>
+                        </tr>
+                        <tr>
+                            <td><span class="loan-id">SMA-24-006</span></td>
+                            <td>Santosh</td>
+                            <td>Apr-24</td>
+                            <td>1,00,000</td>
+                            <td>1,500</td>
+                            <td>Apr-25</td>
+                            <td><span class="status-active">Active</span></td>
+                            <td>10,500</td>
+                        </tr>
+                        <tr>
+                            <td><span class="loan-id">SMA-24-007</span></td>
+                            <td>Pratap</td>
+                            <td>May-24</td>
+                            <td>60,000</td>
+                            <td>900</td>
+                            <td>May-25</td>
+                            <td><span class="status-active">Active</span></td>
+                            <td>5,400</td>
+                        </tr>
+                        <tr>
+                            <td><span class="loan-id">SMA-24-008</span></td>
+                            <td>Pradeep</td>
+                            <td>Nov-24</td>
+                            <td>1,00,000</td>
+                            <td>1,500</td>
+                            <td>Nov-25</td>
+                            <td><span class="status-active">Active</span></td>
+                            <td>-</td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="7"><strong>Total Interest Collected upto November 2024</strong></td>
+                            <td><strong>57,300</strong></td>
+                        </tr>
+                    </tfoot>
                 </table>
+            </div>
 
-                <h3 class="mt-4">Loan Terms</h3>
-                <ul class="feature-list">
-                    <li>Loans are available from the collected funds</li>
-                    <li>All members are eligible for loans</li>
-                    <li>Interest is calculated on monthly basis</li>
-                    <li>Repayment terms are flexible</li>
-                </ul>
-
-                <div class="section-navigation">
-                    <a href="deposits.html" class="nav-button">
-                        <span class="nav-icon">💳</span>
-                        <span class="nav-text">View Deposits Section</span>
-                        <span class="nav-arrow">←</span>
-                    </a>
-                </div>
+            <div class="info-card mt-4">
+                <h3>Loan List 2025-26</h3>
+                <table class="member-table">
+                    <thead>
+                        <tr>
+                            <th>Loan ID</th>
+                            <th>Loan Taken by</th>
+                            <th>From</th>
+                            <th>Amount (₹)</th>
+                            <th>Interest (₹)</th>
+                            <th>Renewal Month</th>
+                            <th>Status</th>
+                            <th>Total Amount Paid (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="loan-id">SMA-24-003</span></td>
+                            <td>Manjunath</td>
+                            <td>Apr-24</td>
+                            <td>1,00,000</td>
+                            <td>1,500</td>
+                            <td>Dec-24</td>
+                            <td><span class="status-clear">Clear</span></td>
+                            <td>12,000</td>
+                        </tr>
+                        <tr>
+                            <td><span class="loan-id">SMA-24-002</span></td>
+                            <td>Pratap</td>
+                            <td>Apr-24</td>
+                            <td>1,40,000</td>
+                            <td>2,100</td>
+                            <td>Jun-25</td>
+                            <td><span class="status-active">Active</span></td>
+                            <td>16,800</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="7"><strong>Total Interest Collected upto April 2025</strong></td>
+                            <td><strong>28,800</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </section>
     </main>

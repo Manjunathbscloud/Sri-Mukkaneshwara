@@ -5,14 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deposits - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <script>
-        if (!sessionStorage.getItem('isAuthenticated')) {
-            window.location.href = 'login.html';
-        }
-    </script>
-
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
         <nav>
@@ -27,112 +22,86 @@
     </header>
 
     <main>
-        <section id="deposits">
-            <h2>Deposit Information</h2>
-            
-            <div class="info-card">
-                <h3>Current Deposit Structure</h3>
-                <table class="member-table">
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Per Member Deposit</td>
-                            <td>₹1,500</td>
-                        </tr>
-                        <tr>
-                            <td>Total Members</td>
-                            <td>7</td>
-                        </tr>
-                        <tr>
-                            <td>Total Monthly Collection</td>
-                            <td>₹10,500</td>
-                        </tr>
-                        <tr>
-                            <td>Annual Collection</td>
-                            <td>₹1,26,000</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3 class="mt-4">Account Balance Summary</h3>
-                <div class="summary-card">
-                    <table class="member-table summary-table">
-                        <thead>
-                            <tr>
-                                <th>Year</th>
-                                <th>Principal Amount</th>
-                                <th>Interest Earned</th>
-                                <th>Total Balance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>First Year (2021-2022)</td>
-                                <td>₹1,11,000</td>
-                                <td>₹8,700</td>
-                                <td>₹1,14,100</td>
-                            </tr>
-                            <tr>
-                                <td>Second Year (2022-2023)</td>
-                                <td>₹1,49,000</td>
-                                <td>₹33,600</td>
-                                <td>₹1,69,600</td>
-                            </tr>
-                            <tr>
-                                <td>Third Year (2023-2024)</td>
-                                <td>₹1,70,000</td>
-                                <td>₹45,700</td>
-                                <td>₹1,97,950</td>
-                            </tr>
-                            <tr>
-                                <td>Fourth Year (2024-2025)</td>
-                                <td>₹1,26,000</td>
-                                <td>₹57,300</td>
-                                <td>₹1,49,915</td>
-                            </tr>
-                            <tr class="total-row">
-                                <td>Total</td>
-                                <td>₹5,56,000</td>
-                                <td>₹1,45,300</td>
-                                <td>₹6,31,565</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h3 class="mt-4">Yearly Records</h3>
-                <div class="year-links">
-                    <a href="deposits-2021.html" class="year-link">
-                        <span class="year">2021-2022</span>
-                        <span class="details">First Year Records</span>
-                    </a>
-                    <a href="deposits-2022.html" class="year-link">
-                        <span class="year">2022-2023</span>
-                        <span class="details">Second Year Records</span>
-                    </a>
-                    <a href="deposits-2023.html" class="year-link">
-                        <span class="year">2023-2024</span>
-                        <span class="details">Third Year Records</span>
-                    </a>
-                    <a href="deposits-2024.html" class="year-link">
-                        <span class="year">2024-2025</span>
-                        <span class="details">Fourth Year Records</span>
-                    </a>
-                </div>
-
-                <div class="section-navigation">
-                    <a href="loans.html" class="nav-button">
-                        <span class="nav-icon">💰</span>
-                        <span class="nav-text">View Loans Section</span>
-                        <span class="nav-arrow">→</span>
-                    </a>
-                </div>
+        <section class="deposits-section">
+            <!-- Top Navigation Bar -->
+            <div class="top-nav-bar">
+                <h2><i class="fas fa-piggy-bank"></i> Deposits</h2>
+                <a href="loans.html" class="nav-button">
+                    <i class="fas fa-hand-holding-usd nav-icon"></i>
+                    <span class="nav-text">View Loans</span>
+                    <i class="fas fa-arrow-right nav-arrow"></i>
+                </a>
             </div>
+
+            <section id="deposits">
+                <div class="info-card">
+                    <h3>Account Balance Summary</h3>
+                    <div class="summary-card">
+                        <table class="member-table summary-table">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Principal Amount</th>
+                                    <th>Interest Earned</th>
+                                    <th>Total Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>First Year (2021-2022)</td>
+                                    <td>₹1,11,000</td>
+                                    <td>₹8,700</td>
+                                    <td>₹1,14,100</td>
+                                </tr>
+                                <tr>
+                                    <td>Second Year (2022-2023)</td>
+                                    <td>₹1,49,000</td>
+                                    <td>₹33,600</td>
+                                    <td>₹1,69,600</td>
+                                </tr>
+                                <tr>
+                                    <td>Third Year (2023-2024)</td>
+                                    <td>₹1,70,000</td>
+                                    <td>₹45,700</td>
+                                    <td>₹1,97,950</td>
+                                </tr>
+                                <tr>
+                                    <td>Fourth Year (2024-2025)</td>
+                                    <td>₹1,26,000</td>
+                                    <td>₹57,300</td>
+                                    <td>₹1,49,915</td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td>Total</td>
+                                    <td>₹5,56,000</td>
+                                    <td>₹1,45,300</td>
+                                    <td>₹6,31,565</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="mt-4">Yearly Records</h3>
+                    <div class="year-links">
+                        <a href="deposits-2021.html" class="year-link">
+                            <span class="year">2021-2022</span>
+                            <span class="details">First Year Records</span>
+                        </a>
+                        <a href="deposits-2022.html" class="year-link">
+                            <span class="year">2022-2023</span>
+                            <span class="details">Second Year Records</span>
+                        </a>
+                        <a href="deposits-2023.html" class="year-link">
+                            <span class="year">2023-2024</span>
+                            <span class="details">Third Year Records</span>
+                        </a>
+                        <a href="deposits-2024.html" class="year-link">
+                            <span class="year">2024-2025</span>
+                            <span class="details">Fourth Year Records</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
         </section>
     </main>
 
