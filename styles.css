@@ -410,61 +410,131 @@ footer {
     margin-left: 1rem;
 }
 
-/* Navigation Button Styles */
-.top-nav-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Rules Page Specific Styles */
+.rules-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.section-title {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+
+.section-title i {
+    color: #3498db;
+    margin-right: 0.8rem;
+}
+
+.section-description {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.rule-box {
+    background: #fff;
     margin-bottom: 2rem;
-    padding: 1rem;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.nav-button {
+.rule-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.rule-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0f2f5;
+}
+
+.rule-header h3 {
+    color: #2c3e50;
+    font-size: 1.5rem;
     display: flex;
     align-items: center;
-    padding: 0.8rem 1.5rem;
-    background: linear-gradient(135deg, #2ecc71, #27ae60);  /* Green gradient */
-    color: white;
-    text-decoration: none;
+    gap: 1rem;
+}
+
+.rule-header h3 i {
+    color: #3498db;
+    font-size: 1.6rem;
+}
+
+.rule-box ul {
+    list-style: none;
+    padding: 0;
+}
+
+.rule-box ul li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f0f2f5;
+    line-height: 1.6;
+    color: #444;
+}
+
+.rule-box ul li:last-child {
+    border-bottom: none;
+}
+
+.rule-box ul li i {
+    color: #27ae60;
+    margin-top: 0.3rem;
+    font-size: 1.1rem;
+}
+
+.rules-note {
+    margin-top: 3rem;
+    padding: 1.2rem;
+    background: #f8f9fa;
     border-radius: 8px;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    box-shadow: 0 2px 4px rgba(46,204,113,0.3);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-left: 4px solid #3498db;
 }
 
-.nav-button:hover {
-    background: linear-gradient(135deg, #27ae60, #219a52);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(46,204,113,0.4);
+.rules-note i {
+    color: #3498db;
+    font-size: 1.3rem;
 }
 
-.nav-icon {
-    margin: 0 0.8rem;
-    font-size: 1.1rem;
-}
-
-.nav-text {
-    margin: 0 0.5rem;
-    font-size: 1rem;
-}
-
-.nav-arrow {
-    margin-left: 0.8rem;
-    font-size: 1.1rem;
+.rules-note p {
+    color: #666;
+    margin: 0;
+    font-size: 0.95rem;
 }
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-    .top-nav-bar {
-        flex-direction: column;
-        gap: 1rem;
+    .rules-section {
+        padding: 1rem;
     }
-    
-    .nav-button {
-        width: 100%;
-        justify-content: center;
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .rule-box {
+        padding: 1.5rem;
+    }
+
+    .rule-header h3 {
+        font-size: 1.3rem;
     }
 }
