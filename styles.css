@@ -474,3 +474,100 @@ footer {
         justify-content: center;
     }
 }
+
+/* Rules Page Styles */
+.rules-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.section-title {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.section-description {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.rule-box {
+    background: white;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.rule-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #eee;
+}
+
+.rule-header h3 {
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.rule-header h3 i {
+    color: #3498db;
+}
+
+.rule-box ul {
+    list-style: none;
+    padding: 0;
+}
+
+.rule-box ul li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f0f2f5;
+    line-height: 1.6;
+}
+
+.rule-box ul li i {
+    color: #27ae60;
+    margin-top: 0.3rem;
+}
+
+.rules-note {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.rules-note i {
+    color: #3498db;
+}
+
+@media screen and (max-width: 768px) {
+    .top-nav-bar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .nav-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .rules-section {
+        padding: 1rem;
+    }
+}
