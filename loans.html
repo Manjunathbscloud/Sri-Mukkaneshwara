@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loans - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <script>
@@ -27,8 +28,40 @@
     </header>
 
     <main>
-        <section id="loans">
-            <h2><i class="fas fa-hand-holding-usd"></i> Loan List 2024-25</h2>
+        <section id="loans" class="loans-section">
+            <div class="section-header">
+                <h2><i class="fas fa-hand-holding-usd"></i> Loan List 2024-25</h2>
+                <a href="deposits.html" class="nav-button">
+                    <i class="fas fa-wallet nav-icon"></i>
+                    <span class="nav-text">View Deposits</span>
+                    <i class="fas fa-arrow-right nav-arrow"></i>
+                </a>
+            </div>
+
+            <div class="loan-summary-card">
+                <div class="summary-item">
+                    <i class="fas fa-users"></i>
+                    <div class="summary-details">
+                        <h4>Active Borrowers</h4>
+                        <p>7</p>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <div class="summary-details">
+                        <h4>Total Loan Amount</h4>
+                        <p>₹6,80,000</p>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="summary-details">
+                        <h4>Total Interest Collected</h4>
+                        <p>₹57,300</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="loan-table-container">
                 <table class="loan-table">
                     <thead>
@@ -58,7 +91,7 @@
                             <td>1,40,000</td>
                             <td>2,100</td>
                             <td>Jun-25</td>
-                            <td>Active</td>
+                            <td><span class="status-active">Active</span></td>
                             <td>14,700</td>
                         </tr>
                         <tr>
@@ -67,7 +100,7 @@
                             <td>1,00,000</td>
                             <td>1,500</td>
                             <td>Dec-24</td>
-                            <td>Active</td>
+                            <td><span class="status-active">Active</span></td>
                             <td>10,500</td>
                         </tr>
                         <tr>
@@ -76,7 +109,7 @@
                             <td>50,000</td>
                             <td>750</td>
                             <td>Dec-24</td>
-                            <td>Active</td>
+                            <td><span class="status-active">Active</span></td>
                             <td>5,250</td>
                         </tr>
                         <tr>
@@ -85,7 +118,7 @@
                             <td>1,00,000</td>
                             <td>1,500</td>
                             <td>Mar-25</td>
-                            <td>Active</td>
+                            <td><span class="status-active">Active</span></td>
                             <td>10,500</td>
                         </tr>
                         <tr>
@@ -94,7 +127,7 @@
                             <td>1,00,000</td>
                             <td>1,500</td>
                             <td>Apr-25</td>
-                            <td>Active</td>
+                            <td><span class="status-active">Active</span></td>
                             <td>10,500</td>
                         </tr>
                         <tr>
@@ -103,7 +136,7 @@
                             <td>60,000</td>
                             <td>900</td>
                             <td>May-25</td>
-                            <td>Active</td>
+                            <td><span class="status-active">Active</span></td>
                             <td>5,400</td>
                         </tr>
                         <tr>
@@ -112,12 +145,12 @@
                             <td>1,00,000</td>
                             <td>1,500</td>
                             <td>Nov-25</td>
-                            <td>Active</td>
+                            <td><span class="status-active">Active</span></td>
                             <td>-</td>
                         </tr>
                     </tbody>
                     <tfoot>
-                        <tr>
+                        <tr class="total-row">
                             <td colspan="6"><strong>Total Interest Collected upto November 2024</strong></td>
                             <td><strong>57,300</strong></td>
                         </tr>
