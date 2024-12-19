@@ -410,47 +410,19 @@ footer {
     margin-left: 1rem;
 }
 
-/* Status badges */
-.status-clear {
-    background-color: #e8f8f5;
-    color: #27ae60;
-    padding: 4px 12px;
-    border-radius: 20px;
+/* Loan ID styles */
+.loan-id {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
     font-size: 0.9rem;
     font-weight: 500;
+    border: 1px solid #dee2e6;
 }
 
-.status-active {
-    background-color: #edf7ff;
-    color: #3498db;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-/* Table specific styles */
-.member-table th {
-    background-color: #2c3e50;
-    color: white;
-    padding: 1rem;
-    text-align: left;
-}
-
-.member-table td {
-    padding: 1rem;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.member-table tr:hover {
-    background-color: #f8f9fa;
-}
-
-.total-row {
-    background-color: #f8f9fa;
-    font-weight: bold;
-}
-
-.total-row td {
-    border-top: 2px solid #dee2e6;
+/* Adjust the colspan in total row */
+.total-row td:first-child {
+    text-align: right;
 }
