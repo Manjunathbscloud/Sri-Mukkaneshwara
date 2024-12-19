@@ -5,88 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rules - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .rules-container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 2rem;
-        }
-
-        .info-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .rules-list {
-            counter-reset: rule-counter;
-            list-style: none;
-            padding: 0;
-        }
-
-        .rules-list li {
-            position: relative;
-            padding: 1rem 1rem 1rem 3rem;
-            margin-bottom: 1rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .rules-list li:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .rules-list li::before {
-            counter-increment: rule-counter;
-            content: counter(rule-counter);
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #007bff;
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        h2, h3, h4 {
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-        }
-
-        h2 {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        h3 {
-            font-size: 1.8rem;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 0.5rem;
-        }
-
-        h4 {
-            font-size: 1.4rem;
-            color: #666;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <script>
+    <!-- Remove or comment out the authentication script -->
+    <!-- <script>
         if (!sessionStorage.getItem('isAuthenticated')) {
             window.location.href = 'login.html';
         }
-    </script>
+    </script> -->
 
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
@@ -102,17 +29,27 @@
     </header>
 
     <main>
-        <section id="rules" class="rules-container">
-            <h2>Rules and Regulations</h2>
-            <div class="info-card">
-                <h3>Sri Mukkanneshwar Associates M Tumbaraguddi</h3>
-                <h4>Final Rules and Regulations</h4>
-                
-                <ol class="rules-list">
-                    <li>Membership is valid for 5 years, no interest or benefits for early exit</li>
-                    <li>Monthly deposit payment window: 10th to 15th of each month</li>
-                    <li>Mandatory attendance at annual meetings (
-                </ol>
+        <section id="rules">
+            <h2><i class="fas fa-gavel"></i> Rules and Regulations</h2>
+            
+            <div class="rules-container">
+                <div class="rules-header">
+                    <h3>Sri Mukkanneshwar Associates</h3>
+                    <p>M Tumbaraguddi</p>
+                </div>
+
+                <div class="rules-categories">
+                    <div class="rule-category">
+                        <h4><i class="fas fa-users"></i> Membership Rules</h4>
+                        <div class="rule-card">
+                            <ul>
+                                <li>Membership is valid for 5 years, no interest or benefits for early exit</li>
+                                <li>Monthly deposit payment window: 10th to 15th of each month</li>
+                                <li>Mandatory attendance at annual meetings (
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
