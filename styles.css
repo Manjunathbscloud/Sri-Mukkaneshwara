@@ -611,3 +611,27 @@ footer {
         gap: 1rem;
     }
 }
+
+.note-card {
+    margin-bottom: 2rem;
+    background: #f8f9fa;
+    border-left: 4px solid #3498db;
+}
+
+.important-note {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.important-note i {
+    color: #3498db;
+    font-size: 1.3rem;
+}
+
+.important-note p {
+    color: #2c3e50;
+    margin: 0;
+    font-size: 0.95rem;
+}
