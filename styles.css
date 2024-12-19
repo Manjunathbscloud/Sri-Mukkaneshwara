@@ -410,105 +410,67 @@ footer {
     margin-left: 1rem;
 }
 
-/* Rules Page Specific Styles */
-.rules-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+/* Loan Table Styles */
+.loan-table-container {
+    margin: 2rem auto;
+    padding: 0 1rem;
+    overflow-x: auto;
 }
 
-.rules-header {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.rules-header h3 {
-    color: #333;
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
-}
-
-.rules-header p {
-    color: #666;
-    font-size: 1.2rem;
-}
-
-.rules-categories {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 1rem;
-}
-
-.rule-category {
-    margin-bottom: 2rem;
-}
-
-.rule-category h4 {
-    color: #2c3e50;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.rule-category h4 i {
-    color: #3498db;
-}
-
-.rule-card {
-    background: #f9f9f9;
-    padding: 1.5rem;
+.loan-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease;
+    overflow: hidden;
 }
 
-.rule-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+.loan-table th,
+.loan-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
-.rule-card ul {
-    list-style-type: none;
-    padding-left: 0;
+.loan-table th {
+    background-color: #3498db;
+    color: white;
+    font-weight: 600;
 }
 
-.rule-card li {
-    margin-bottom: 0.8rem;
-    padding-left: 1.5rem;
-    position: relative;
-    line-height: 1.6;
-    color: #444;
+.loan-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
 }
 
-.rule-card li:before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: #3498db;
+.loan-table tbody tr:hover {
+    background-color: #f1f4f7;
 }
 
-.rule-card li:last-child {
-    margin-bottom: 0;
+.status-clear {
+    color: #27ae60;
+    font-weight: 600;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .rules-container {
-        padding: 1rem;
+.loan-table tfoot {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.loan-table tfoot td {
+    border-top: 2px solid #ddd;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .loan-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
-
-    .rules-categories {
-        grid-template-columns: 1fr;
-    }
-
-    .rules-header h3 {
-        font-size: 1.5rem;
-    }
-
-    .rule-category h4 {
-        font-size: 1.2rem;
+    
+    .loan-table th,
+    .loan-table td {
+        padding: 8px 10px;
     }
 }
