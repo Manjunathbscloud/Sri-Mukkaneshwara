@@ -8,11 +8,9 @@
 </head>
 <body>
     <script>
-        // Check authentication before showing content
         if (!sessionStorage.getItem('isAuthenticated')) {
             window.location.href = 'login.html';
         }
-        
     </script>
 
     <header>
@@ -61,195 +59,79 @@
                     </tbody>
                 </table>
 
-                <h3 class="mt-4">First Year History (2021-2022)</h3>
-                <div class="history-summary">
-                    <p>In the inaugural year, the association established its financial foundation as follows:</p>
-                    <ul class="feature-list">
-                        <li>Initial contribution: Each member deposited ₹5,000 in February 2021</li>
-                        <li>Regular monthly deposits: ₹1,000 per member from March 2021 to January 2022</li>
-                        <li>Special consideration: The President was exempted from December 2021 deposit</li>
-                        <li>Additional income: Earned ₹8,700 through interest</li>
-                        <li>Annual expenses: ₹5,600 spent on year-end meeting</li>
-                    </ul>
+                <h3 class="mt-4">Account Balance Summary</h3>
+                <div class="summary-card">
+                    <table class="member-table summary-table">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Principal Amount</th>
+                                <th>Interest Earned</th>
+                                <th>Total Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>First Year (2021-2022)</td>
+                                <td>₹1,11,000</td>
+                                <td>₹8,700</td>
+                                <td>₹1,14,100</td>
+                            </tr>
+                            <tr>
+                                <td>Second Year (2022-2023)</td>
+                                <td>₹1,49,000</td>
+                                <td>₹33,600</td>
+                                <td>₹1,69,600</td>
+                            </tr>
+                            <tr>
+                                <td>Third Year (2023-2024)</td>
+                                <td>₹1,70,000</td>
+                                <td>₹45,700</td>
+                                <td>₹1,97,950</td>
+                            </tr>
+                            <tr>
+                                <td>Fourth Year (2024-2025)</td>
+                                <td>₹1,26,000</td>
+                                <td>₹57,300</td>
+                                <td>₹1,49,915</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td>Total</td>
+                                <td>₹5,56,000</td>
+                                <td>₹1,45,300</td>
+                                <td>₹6,31,565</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <h3 class="mt-4">Detailed First Year Summary</h3>
-                <table class="member-table">
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Details</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Initial Deposit</td>
-                            <td>February 2021 (₹5,000 × 7 members)</td>
-                            <td>₹35,000</td>
-                        </tr>
-                        <tr>
-                            <td>Monthly Deposits</td>
-                            <td>March 2021 - November 2021 (₹1,000 × 7 members × 9 months)</td>
-                            <td>₹63,000</td>
-                        </tr>
-                        <tr>
-                            <td>December 2021</td>
-                            <td>6 members (President exempt)</td>
-                            <td>₹6,000</td>
-                        </tr>
-                        <tr>
-                            <td>January 2022</td>
-                            <td>All 7 members</td>
-                            <td>₹7,000</td>
-                        </tr>
-                        <tr>
-                            <td>Interest Earned</td>
-                            <td>Total interest for the year</td>
-                            <td>₹8,700</td>
-                        </tr>
-                        <tr>
-                            <td>Annual Meeting Expense</td>
-                            <td>Year-end meeting cost</td>
-                            <td>-₹5,600</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td>Total Balance</td>
-                            <td>End of First Year</td>
-                            <td>₹1,14,100</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3 class="mt-4">Second Year History (2022-2023)</h3>
-                <div class="history-summary">
-                    <p>In the second year, the association implemented the following changes:</p>
-                    <ul class="feature-list">
-                        <li>Yearly renewal fee: ₹2,000 per member</li>
-                        <li>Increased monthly deposit: ₹1,500 per member</li>
-                        <li>Special consideration: President exempted from December 2022 deposit</li>
-                        <li>Additional income: Earned ₹33,600 through interest</li>
-                        <li>Annual expenses: ₹13,000 spent on year-end meeting</li>
-                    </ul>
+                <h3 class="mt-4">Yearly Records</h3>
+                <div class="year-links">
+                    <a href="deposits-2021.html" class="year-link">
+                        <span class="year">2021-2022</span>
+                        <span class="details">First Year Records</span>
+                    </a>
+                    <a href="deposits-2022.html" class="year-link">
+                        <span class="year">2022-2023</span>
+                        <span class="details">Second Year Records</span>
+                    </a>
+                    <a href="deposits-2023.html" class="year-link">
+                        <span class="year">2023-2024</span>
+                        <span class="details">Third Year Records</span>
+                    </a>
+                    <a href="deposits-2024.html" class="year-link">
+                        <span class="year">2024-2025</span>
+                        <span class="details">Fourth Year Records</span>
+                    </a>
                 </div>
 
-                <h3 class="mt-4">Detailed Second Year Summary</h3>
-                <table class="member-table">
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Details</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Renewal Fee</td>
-                            <td>February 2022 (₹2,000 × 7 members)</td>
-                            <td>₹14,000</td>
-                        </tr>
-                        <tr>
-                            <td>February 2022</td>
-                            <td>First month with new rate (₹1,500 × 7 members)</td>
-                            <td>₹10,500</td>
-                        </tr>
-                        <tr>
-                            <td>Monthly Deposits</td>
-                            <td>March 2022 - November 2022 (₹1,500 × 7 members × 9 months)</td>
-                            <td>₹94,500</td>
-                        </tr>
-                        <tr>
-                            <td>December 2022</td>
-                            <td>6 members (President exempt)</td>
-                            <td>₹9,000</td>
-                        </tr>
-                        <tr>
-                            <td>January 2023</td>
-                            <td>All 7 members</td>
-                            <td>₹10,500</td>
-                        </tr>
-                        <tr>
-                            <td>February 2023</td>
-                            <td>All 7 members</td>
-                            <td>₹10,500</td>
-                        </tr>
-                        <tr>
-                            <td>Interest Earned</td>
-                            <td>Total interest for the year</td>
-                            <td>₹33,600</td>
-                        </tr>
-                        <tr>
-                            <td>Annual Meeting Expense</td>
-                            <td>Year-end meeting cost</td>
-                            <td>-₹13,000</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td>Total Balance</td>
-                            <td>End of Second Year</td>
-                            <td>₹169,600</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3 class="mt-4">Third Year History (2023-2024)</h3>
-                <div class="history-summary">
-                    <p>In the third year, the association continued with the following structure:</p>
-                    <ul class="feature-list">
-                        <li>Yearly renewal fee: ₹5,000 per member</li>
-                        <li>Monthly deposit: ₹1,500 per member</li>
-                        <li>Special consideration: President exempted from December 2023 deposit</li>
-                        <li>Additional income: Earned ₹45,700 through interest</li>
-                        <li>Annual expenses: ₹17,750 spent on year-end meeting</li>
-                    </ul>
+                <div class="section-navigation">
+                    <a href="loans.html" class="nav-button">
+                        <span class="nav-icon">💰</span>
+                        <span class="nav-text">View Loans Section</span>
+                        <span class="nav-arrow">→</span>
+                    </a>
                 </div>
-
-                <h3 class="mt-4">Detailed Third Year Summary</h3>
-                <table class="member-table">
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Details</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Renewal Fee</td>
-                            <td>March 2023 (₹5,000 × 7 members)</td>
-                            <td>₹35,000</td>
-                        </tr>
-                        <tr>
-                            <td>Monthly Deposits</td>
-                            <td>March 2023 - November 2023 (₹1,500 × 7 members × 9 months)</td>
-                            <td>₹94,500</td>
-                        </tr>
-                        <tr>
-                            <td>December 2023</td>
-                            <td>6 members (President exempt)</td>
-                            <td>₹9,000</td>
-                        </tr>
-                        <tr>
-                            <td>Monthly Deposits</td>
-                            <td>January 2024 - March 2024 (₹1,500 × 7 members × 3 months)</td>
-                            <td>₹31,500</td>
-                        </tr>
-                        <tr>
-                            <td>Interest Earned</td>
-                            <td>Total interest for the year</td>
-                            <td>₹45,700</td>
-                        </tr>
-                        <tr>
-                            <td>Annual Meeting Expense</td>
-                            <td>Year-end meeting cost</td>
-                            <td>-₹17,750</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td>Total Balance</td>
-                            <td>End of Third Year</td>
-                            <td>₹197,950</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </section>
     </main>

@@ -309,10 +309,6 @@ footer {
 }
 
 .summary-table td:nth-child(4) {
-    color: #dc3545;
-}
-
-.summary-table td:nth-child(5) {
     color: #28a745;
 }
 
