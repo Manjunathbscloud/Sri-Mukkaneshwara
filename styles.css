@@ -768,3 +768,21 @@ footer {
         gap: 1rem;
     }
 }
+
+/* Account Overview Section */
+.account-overview {
+    margin: 2rem auto;
+    max-width: 1200px;
+    padding: 0 1rem;
+}
+
+.account-overview .account-stats {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+/* Adjust spacing for following sections */
+.deposit-history {
+    margin-top: 2rem;
+}
