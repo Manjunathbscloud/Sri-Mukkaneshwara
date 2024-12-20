@@ -635,3 +635,64 @@ footer {
     margin: 0;
     font-size: 0.95rem;
 }
+
+/* Deposit History Timeline Styles */
+.deposit-history {
+    margin-bottom: 2rem;
+}
+
+.history-timeline {
+    padding: 1rem 0;
+}
+
+.timeline-item {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    border-left: 2px solid #e0e0e0;
+    position: relative;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-item:before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #3498db;
+}
+
+.timeline-item.current {
+    border-left-color: #2ecc71;
+}
+
+.timeline-item.current:before {
+    background: #2ecc71;
+}
+
+.timeline-item .year {
+    font-weight: 600;
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-item p {
+    margin: 0.3rem 0;
+    color: #666;
+}
+
+.timeline-item .note {
+    font-size: 0.9rem;
+    color: #888;
+    font-style: italic;
+}
+
+.timeline-item strong {
+    color: #2c3e50;
+}
