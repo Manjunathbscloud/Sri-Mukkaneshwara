@@ -55,32 +55,6 @@
                 </div>
             </div>
 
-            <!-- New Reminder Section -->
-            <div class="info-card reminder-section">
-                <h3><i class="fas fa-bell"></i> Loan Renewals Due This Month</h3>
-                <div id="currentReminders">
-                    <!-- If no renewals are due -->
-                    <p class="no-reminders" style="display: none;">No loan renewals due this month.</p>
-                    
-                    <!-- Reminder table -->
-                    <table class="member-table">
-                        <thead>
-                            <tr>
-                                <th>Loan ID</th>
-                                <th>Member Name</th>
-                                <th>Phone Number</th>
-                                <th>Loan Amount (₹)</th>
-                                <th>Due Date</th>
-                                <th>Contact</th>
-                            </tr>
-                        </thead>
-                        <tbody id="reminderTableBody">
-                            <!-- Rows will be populated by JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
             <div class="info-card">
                 <h3>Loan List 2024-25</h3>
                 <table class="member-table">
@@ -308,59 +282,5 @@
     <footer>
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
-
-    <!-- Add this script at the bottom of your page, before </body> -->
-    <script>
-        // Function to check current month's renewals
-        function checkRenewals() {
-            const currentMonth = new Date().toLocaleString('default', { month: 'short' });
-            const tbody = document.getElementById('reminderTableBody');
-            const noReminders = document.querySelector('.no-reminders');
-            let hasRenewals = false;
-
-            // Clear existing rows
-            tbody.innerHTML = '';
-
-            // Get all loan rows from the 2025-26 table
-            const loanRows = document.querySelectorAll('.member-table tbody tr');
-            
-            loanRows.forEach(row => {
-                const renewalMonth = row.querySelector('td:nth-child(6)').textContent.split('-')[0];
-                
-                if (renewalMonth === currentMonth) {
-                    hasRenewals = true;
-                    const loanId = row.querySelector('td:nth-child(1)').textContent;
-                    const memberName = row.querySelector('td:nth-child(2)').textContent;
-                    const amount = row.querySelector('td:nth-child(4)').textContent;
-                    const dueDate = row.querySelector('td:nth-child(6)').textContent;
-                    
-                    // Create reminder row
-                    const reminderRow = document.createElement('tr');
-                    reminderRow.innerHTML = `
-                        <td>${loanId}</td>
-                        <td>${memberName}</td>
-                        <td>Contact Admin</td>
-                        <td>${amount}</td>
-                        <td>${dueDate}</td>
-                        <td>
-                            <button class="contact-btn" onclick="alert('Please contact the admin for member\'s contact information.')">
-                                <i class="fas fa-phone"></i> Contact
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(reminderRow);
-                }
-            });
-
-            // Show/hide "no reminders" message
-            noReminders.style.display = hasRenewals ? 'none' : 'block';
-            
-            // Show/hide the entire reminder section
-            document.querySelector('.reminder-section').style.display = hasRenewals ? 'block' : 'none';
-        }
-
-        // Run when page loads
-        window.onload = checkRenewals;
-    </script>
 </body>
 </html>
