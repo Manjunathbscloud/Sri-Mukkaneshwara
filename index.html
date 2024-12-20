@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <h1>Sri Mukkanneshwara Associate</h1>
+        <h1 class="fade-in">Sri Mukkanneshwara Associate</h1>
         <nav>
             <ul>
                 <li><a href="index.html">Overview</a></li>
@@ -23,20 +23,112 @@
 
     <main>
         <section id="overview">
-            <h2><i class="fas fa-home"></i> Overview</h2>
-            <div class="info-card">
-                <p>Sri Mukkaneswara Associates was established in February 2021 with an initial membership of 8 members. However, one member voluntarily opted out due to personal reasons.</p>
+            <h2 class="slide-in"><i class="fas fa-home"></i> Overview</h2>
+            
+            <!-- Updated History Card -->
+            <div class="info-card slide-in-delay-1">
+                <h3><i class="fas fa-history"></i> Our Journey</h3>
                 
-                <p>Despite this, the association has continued to move forward with determination and has successfully completed 4 years of operation. At the end of each year, the association conducts a meeting, and the expenses for this meeting are covered by the association's funds.</p>
-                
-                <p>The members of the association are considered part of a single family, and each member contributes to the association's account. The association operates according to a set of rules, which can be found in the "Rules Section."</p>
+                <div class="journey-timeline">
+                    <div class="timeline-item">
+                        <span class="year">2021</span>
+                        <h4>Establishment & Initial Growth</h4>
+                        <ul>
+                            <li>Founded in February 2021 with 8 initial members</li>
+                            <li>Started with monthly deposit of ₹1,000 per member</li>
+                            <li>First annual meeting held at M Thumbaraguddi (Native Place)</li>
+                            <li>Established core rules and loan procedures</li>
+                        </ul>
+                    </div>
 
-                <h3><i class="fas fa-info-circle"></i> Key Information</h3>
-                <ul class="feature-list">
-                    <li><i class="fas fa-users"></i> Total Members: 7</li>
-                    <li><i class="fas fa-piggy-bank"></i> Monthly Deposit: ₹2,000 per member</li>
-                    <li><i class="fas fa-money-bill-wave"></i> Total Monthly Collection: ₹14,000</li>
-                </ul>
+                    <div class="timeline-item">
+                        <span class="year">2022</span>
+                        <h4>Strengthening & Development</h4>
+                        <ul>
+                            <li>Increased monthly deposit to ₹1,500 after first annual meeting</li>
+                            <li>Second annual meeting at Sampige Heritage Resort, Koppal</li>
+                            <li>Streamlined loan distribution process</li>
+                            <li>Established systematic record-keeping</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="year">2023-24</span>
+                        <h4>Growth & Stability</h4>
+                        <ul>
+                            <li>Maintained strong financial management</li>
+                            <li>Third annual meeting at Cotton County Club, Hubballi</li>
+                            <li>Successfully managed multiple active loans</li>
+                            <li>Strengthened member relationships through regular meetings</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item current">
+                        <span class="year">2024-25</span>
+                        <h4>Current Status & Future Plans</h4>
+                        <ul>
+                            <li>Increased monthly deposit to ₹2,000 per member</li>
+                            <li>Fourth annual meeting planned at Jungle Vibes Resort, Dandeli</li>
+                            <li>7 active members contributing to association's growth</li>
+                            <li>Transparent financial management with detailed record-keeping</li>
+                            <li>Strong loan management system benefiting all members</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Stats Card -->
+            <div class="info-card stats-card slide-in-delay-2">
+                <h3><i class="fas fa-chart-line"></i> Current Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <i class="fas fa-users"></i>
+                        <h4>Total Members</h4>
+                        <span class="counter">7</span>
+                        <p>Active Members</p>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-piggy-bank"></i>
+                        <h4>Monthly Deposit</h4>
+                        <span>₹2,000</span>
+                        <p>Per Member</p>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h4>Monthly Collection</h4>
+                        <span>₹14,000</span>
+                        <p>Total</p>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-handshake"></i>
+                        <h4>Annual Meetings</h4>
+                        <span>4</span>
+                        <p>Successful Gatherings</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements Card -->
+            <div class="info-card achievement-card slide-in-delay-3">
+                <h3><i class="fas fa-trophy"></i> Key Achievements</h3>
+                <div class="achievement-list">
+                    <div class="achievement-item">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Successfully managing loans and deposits for 4 years</p>
+                    </div>
+                    <div class="achievement-item">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Organized annual meetings at various locations</p>
+                    </div>
+                    <div class="achievement-item">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Maintained transparent financial records</p>
+                    </div>
+                    <div class="achievement-item">
+                        <i class="fas fa-check-circle"></i>
+                        <p>Increased monthly deposit from ₹1,000 to ₹2,000</p>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -44,5 +136,218 @@
     <footer>
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
+
+    <style>
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+
+        .slide-in {
+            animation: slideIn 1s ease-out;
+        }
+
+        .slide-in-delay-1 {
+            animation: slideIn 1s ease-out 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .slide-in-delay-2 {
+            animation: slideIn 1s ease-out 0.4s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .slide-in-delay-3 {
+            animation: slideIn 1s ease-out 0.6s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        /* Stats Grid Styles */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-item i {
+            font-size: 2rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item h4 {
+            color: #666;
+            margin: 0.5rem 0;
+        }
+
+        .stat-item span {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            display: block;
+            margin: 0.5rem 0;
+        }
+
+        .stat-item p {
+            color: #888;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Achievement Styles */
+        .achievement-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .achievement-item:hover {
+            transform: translateX(10px);
+        }
+
+        .achievement-item i {
+            color: #2ecc71;
+            font-size: 1.2rem;
+        }
+
+        .achievement-item p {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        @media screen and (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .achievement-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Journey Timeline Styles */
+        .journey-timeline {
+            padding: 1.5rem 0;
+        }
+
+        .journey-timeline .timeline-item {
+            position: relative;
+            padding: 1.5rem;
+            margin-left: 2rem;
+            margin-bottom: 2rem;
+            border-left: 3px solid #3498db;
+            background: #f8f9fa;
+            border-radius: 0 10px 10px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .journey-timeline .timeline-item:hover {
+            transform: translateX(10px);
+        }
+
+        .journey-timeline .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .journey-timeline .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 2rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3498db;
+            border: 3px solid #fff;
+        }
+
+        .journey-timeline .timeline-item.current {
+            border-left-color: #2ecc71;
+        }
+
+        .journey-timeline .timeline-item.current::before {
+            background: #2ecc71;
+        }
+
+        .journey-timeline .year {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: #3498db;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .journey-timeline .current .year {
+            background: #2ecc71;
+        }
+
+        .journey-timeline h4 {
+            color: #2c3e50;
+            margin: 0.5rem 0 1rem 0;
+        }
+
+        .journey-timeline ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .journey-timeline ul li {
+            color: #666;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .journey-timeline ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        @media screen and (max-width: 768px) {
+            .journey-timeline .timeline-item {
+                margin-left: 1rem;
+                padding: 1rem;
+            }
+        }
+    </style>
 </body>
 </html>
