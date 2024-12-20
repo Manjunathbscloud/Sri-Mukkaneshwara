@@ -25,14 +25,56 @@
         <section id="overview">
             <h2 class="slide-in"><i class="fas fa-home"></i> Overview</h2>
             
-            <!-- History Card -->
+            <!-- Updated History Card -->
             <div class="info-card slide-in-delay-1">
                 <h3><i class="fas fa-history"></i> Our Journey</h3>
-                <p>Sri Mukkaneswara Associates was established in February 2021 with an initial membership of 8 members. However, one member voluntarily opted out due to personal reasons.</p>
                 
-                <p>Despite this, the association has continued to move forward with determination and has successfully completed 4 years of operation. At the end of each year, the association conducts a meeting, and the expenses for this meeting are covered by the association's funds.</p>
-                
-                <p>The members of the association are considered part of a single family, and each member contributes to the association's account. The association operates according to a set of rules, which can be found in the "Rules Section."</p>
+                <div class="journey-timeline">
+                    <div class="timeline-item">
+                        <span class="year">2021</span>
+                        <h4>Establishment & Initial Growth</h4>
+                        <ul>
+                            <li>Founded in February 2021 with 8 initial members</li>
+                            <li>Started with monthly deposit of ₹1,000 per member</li>
+                            <li>First annual meeting held at M Thumbaraguddi (Native Place)</li>
+                            <li>Established core rules and loan procedures</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="year">2022</span>
+                        <h4>Strengthening & Development</h4>
+                        <ul>
+                            <li>Increased monthly deposit to ₹1,500 after first annual meeting</li>
+                            <li>Second annual meeting at Sampige Heritage Resort, Koppal</li>
+                            <li>Streamlined loan distribution process</li>
+                            <li>Established systematic record-keeping</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="year">2023-24</span>
+                        <h4>Growth & Stability</h4>
+                        <ul>
+                            <li>Maintained strong financial management</li>
+                            <li>Third annual meeting at Cotton County Club, Hubballi</li>
+                            <li>Successfully managed multiple active loans</li>
+                            <li>Strengthened member relationships through regular meetings</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item current">
+                        <span class="year">2024-25</span>
+                        <h4>Current Status & Future Plans</h4>
+                        <ul>
+                            <li>Increased monthly deposit to ₹2,000 per member</li>
+                            <li>Fourth annual meeting planned at Jungle Vibes Resort, Dandeli</li>
+                            <li>7 active members contributing to association's growth</li>
+                            <li>Transparent financial management with detailed record-keeping</li>
+                            <li>Strong loan management system benefiting all members</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <!-- Key Stats Card -->
@@ -219,6 +261,91 @@
 
             .achievement-list {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        /* Journey Timeline Styles */
+        .journey-timeline {
+            padding: 1.5rem 0;
+        }
+
+        .journey-timeline .timeline-item {
+            position: relative;
+            padding: 1.5rem;
+            margin-left: 2rem;
+            margin-bottom: 2rem;
+            border-left: 3px solid #3498db;
+            background: #f8f9fa;
+            border-radius: 0 10px 10px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .journey-timeline .timeline-item:hover {
+            transform: translateX(10px);
+        }
+
+        .journey-timeline .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .journey-timeline .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 2rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3498db;
+            border: 3px solid #fff;
+        }
+
+        .journey-timeline .timeline-item.current {
+            border-left-color: #2ecc71;
+        }
+
+        .journey-timeline .timeline-item.current::before {
+            background: #2ecc71;
+        }
+
+        .journey-timeline .year {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            background: #3498db;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .journey-timeline .current .year {
+            background: #2ecc71;
+        }
+
+        .journey-timeline h4 {
+            color: #2c3e50;
+            margin: 0.5rem 0 1rem 0;
+        }
+
+        .journey-timeline ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .journey-timeline ul li {
+            color: #666;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .journey-timeline ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        @media screen and (max-width: 768px) {
+            .journey-timeline .timeline-item {
+                margin-left: 1rem;
+                padding: 1rem;
             }
         }
     </style>
