@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Members - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header>
@@ -31,6 +32,7 @@
                             <th>Member ID</th>
                             <th>Name</th>
                             <th>Role</th>
+                            <th>Contact</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,36 +40,78 @@
                             <td>001</td>
                             <td>Manjunath Banakar</td>
                             <td>President</td>
+                            <td>
+                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919591382942">
+                                    <i class="fas fa-phone"></i> Contact
+                                </button>
+                                <span class="phone-number hidden">+919591382942</span>
+                            </td>
                         </tr>
                         <tr>
                             <td>002</td>
                             <td>Pratap Banakar</td>
                             <td>Vice President</td>
+                            <td>
+                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+917259907409">
+                                    <i class="fas fa-phone"></i> Contact
+                                </button>
+                                <span class="phone-number hidden">+917259907409</span>
+                            </td>
                         </tr>
                         <tr>
                             <td>003</td>
                             <td>Sarpabhushana Banakar</td>
                             <td>Member</td>
+                            <td>
+                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919740373454">
+                                    <i class="fas fa-phone"></i> Contact
+                                </button>
+                                <span class="phone-number hidden">+919740373454</span>
+                            </td>
                         </tr>
                         <tr>
                             <td>004</td>
                             <td>Mukkanna Banakar</td>
                             <td>Member</td>
+                            <td>
+                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+918618600807">
+                                    <i class="fas fa-phone"></i> Contact
+                                </button>
+                                <span class="phone-number hidden">+918618600807</span>
+                            </td>
                         </tr>
                         <tr>
                             <td>005</td>
                             <td>Santosh Banakar</td>
                             <td>Member</td>
+                            <td>
+                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919739678816">
+                                    <i class="fas fa-phone"></i> Contact
+                                </button>
+                                <span class="phone-number hidden">+919739678816</span>
+                            </td>
                         </tr>
                         <tr>
                             <td>006</td>
                             <td>Pradeep Banakar</td>
                             <td>Member</td>
+                            <td>
+                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919663644751">
+                                    <i class="fas fa-phone"></i> Contact
+                                </button>
+                                <span class="phone-number hidden">+919663644751</span>
+                            </td>
                         </tr>
                         <tr>
                             <td>007</td>
                             <td>Praveen Banakar</td>
                             <td>Member</td>
+                            <td>
+                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919538913204">
+                                    <i class="fas fa-phone"></i> Contact
+                                </button>
+                                <span class="phone-number hidden">+919538913204</span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -78,5 +122,53 @@
     <footer>
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
+
+    <script>
+        function togglePhone(button) {
+            const phoneSpan = button.nextElementSibling;
+            if (phoneSpan.classList.contains('hidden')) {
+                // Show phone number
+                phoneSpan.classList.remove('hidden');
+                button.innerHTML = '<i class="fas fa-times"></i> Hide';
+            } else {
+                // Hide phone number
+                phoneSpan.classList.add('hidden');
+                button.innerHTML = '<i class="fas fa-phone"></i> Contact';
+            }
+        }
+    </script>
+
+    <style>
+        .contact-btn {
+            padding: 0.5rem 1rem;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .contact-btn:hover {
+            background: #2980b9;
+        }
+
+        .phone-number {
+            margin-left: 1rem;
+            color: #2c3e50;
+            font-family: monospace;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .contact-btn i {
+            font-size: 0.8rem;
+        }
+    </style>
 </body>
 </html>
