@@ -1256,3 +1256,121 @@ html {
 .top-nav-bar {
     padding: 20px 0;
 }
+
+.header-with-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+    position: relative;
+}
+
+.header-with-nav .page-title {
+    margin: 0;
+    border-bottom: none;
+    text-align: center;
+}
+
+.header-with-nav .nav-button {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Ensure page title stays centered */
+.page-title {
+    text-align: center;
+    margin: 1rem auto 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #2c3e50;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.year-link.current-year {
+    background-color: #f0f8ff;  /* Light blue background */
+    border: 2px solid #3498db;  /* Blue border */
+    position: relative;
+}
+
+.active-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #28a745;  /* Green background */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.current-year .details {
+    color: #2c3e50;  /* Darker color for emphasis */
+    font-weight: 500;
+}
+
+.no-records {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.no-data-content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.no-data-image {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+}
+
+.no-data-content h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.no-data-content p {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.no-data-emoji {
+    font-size: 2rem;
+    color: #888;
+    margin-top: 1.5rem;
+}
+
+.bottom-nav {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.bottom-nav .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.bottom-nav .back-button:hover {
+    background-color: #555;
+    transform: translateX(-5px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
