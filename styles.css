@@ -1,3 +1,16 @@
+:root {
+    --primary: #800000;      /* Maroon */
+    --primary-light: #A52A2A; /* Brown */
+    --accent: #FFD700;       /* Gold */
+    --text: #333333;         /* Dark Grey */
+    --background: #FFF5E6;   /* Light Cream */
+    --timeline-primary: #8B4513;     /* Saddle Brown */
+    --timeline-accent: #DAA520;      /* Golden Rod */
+    --timeline-current: #556B2F;     /* Dark Olive Green */
+    --timeline-text: #2C1810;        /* Dark Brown */
+    --timeline-bg: #FFF8E7;          /* Antique White */
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,8 +20,8 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f4f4f4;
+    color: var(--text);
+    background-color: var(--background);
 }
 
 header {
@@ -830,4 +843,416 @@ footer {
 
 .contact-btn i {
     font-size: 0.8rem;
+}
+
+/* Enhanced Header Styles */
+.main-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.site-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 0 1rem 0;
+    color: #fff;
+}
+
+.site-title .fa-om {
+    font-size: 2.5rem;
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(255,215,0,0.5);
+}
+
+.title-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.sri {
+    font-size: 1rem;
+    color: var(--accent);
+    font-weight: normal;
+}
+
+/* Navigation Styles */
+.main-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-link i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+.nav-link:hover i {
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    background: rgba(255,255,255,0.15);
+    color: var(--accent);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .site-title {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    .main-nav ul {
+        justify-content: center;
+    }
+
+    .nav-link {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Animation for header elements */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.site-title {
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.main-nav {
+    animation: fadeInDown 0.8s ease-out 0.2s backwards;
+}
+
+/* Optional: Add a subtle hover effect to the entire header */
+.main-header:hover .fa-om {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        transform: translateX(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.slide-up {
+    animation: slideUp 1s ease-out forwards;
+}
+
+.fade-in-left {
+    animation: fadeInLeft 1s ease-out forwards;
+}
+
+.fade-in-right {
+    animation: fadeInRight 1s ease-out forwards;
+}
+
+/* Delay Classes */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+.delay-4 { animation-delay: 0.8s; }
+.delay-5 { animation-delay: 1.0s; }
+.delay-6 { animation-delay: 1.2s; }
+.delay-7 { animation-delay: 1.4s; }
+
+/* Additional Hover Effects */
+.timeline-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.timeline-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.feature-list li {
+    transition: transform 0.3s ease;
+}
+
+.feature-list li:hover {
+    transform: translateY(-5px);
+}
+
+/* Ensure elements are hidden before animation starts */
+.fade-in, .slide-up, .fade-in-left, .fade-in-right {
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+/* Optional: Add smooth scrolling for better experience */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Enhanced Journey Timeline Styles with Neutral Colors */
+.journey-timeline {
+    position: relative;
+    padding: 2rem 0;
+}
+
+.timeline-item {
+    position: relative;
+    padding: 2rem;
+    margin: 0 0 2rem 3rem;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    border-left: 5px solid #666;
+    overflow: hidden;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -3rem;
+    top: 2rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #666;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 2.5rem;
+    width: 2px;
+    height: calc(100% + 2rem);
+    background: #666;
+    z-index: 0;
+}
+
+.timeline-item:last-child::after {
+    display: none;
+}
+
+.year {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: #333;
+    color: white !important;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-item h4 {
+    color: #333;
+    margin: 0.5rem 0 1.5rem;
+    font-size: 1.3rem;
+}
+
+.timeline-item ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.timeline-item ul li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #666;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    top: -1px;
+}
+
+.timeline-item ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Hover Effects */
+.timeline-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.timeline-item:hover::before {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-item:hover .year {
+    color: white !important;
+    background: #333;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Current Year Styling */
+.timeline-item.current {
+    border-left-color: #444;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.02), #fff);
+}
+
+.timeline-item.current::before {
+    background: #444;
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-item.current .year {
+    background: #000;
+    color: #fff;
+    font-weight: 800;
+}
+
+.timeline-item.current ul li::before {
+    color: #444;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .timeline-item {
+        margin-left: 2rem;
+        padding: 1.5rem;
+    }
+
+    .timeline-item::before {
+        left: -2rem;
+    }
+
+    .timeline-item::after {
+        left: -1.5rem;
+    }
+}
+
+/* Back Button Styling */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.back-button i {
+    font-size: 16px;
+}
+
+.back-button:hover {
+    background-color: #555;
+    transform: translateX(-5px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.back-button:active {
+    transform: translateX(-2px);
+}
+
+/* Container for the button */
+.top-nav-bar {
+    padding: 20px 0;
 }
