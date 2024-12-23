@@ -6,6 +6,12 @@
     <title>Loans - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        if (!sessionStorage.getItem('isAuthenticated')) {
+            sessionStorage.setItem('returnUrl', window.location.href);
+            window.location.href = 'login.html';
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -66,7 +72,7 @@
                     </a>
                     <a href="loans-2024.html" class="year-link current-year">
                         <span class="year">2024-2025</span>
-                        <span class="details">Current Active Loans</span>
+                        <span class="details">Fourth Year Records</span>
                         <span class="active-badge">Active</span>
                     </a>
                 </div>

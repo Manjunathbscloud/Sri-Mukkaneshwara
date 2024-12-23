@@ -3,34 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access - Sri Mukkanneshwara Associate</title>
+    <title>Login - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Overview</a></li>
-                <li><a href="members.html">Members</a></li>
-                <li><a href="login.html">Accounts</a></li>
-                <li><a href="meetings.html">Meetings</a></li>
-                <li><a href="rules.html">Rules</a></li>
-            </ul>
-        </nav>
     </header>
 
     <main>
-        <section class="login-form">
-            <h2>Access Required</h2>
-            <p>Please enter the access code to view accounts section</p>
-            <form id="loginForm" onsubmit="return validateCode(event)">
-                <div class="form-group">
-                    <label for="accessCode">Access Code:</label>
-                    <input type="password" id="accessCode" name="accessCode" required>
+        <section class="login-section">
+            <div class="back-nav">
+                <a href="index.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </a>
+            </div>
+
+            <div class="login-container">
+                <h2 class="page-title">
+                    <i class="fas fa-user-lock"></i>
+                    Member Login
+                </h2>
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user"></i> Username
+                        </label>
+                        <input type="text" id="username" placeholder="Enter your username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-key"></i> Password
+                        </label>
+                        <input type="password" id="password" placeholder="Enter your password">
+                    </div>
+                    <div class="form-group">
+                        <button id="loginBtn" class="login-btn">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </div>
+                    <div id="errorMessage" class="error-message"></div>
                 </div>
-                <button type="submit">Submit</button>
-            </form>
+            </div>
         </section>
     </main>
 

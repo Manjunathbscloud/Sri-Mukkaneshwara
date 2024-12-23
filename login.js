@@ -1,23 +1,75 @@
-function validateCode(event) {
-    event.preventDefault();
-    
-    const accessCode = document.getElementById('accessCode').value;
-    
-    // Replace this with your desired access code
-    const validCode = '123456';
-    
-    if (accessCode === validCode) {
-        try {
-            // Store authentication status
-            sessionStorage.setItem('isAuthenticated', 'true');
-            console.log('Authentication successful');
-            // Redirect to accounts page
-            window.location.href = 'accounts.html';
-        } catch (error) {
-            console.error('Error during authentication:', error);
-            alert('An error occurred during authentication. Please try again.');
-        }
-    } else {
-        alert('Invalid access code. Please try again.');
+// User credentials (in real application, this would be on server)
+const users = [
+    {
+        username: "manjunath",
+        password: "mb2024",
+        role: "president",
+        name: "Manjunath Banakar"
+    },
+    {
+        username: "pratap",
+        password: "pb2024",
+        role: "vicePresident",
+        name: "Pratap Banakar"
+    },
+    {
+        username: "sarpa",
+        password: "sb2024",
+        role: "member",
+        name: "Sarpabhushana Banakar"
+    },
+    {
+        username: "pradeep",
+        password: "pb2024",
+        role: "member",
+        name: "Pradeep Banakar"
+    },
+    {
+        username: "santosh",
+        password: "sb2024",
+        role: "member",
+        name: "Santosh Banakar"
+    },
+    {
+        username: "mukkanna",
+        password: "mb2024",
+        role: "member",
+        name: "Mukkanna Banakar"
+    },
+    {
+        username: "praveen",
+        password: "pb2024",
+        role: "member",
+        name: "Praveen Banakar"
     }
+];
+
+document.getElementById('loginBtn').addEventListener('click', function() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('errorMessage');
+
+    // Find user
+    const user = users.find(u => u.username === username && u.password === password);
+
+    if (user) {
+        // Store login state
+        sessionStorage.setItem('isAuthenticated', 'true');
+        sessionStorage.setItem('userName', user.name);
+        sessionStorage.setItem('userRole', user.role);
+
+        // Redirect to previous page or deposits page
+        const returnUrl = sessionStorage.getItem('returnUrl') || 'deposits.html';
+        window.location.href = returnUrl;
+    } else {
+        errorMessage.textContent = 'Invalid username or password';
+    }
+});
+
+// Clear error message when typing
+document.getElementById('username').addEventListener('input', clearError);
+document.getElementById('password').addEventListener('input', clearError);
+
+function clearError() {
+    document.getElementById('errorMessage').textContent = '';
 }

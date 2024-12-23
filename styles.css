@@ -1374,3 +1374,76 @@ html {
     transform: translateX(-5px);
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
+
+/* Login Page Styles */
+.login-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px);
+}
+
+.login-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-form {
+    margin-top: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #555;
+}
+
+.error-message {
+    color: #dc3545;
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.back-nav {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.login-section {
+    position: relative;  /* Add this to contain the absolute positioned back button */
+}
