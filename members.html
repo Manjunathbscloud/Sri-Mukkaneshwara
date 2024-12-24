@@ -27,97 +27,118 @@
                 <i class="fas fa-users"></i> 
                 Members List
             </h2>
-            <div class="info-card">
-                <h3>Current Members</h3>
-                <table class="member-table">
-                    <thead>
-                        <tr>
-                            <th>Member ID</th>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Contact</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>Manjunath Banakar</td>
-                            <td>President</td>
-                            <td>
-                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919591382942">
-                                    <i class="fas fa-phone"></i> Contact
-                                </button>
-                                <span class="phone-number hidden">+919591382942</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>002</td>
-                            <td>Pratap Banakar</td>
-                            <td>Vice President</td>
-                            <td>
-                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+917259907409">
-                                    <i class="fas fa-phone"></i> Contact
-                                </button>
-                                <span class="phone-number hidden">+917259907409</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>003</td>
-                            <td>Sarpabhushana Banakar</td>
-                            <td>Member</td>
-                            <td>
-                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919740373454">
-                                    <i class="fas fa-phone"></i> Contact
-                                </button>
-                                <span class="phone-number hidden">+919740373454</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>004</td>
-                            <td>Mukkanna Banakar</td>
-                            <td>Member</td>
-                            <td>
-                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+918618600807">
-                                    <i class="fas fa-phone"></i> Contact
-                                </button>
-                                <span class="phone-number hidden">+918618600807</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>005</td>
-                            <td>Santosh Banakar</td>
-                            <td>Member</td>
-                            <td>
-                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919739678816">
-                                    <i class="fas fa-phone"></i> Contact
-                                </button>
-                                <span class="phone-number hidden">+919739678816</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>006</td>
-                            <td>Pradeep Banakar</td>
-                            <td>Member</td>
-                            <td>
-                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919663644751">
-                                    <i class="fas fa-phone"></i> Contact
-                                </button>
-                                <span class="phone-number hidden">+919663644751</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>007</td>
-                            <td>Praveen Banakar</td>
-                            <td>Member</td>
-                            <td>
-                                <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919538913204">
-                                    <i class="fas fa-phone"></i> Contact
-                                </button>
-                                <span class="phone-number hidden">+919538913204</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="members-grid">
+                <!-- President -->
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <img src="images/members/member-001.jpeg" alt="Manjunath Banakar" 
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-user" style="display: none;"></i>
+                    </div>
+                    <span class="member-role role-president">President</span>
+                    <h3 class="member-name">Manjunath Banakar</h3>
+                    <div class="member-id">Member ID: 001</div>
+                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919591382942">
+                        <i class="fas fa-phone"></i> Contact
+                    </button>
+                    <div class="phone-number hidden">+919591382942</div>
+                </div>
+
+                <!-- Vice President -->
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <img src="images/members/member-002.jpeg" alt="Pratap Banakar" 
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-user" style="display: none;"></i>
+                    </div>
+                    <span class="member-role role-vice-president">Vice President</span>
+                    <h3 class="member-name">Pratap Banakar</h3>
+                    <div class="member-id">Member ID: 002</div>
+                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+917259907409">
+                        <i class="fas fa-phone"></i> Contact
+                    </button>
+                    <div class="phone-number hidden">+917259907409</div>
+                </div>
+
+                <!-- Member 003 -->
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <img src="images/members/member-003.jpeg" alt="Sarpabhushana Banakar" 
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-user" style="display: none;"></i>
+                    </div>
+                    <span class="member-role role-member">Member</span>
+                    <h3 class="member-name">Sarpabhushana Banakar</h3>
+                    <div class="member-id">Member ID: 003</div>
+                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919740373454">
+                        <i class="fas fa-phone"></i> Contact
+                    </button>
+                    <div class="phone-number hidden">+919740373454</div>
+                </div>
+
+                <!-- Member 004 -->
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <img src="images/members/member-004.jpeg" alt="Mukkanna Banakar" 
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-user" style="display: none;"></i>
+                    </div>
+                    <span class="member-role role-member">Member</span>
+                    <h3 class="member-name">Mukkanna Banakar</h3>
+                    <div class="member-id">Member ID: 004</div>
+                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+918618600807">
+                        <i class="fas fa-phone"></i> Contact
+                    </button>
+                    <div class="phone-number hidden">+918618600807</div>
+                </div>
+
+                <!-- Member 005 -->
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <img src="images/members/member-005.jpeg" alt="Santosh Banakar" 
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-user" style="display: none;"></i>
+                    </div>
+                    <span class="member-role role-member">Member</span>
+                    <h3 class="member-name">Santosh Banakar</h3>
+                    <div class="member-id">Member ID: 005</div>
+                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919739678816">
+                        <i class="fas fa-phone"></i> Contact
+                    </button>
+                    <div class="phone-number hidden">+919739678816</div>
+                </div>
+
+                <!-- Member 006 -->
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <img src="images/members/member-006.jpeg" alt="Pradeep Banakar" 
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-user" style="display: none;"></i>
+                    </div>
+                    <span class="member-role role-member">Member</span>
+                    <h3 class="member-name">Pradeep Banakar</h3>
+                    <div class="member-id">Member ID: 006</div>
+                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919663644751">
+                        <i class="fas fa-phone"></i> Contact
+                    </button>
+                    <div class="phone-number hidden">+919663644751</div>
+                </div>
+
+                <!-- Member 007 -->
+                <div class="member-card">
+                    <div class="member-avatar">
+                        <img src="images/members/member-007.jpeg" alt="Praveen Banakar" 
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-user" style="display: none;"></i>
+                    </div>
+                    <span class="member-role role-member">Member</span>
+                    <h3 class="member-name">Praveen Banakar</h3>
+                    <div class="member-id">Member ID: 007</div>
+                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919538913204">
+                        <i class="fas fa-phone"></i> Contact
+                    </button>
+                    <div class="phone-number hidden">+919538913204</div>
+                </div>
             </div>
         </section>
     </main>
