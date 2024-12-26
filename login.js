@@ -58,8 +58,8 @@ document.getElementById('loginBtn').addEventListener('click', function() {
         sessionStorage.setItem('userName', user.name);
         sessionStorage.setItem('userRole', user.role);
 
-        // Redirect to previous page or deposits page
-        const returnUrl = sessionStorage.getItem('returnUrl') || 'deposits.html';
+        // Change this line to redirect to accounts page instead of deposits
+        const returnUrl = sessionStorage.getItem('returnUrl') || 'accounts.html';
         window.location.href = returnUrl;
     } else {
         errorMessage.textContent = 'Invalid username or password';
