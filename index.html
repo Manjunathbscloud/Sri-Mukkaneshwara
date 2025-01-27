@@ -27,6 +27,32 @@
                 <i class="fas fa-home"></i> 
                 Overview
             </h2>
+            
+            <!-- Add Banking Quick Stats -->
+            <div class="banking-stats">
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-info">
+                        <h3>Active Members</h3>
+                        <p>7 Members</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <div class="stat-info">
+                        <h3>Monthly Collection</h3>
+                        <p>₹14,000</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-piggy-bank"></i>
+                    <div class="stat-info">
+                        <h3>Monthly Deposit</h3>
+                        <p>₹2,000</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="info-card slide-up">
                 <div class="overview-content">
                     <h3><i class="fas fa-info-circle"></i> About Our Association</h3>
@@ -51,6 +77,53 @@
                     <p>
                         Throughout our journey, we have achieved several significant milestones. We have established a robust financial framework, implemented transparent loan procedures, and maintained strong member relationships. Our systematic approach to record-keeping and financial management has ensured smooth operations and member satisfaction. The gradual increase in monthly deposits from ₹1,000 to ₹2,000 reflects our growing financial capacity and members' commitment to the association's growth.
                     </p>
+
+                    <!-- Modified Banking Details Section -->
+                    <h3><i class="fas fa-university"></i> Banking Details</h3>
+                    <div class="banking-details">
+                        <table>
+                            <tr>
+                                <td><i class="fas fa-user"></i> <strong>Account Name</strong></td>
+                                <td>: Sri Mukkaneshwara Associates</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-landmark"></i> <strong>Bank Name</strong></td>
+                                <td>: ICICI Bank Ltd</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-hashtag"></i> <strong>Account No.</strong></td>
+                                <td>: 437601000088</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-qrcode"></i> <strong>IFSC Code</strong></td>
+                                <td>: ICIC0004376</td>
+                            </tr>
+                        </table>
+                        
+                        <!-- Add Quick Actions -->
+                        <div class="banking-actions">
+                            <button class="action-btn" onclick="copyBankDetails()">
+                                <i class="fas fa-copy"></i> Copy Account Details
+                            </button>
+                            <button class="action-btn" onclick="showQRCode()">
+                                <i class="fas fa-qrcode"></i> Show QR Code
+                            </button>
+                        </div>
+                        <!-- Add a hidden element for copying -->
+                        <textarea id="bankDetails" style="position: absolute; left: -9999px;">
+Account Name: Sri Mukkaneshwara Associates
+Bank Name: ICICI Bank Ltd
+Account No.: 437601000088
+IFSC Code: ICIC0004376</textarea>
+                        <!-- Add container for QR Code -->
+                        <div id="qrcode" style="display: none; margin-top: 20px; text-align: center;">
+                            <div class="qr-wrapper"></div>
+                            <p class="qr-hint">Scan with any UPI app to pay</p>
+                            <button class="close-btn" onclick="hideQRCode()">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -59,5 +132,48 @@
     <footer>
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        function copyBankDetails() {
+            const bankDetails = document.getElementById('bankDetails');
+            bankDetails.select();
+            document.execCommand('copy');
+            
+            // Show feedback to user
+            const button = event.currentTarget;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+            }, 2000);
+        }
+
+        function showQRCode() {
+            const qrcodeContainer = document.getElementById('qrcode');
+            const qrWrapper = qrcodeContainer.querySelector('.qr-wrapper');
+            qrWrapper.innerHTML = ''; // Clear previous QR code
+            qrcodeContainer.style.display = 'block';
+
+            // Replace 'YOUR_ACTUAL_UPI_ID' with your real UPI ID
+            const upiLink = "upi://pay?pa=YOUR_ACTUAL_UPI_ID&pn=Sri%20Mukkanneshwara%20Associates&cu=INR";
+            
+            // Create QR Code with UPI link
+            new QRCode(qrWrapper, {
+                text: upiLink,
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        function hideQRCode() {
+            const qrcodeContainer = document.getElementById('qrcode');
+            qrcodeContainer.style.display = 'none';
+        }
+    </script>
 </body>
 </html>
