@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Application - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Sri Mukkanneshwara Associate</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="login.html">Accounts</a></li>
+                <li><a href="meetings.html">Meetings</a></li>
+                <li><a href="rules.html">Rules</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="loan-application-section">
+            <h2 class="page-title">
+                <i class="fas fa-hand-holding-usd"></i> 
+                Loan Application
+            </h2>
+
+            <div class="loan-form-container">
+                <form class="loan-application-form" onsubmit="return submitLoanApplication(event)">
+                    <div class="form-group">
+                        <label for="memberName">Member Name</label>
+                        <input type="text" id="memberName" name="memberName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="memberID">Member ID</label>
+                        <input type="text" id="memberID" name="memberID" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loanAmount">Loan Amount (₹)</label>
+                        <input type="number" id="loanAmount" name="loanAmount" min="1000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loanPurpose">Purpose of Loan</label>
+                        <textarea id="loanPurpose" name="loanPurpose" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repaymentPeriod">Repayment Period (in months)</label>
+                        <select id="repaymentPeriod" name="repaymentPeriod" required>
+                            <option value="">Select Period</option>
+                            <option value="3">3 months</option>
+                            <option value="6">6 months</option>
+                            <option value="12">12 months</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" onclick="window.location.href='index.html'">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Submit Application
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function submitLoanApplication(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const formData = {
+                memberName: document.getElementById('memberName').value,
+                memberID: document.getElementById('memberID').value,
+                loanAmount: document.getElementById('loanAmount').value,
+                loanPurpose: document.getElementById('loanPurpose').value,
+                repaymentPeriod: document.getElementById('repaymentPeriod').value
+            };
+
+            // Here you would typically send this data to your server
+            console.log('Loan Application Data:', formData);
+
+            // Show success message
+            alert('Loan application submitted successfully!');
+            
+            // Redirect to home page
+            window.location.href = 'index.html';
+            
+            return false;
+        }
+    </script>
+</body>
+</html> 
