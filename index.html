@@ -109,6 +109,22 @@
                                 <i class="fas fa-qrcode"></i> Show QR Code
                             </button>
                         </div>
+
+                        <!-- Add hidden elements for copy and QR functionality -->
+                        <textarea id="bankDetails" style="position: absolute; left: -9999px;">
+Account Name: Sri Mukkaneshwara Associates
+Bank Name: ICICI Bank Ltd
+Account No.: 437601000088
+IFSC Code: ICIC0004376</textarea>
+                        
+                        <!-- Add container for QR Code -->
+                        <div id="qrcode" style="display: none; margin-top: 20px; text-align: center;">
+                            <div class="qr-wrapper"></div>
+                            <p class="qr-hint">Scan with any UPI app to pay</p>
+                            <button class="close-btn" onclick="hideQRCode()">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -142,8 +158,8 @@
             qrWrapper.innerHTML = ''; // Clear previous QR code
             qrcodeContainer.style.display = 'block';
 
-            // Replace 'YOUR_ACTUAL_UPI_ID' with your real UPI ID
-            const upiLink = "upi://pay?pa=YOUR_ACTUAL_UPI_ID&pn=Sri%20Mukkanneshwara%20Associates&cu=INR";
+            // Updated with actual UPI ID
+            const upiLink = "upi://pay?pa=mukkaneshwara@ybl&pn=Sri%20Mukkanneshwara%20Associates&cu=INR";
             
             // Create QR Code with UPI link
             new QRCode(qrWrapper, {
