@@ -9,10 +9,76 @@
 </head>
 <body>
     <script>
-        // Check authentication before showing content
-        if (!sessionStorage.getItem('isAuthenticated')) {
-            window.location.href = 'login.html';
+        // First check if user is authenticated
+        function checkAuth() {
+            const isAuthenticated = sessionStorage.getItem('isAuthenticated');
+            if (!isAuthenticated) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
         }
+
+        // Actual loan data for each user
+        const loanDatabase = {
+            'manju@gmail.com': [
+                {
+                    loanId: 'L2024001',
+                    amount: '₹50,000',
+                    date: '2024-01-15',
+                    dueDate: '2024-07-15',
+                    status: 'Active',
+                    purpose: 'Personal'
+                }
+            ],
+            'ravi@gmail.com': [
+                {
+                    loanId: 'L2023003',
+                    amount: '₹30,000',
+                    date: '2023-12-10',
+                    dueDate: '2024-06-10',
+                    status: 'Active',
+                    purpose: 'Business'
+                }
+            ]
+        };
+
+        function displayUserLoans() {
+            if (!checkAuth()) return;
+
+            // Get user email from session
+            const userEmail = sessionStorage.getItem('userEmail');
+            const userLoans = loanDatabase[userEmail] || [];
+            const tableBody = document.getElementById('activeLoansTable');
+            
+            if (userLoans.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="no-loans">No active loans found</td>
+                    </tr>`;
+                return;
+            }
+
+            tableBody.innerHTML = userLoans.map(loan => `
+                <tr class="loan-row ${loan.status.toLowerCase()}">
+                    <td>${loan.loanId}</td>
+                    <td>${loan.amount}</td>
+                    <td>${new Date(loan.date).toLocaleDateString()}</td>
+                    <td>${new Date(loan.dueDate).toLocaleDateString()}</td>
+                    <td><span class="status-badge ${loan.status.toLowerCase()}">${loan.status}</span></td>
+                </tr>
+            `).join('');
+
+            // Update the heading with user email
+            const loanSectionHeading = document.querySelector('.active-loans h4');
+            loanSectionHeading.innerHTML = `
+                <i class="fas fa-file-invoice-dollar"></i> 
+                Loans for ${userEmail}
+            `;
+        }
+
+        // Call this when page loads
+        displayUserLoans();
     </script>
 
     <header>
@@ -77,16 +143,6 @@
             </div>
         </section>
 
-        <section id="accounts">
-            <h2>Accounts Section</h2>
-            <div class="info-card">
-                <div class="account-buttons">
-                    <a href="deposits.html" class="account-btn">Deposits</a>
-                    <a href="loans.html" class="account-btn">Loans</a>
-                </div>
-            </div>
-        </section>
-
         <section class="accounts-section">
             <h2 class="page-title">
                 <i class="fas fa-university"></i> 
@@ -94,10 +150,48 @@
             </h2>
 
             <div class="services-container">
+                <!-- Account Services Buttons -->
+                <div class="service-card">
+                    <h3><i class="fas fa-university"></i> Quick Access</h3>
+                    <p>Access your deposits and loan information</p>
+                    <div class="account-buttons">
+                        <a href="deposits.html" class="account-btn">
+                            <i class="fas fa-piggy-bank"></i>
+                            Deposits
+                        </a>
+                        <a href="loans.html" class="account-btn">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            Loans
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Loan Services Section -->
                 <div class="service-card">
                     <h3><i class="fas fa-money-check-alt"></i> Loan Services</h3>
                     <p>Apply for loans or check your existing loan status</p>
+                    
+                    <!-- Add Active Loans Section -->
+                    <div class="active-loans">
+                        <h4><i class="fas fa-file-invoice-dollar"></i> Your Active Loans</h4>
+                        <div class="loans-table-container">
+                            <table class="loans-table">
+                                <thead>
+                                    <tr>
+                                        <th>Loan ID</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="activeLoansTable">
+                                    <!-- Loans will be populated here by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                     <div class="action-buttons">
                         <button class="apply-loan-btn" onclick="window.location.href='loan-application.html'">
                             <i class="fas fa-hand-holding-usd"></i>
