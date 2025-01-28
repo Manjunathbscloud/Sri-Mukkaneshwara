@@ -77,8 +77,20 @@
             `;
         }
 
-        // Call this when page loads
-        displayUserLoans();
+        // Check if user is president and show admin button
+        function checkPresidentAccess() {
+            const isPresident = sessionStorage.getItem('isPresident');
+            const adminButton = document.getElementById('adminLoanBtn');
+            if (isPresident === 'true') {
+                adminButton.style.display = 'flex';
+            }
+        }
+
+        // Call when page loads
+        window.onload = function() {
+            displayUserLoans();
+            checkPresidentAccess();
+        }
     </script>
 
     <header>
@@ -200,6 +212,14 @@
                         <button class="view-loans-btn" onclick="window.location.href='loan-status.html'">
                             <i class="fas fa-list-ul"></i>
                             View Loan Status
+                        </button>
+                        <!-- Add President-only button -->
+                        <button id="adminLoanBtn" 
+                                class="admin-loan-btn" 
+                                onclick="window.location.href='loan-applications-admin.html'"
+                                style="display: none;">
+                            <i class="fas fa-tasks"></i>
+                            Review Applications
                         </button>
                     </div>
                 </div>
