@@ -1305,42 +1305,63 @@ html {
 
 .header-with-nav {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 2rem;
-    padding: 0 1rem;
-    position: relative;
-}
-
-.header-with-nav .page-title {
-    margin: 0;
-    border-bottom: none;
-    text-align: center;
-}
-
-.header-with-nav .nav-button {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-/* Ensure page title stays centered */
-.page-title {
-    text-align: center;
-    margin: 1rem auto 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid #2c3e50;
-    font-size: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 1rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
     gap: 1rem;
 }
 
+.page-title {
+    text-align: center;
+    margin: 0;
+    font-size: 1.8rem;
+    flex: 1;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    min-width: 160px;
+    justify-content: center;
+}
+
+.nav-button:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.nav-icon {
+    font-size: 1.1rem;
+}
+
+.nav-arrow {
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .header-with-nav {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .nav-button {
+        width: 100%;
+    }
+}
+
 .year-link.current-year {
-    background-color: #f0f8ff;  /* Light blue background */
-    border: 2px solid #3498db;  /* Blue border */
+    background-color: #f0f8ff;
+    border: 2px solid #3498db;
     position: relative;
 }
 
@@ -1348,7 +1369,7 @@ html {
     position: absolute;
     top: -10px;
     right: -10px;
-    background-color: #28a745;  /* Green background */
+    background-color: #28a745;
     color: white;
     padding: 4px 8px;
     border-radius: 12px;
@@ -1357,7 +1378,7 @@ html {
 }
 
 .current-year .details {
-    color: #2c3e50;  /* Darker color for emphasis */
+    color: #2c3e50;
     font-weight: 500;
 }
 
@@ -1495,7 +1516,7 @@ html {
 }
 
 .login-section {
-    position: relative;  /* Add this to contain the absolute positioned back button */
+    position: relative;
 }
 
 /* Member Cards Styling */
@@ -1534,7 +1555,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;  /* For image containment */
+    overflow: hidden;
     border: 3px solid #fff;
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
@@ -1542,7 +1563,7 @@ html {
 .member-avatar img {
     width: 100%;
     height: 100%;
-    object-fit: cover;  /* This ensures the image covers the circle nicely */
+    object-fit: cover;
 }
 
 .member-avatar i {
@@ -1732,7 +1753,7 @@ html {
     padding: 15px 10px;
     line-height: 1.6;
     border-bottom: 1px solid #e9ecef;
-    white-space: nowrap;  /* Add this line to prevent wrapping */
+    white-space: nowrap;
 }
 
 .banking-details td i {
@@ -2145,10 +2166,10 @@ html {
     transition: all 0.3s ease;
     text-decoration: none;
     width: fit-content;
-    position: absolute;  /* Changed to absolute positioning */
-    top: 100px;         /* Position below the header */
-    left: 20px;         /* Distance from left edge */
-    z-index: 100;       /* Ensure it stays above other content */
+    position: absolute;
+    top: 100px;
+    left: 20px;
+    z-index: 100;
 }
 
 .back-to-account:hover {
@@ -2164,17 +2185,17 @@ html {
 /* Add responsive adjustments */
 @media (max-width: 768px) {
     .back-to-account {
-        position: fixed;  /* Fixed position on mobile */
-        top: auto;       /* Reset top */
-        bottom: 80px;    /* Position above footer */
-        left: 50%;      /* Center horizontally */
-        transform: translateX(-50%);  /* Center alignment */
-        width: calc(100% - 40px);    /* Full width minus margins */
-        max-width: 300px;            /* Maximum width */
+        position: fixed;
+        top: auto;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 40px);
+        max-width: 300px;
         justify-content: center;
     }
 
     .back-to-account:hover {
-        transform: translateX(-50%);  /* Maintain center alignment on hover */
+        transform: translateX(-50%);
     }
 }
