@@ -1,71 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login - Sri Mukkaneshwara</title>
-    <style>
-        .login-container {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="login-container">
-        <h2>Member Login</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" required>
+    <header>
+        <h1>Sri Mukkanneshwara Associate</h1>
+    </header>
+
+    <main>
+        <section class="login-section">
+            <div class="back-nav">
+                <a href="index.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </a>
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" required>
+
+            <div class="login-container">
+                <h2 class="page-title">
+                    <i class="fas fa-user-lock"></i>
+                    Member Login
+                </h2>
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user"></i> Username
+                        </label>
+                        <input type="text" id="username" placeholder="Enter your username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-key"></i> Password
+                        </label>
+                        <input type="password" id="password" placeholder="Enter your password">
+                    </div>
+                    <div class="form-group">
+                        <button id="loginBtn" class="login-btn">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </div>
+                    <div id="errorMessage" class="error-message"></div>
+                </div>
             </div>
-            <button type="submit">Login</button>
-        </form>
-        <p>New member? <a href="register.html">Register here</a></p>
-    </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
+    </footer>
+
+    <script src="login.js"></script>
 </body>
 </html>
-
-1. `package.json`:
-```json
-{
-  "dependencies": {
-    "express": "^4.17.1",
-    "pg": "^8.7.1",
-    "bcrypt": "^5.0.1"
-  }
-}
-
-Looking at both code snippets, they appear to be identical. There are no differences between the original code and the suggested edit. The HTML structure, styles, and content are exactly the same in both versions.
-
-Would you like to make any specific changes to the login page? For example, we could:
-1. Add client-side form validation
-2. Improve the styling
-3. Add error message handling
-4. Implement the form submission logic
-
-Please let me know what specific changes you'd like to make to the code.
