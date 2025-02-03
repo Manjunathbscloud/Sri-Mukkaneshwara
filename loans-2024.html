@@ -12,6 +12,79 @@
             window.location.href = 'login.html';
         }
     </script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background: #004080;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .loans-section {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .info-card {
+            overflow-x: auto;
+        }
+        .member-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .member-table th, .member-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .member-table th {
+            background: #004080;
+            color: white;
+        }
+        .status-clear {
+            color: green;
+            font-weight: bold;
+        }
+        .status-active {
+            color: red;
+            font-weight: bold;
+        }
+        .bottom-nav {
+            margin-top: 20px;
+        }
+        .back-button {
+            background: #004080;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background: #003366;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -26,13 +99,9 @@
             </ul>
         </nav>
     </header>
-
     <main>
         <section class="loans-section">
-           
-
             <h2 class="page-title"><i class="fas fa-hand-holding-usd"></i> Loans 2024-25</h2>
-
             <div class="info-card">
                 <h3>Loan List 2024-25</h3>
                 <table class="member-table">
@@ -50,7 +119,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><span class="loan-id">SMA-24-003</span></td>
+                            <td>SMA-24-003</td>
                             <td>Manjunath</td>
                             <td>Dec-24</td>
                             <td>1,00,000</td>
@@ -60,7 +129,7 @@
                             <td>1,500</td>
                         </tr>
                         <tr>
-                            <td><span class="loan-id">SMA-24-002</span></td>
+                            <td>SMA-24-002</td>
                             <td>Pratap</td>
                             <td>Dec-24</td>
                             <td>1,40,000</td>
@@ -70,7 +139,7 @@
                             <td>-</td>
                         </tr>
                         <tr>
-                            <td><span class="loan-id">SMA-24-004</span></td>
+                            <td>SMA-24-004</td>
                             <td>Pratap</td>
                             <td>Dec-24</td>
                             <td>50,000</td>
@@ -79,88 +148,24 @@
                             <td><span class="status-active">Active</span></td>
                             <td>-</td>
                         </tr>
-                        <tr>
-                            <td><span class="loan-id">SMA-24-005</span></td>
-                            <td>Pradeep</td>
-                            <td>Dec-24</td>
-                            <td>1,00,000</td>
-                            <td>1,500</td>
-                            <td>Mar-25</td>
-                            <td><span class="status-active">Active</span></td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td><span class="loan-id">SMA-24-006</span></td>
-                            <td>Santosh</td>
-                            <td>Dec-24</td>
-                            <td>1,00,000</td>
-                            <td>1,500</td>
-                            <td>Apr-25</td>
-                            <td><span class="status-active">Active</span></td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td><span class="loan-id">SMA-24-007</span></td>
-                            <td>Pratap</td>
-                            <td>Dec-24</td>
-                            <td>60,000</td>
-                            <td>900</td>
-                            <td>May-25</td>
-                            <td><span class="status-active">Active</span></td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td><span class="loan-id">SMA-24-008</span></td>
-                            <td>Pradeep</td>
-                            <td>Nov-24</td>
-                            <td>1,00,000</td>
-                            <td>1,500</td>
-                            <td>Nov-25</td>
-                            <td><span class="status-active">Active</span></td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td><span class="loan-id">SMA-25-001</span></td>
-                            <td>Sarpabhushana</td>
-                            <td>Dec-24</td>
-                            <td>30,000</td>
-                            <td>450</td>
-                            <td>Dec-25</td>
-                            <td><span class="status-active">Active</span></td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td><span class="loan-id">SMA-25-002</span></td>
-                            <td>Santosh</td>
-                            <td>Dec-24</td>
-                            <td>40,000</td>
-                            <td>600</td>
-                            <td>Dec-25</td>
-                            <td><span class="status-active">Active</span></td>
-                            <td>-</td>
-                        </tr>
                     </tbody>
                     <tfoot>
-                        <tr class="total-row">
+                        <tr>
                             <td colspan="7"><strong>Total Interest Collected</strong></td>
-                            <td><strong>1,500</strong></td>
+                            <td><strong>6,850</strong></td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
-            <div style="display: flex; justify-content: center; width: 100%;">
-                <div class="bottom-nav">
-                    <a href="loans.html" class="back-button">
-                        <i class="fas fa-arrow-left"></i>
-                        Back to Loans Overview
-                    </a>
-                </div>
+            <div style="text-align: center;">
+                <a href="loans.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Back to Loans Overview
+                </a>
             </div>
         </section>
     </main>
-
     <footer>
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
 </body>
-</html> 
+</html>
