@@ -1,8 +1,8 @@
 // Member database with credentials
 const memberDatabase = {
-    'MB001': {  // Manjunath Banakar
+    '9591382942': {  // Manjunath Banakar
         id: '001',
-        password: 'mb001',  // You should use more secure passwords
+        password: '12345',  // You should use more secure passwords
         name: 'Manjunath Banakar',
         role: 'president',
         email: 'manjunath.banakar@gmail.com',
@@ -24,9 +24,9 @@ const memberDatabase = {
         email: 'sarpabhushana.banakar@gmail.com',
         phone: '+919740373454'
     },
-    'MB004': {  // Mukkanna Banakar
+    '8618600807': {  // Mukkanna Banakar
         id: '004',
-        password: 'mb004',
+        password: '00000',
         name: 'Mukkanna Banakar',
         role: 'member',
         email: 'mukkanna.banakar@gmail.com',
