@@ -1,97 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Accounts - Sri Mukkanneshwara Associate</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 </head>
 <body>
-    <script>
-        // First check if user is authenticated
-        function checkAuth() {
-            const isAuthenticated = sessionStorage.getItem('isAuthenticated');
-            if (!isAuthenticated) {
-                window.location.href = 'login.html';
-                return false;
-            }
-            return true;
-        }
-
-        // Actual loan data for each user
-        const loanDatabase = {
-            'manju@gmail.com': [
-                {
-                    loanId: 'L2024001',
-                    amount: '₹50,000',
-                    date: '2024-01-15',
-                    dueDate: '2024-07-15',
-                    status: 'Active',
-                    purpose: 'Personal'
-                }
-            ],
-            'ravi@gmail.com': [
-                {
-                    loanId: 'L2023003',
-                    amount: '₹30,000',
-                    date: '2023-12-10',
-                    dueDate: '2024-06-10',
-                    status: 'Active',
-                    purpose: 'Business'
-                }
-            ]
-        };
-
-        function displayUserLoans() {
-            if (!checkAuth()) return;
-
-            // Get user email from session
-            const userEmail = sessionStorage.getItem('userEmail');
-            const userLoans = loanDatabase[userEmail] || [];
-            const tableBody = document.getElementById('activeLoansTable');
-            
-            if (userLoans.length === 0) {
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="no-loans">No active loans found</td>
-                    </tr>`;
-                return;
-            }
-
-            tableBody.innerHTML = userLoans.map(loan => `
-                <tr class="loan-row ${loan.status.toLowerCase()}">
-                    <td>${loan.loanId}</td>
-                    <td>${loan.amount}</td>
-                    <td>${new Date(loan.date).toLocaleDateString()}</td>
-                    <td>${new Date(loan.dueDate).toLocaleDateString()}</td>
-                    <td><span class="status-badge ${loan.status.toLowerCase()}">${loan.status}</span></td>
-                </tr>
-            `).join('');
-
-            // Update the heading with user email
-            const loanSectionHeading = document.querySelector('.active-loans h4');
-            loanSectionHeading.innerHTML = `
-                <i class="fas fa-file-invoice-dollar"></i> 
-                Loans for ${userEmail}
-            `;
-        }
-
-        // Check if user is president and show admin button
-        function checkPresidentAccess() {
-            const isPresident = sessionStorage.getItem('isPresident');
-            const adminButton = document.getElementById('adminLoanBtn');
-            if (isPresident === 'true') {
-                adminButton.style.display = 'flex';
-            }
-        }
-
-        // Call when page loads
-        window.onload = function() {
-            displayUserLoans();
-            checkPresidentAccess();
-        }
-    </script>
 
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
@@ -99,7 +15,7 @@
             <ul>
                 <li><a href="index.html">Overview</a></li>
                 <li><a href="members.html">Members</a></li>
-                <li><a href="login.html">Accounts</a></li>
+                <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
                 <li><a href="rules.html">Rules</a></li>
             </ul>
@@ -107,7 +23,6 @@
     </header>
 
     <main>
-        <!-- Account Stats Section Moved to Top -->
         <section class="account-overview">
             <div class="account-stats">
                 <div class="stat-card">
@@ -117,7 +32,7 @@
                     <div class="stat-info">
                         <h4>Current Bank Balance</h4>
                         <span class="stat-value">₹94,790</span>
-                        <span class="stat-date">As of july 15th 2025</span>
+                        <span class="stat-date">As of July 15th 2025</span>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -127,13 +42,12 @@
                     <div class="stat-info">
                         <h4>Available Loan Amount</h4>
                         <span class="stat-value">₹85,000</span>
-                        <span class="stat-date">For july 15th 2025</span>
+                        <span class="stat-date">For July 15th 2025</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Deposit History Section -->
         <section class="deposit-history">
             <div class="info-card history-summary">
                 <h3><i class="fas fa-history"></i> Deposit Structure History</h3>
@@ -162,7 +76,6 @@
             </h2>
 
             <div class="services-container">
-                <!-- Account Services Buttons -->
                 <div class="service-card">
                     <h3><i class="fas fa-university"></i> Quick Access</h3>
                     <p>Access your deposits and loan information</p>
@@ -178,14 +91,12 @@
                     </div>
                 </div>
 
-                <!-- Loan Services Section -->
                 <div class="service-card">
                     <h3><i class="fas fa-money-check-alt"></i> Loan Services</h3>
                     <p>Apply for loans or check your existing loan status</p>
                     
-                    <!-- Add Active Loans Section -->
                     <div class="active-loans">
-                        <h4><i class="fas fa-file-invoice-dollar"></i> Your Active Loans</h4>
+                        <h4><i class="fas fa-file-invoice-dollar"></i> Loans for manju@gmail.com</h4>
                         <div class="loans-table-container">
                             <table class="loans-table">
                                 <thead>
@@ -197,8 +108,14 @@
                                         <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tbody id="activeLoansTable">
-                                    <!-- Loans will be populated here by JavaScript -->
+                                <tbody>
+                                    <tr class="loan-row active">
+                                        <td>L2024001</td>
+                                        <td>₹50,000</td>
+                                        <td>15/1/2024</td>
+                                        <td>15/7/2024</td>
+                                        <td><span class="status-badge active">Active</span></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -213,18 +130,12 @@
                             <i class="fas fa-list-ul"></i>
                             View Loan Status
                         </button>
-                        <!-- Add President-only button -->
-                        <button id="adminLoanBtn" 
-                                class="admin-loan-btn" 
-                                onclick="window.location.href='loan-applications-admin.html'"
-                                style="display: none;">
+                        <button class="admin-loan-btn" onclick="window.location.href='loan-applications-admin.html'">
                             <i class="fas fa-tasks"></i>
                             Review Applications
                         </button>
                     </div>
                 </div>
-
-                <!-- Add other account services here -->
             </div>
         </section>
     </main>
