@@ -1,56 +1,56 @@
 // Member database with credentials
 const memberDatabase = {
-    '9591382942': {  // Manjunath Banakar
+    'Manjunath': {  // Manjunath Banakar
         id: '001',
-        password: '12345',  // You should use more secure passwords
+        password: '9591382942',  // You should use more secure passwords
         name: 'Manjunath Banakar',
         role: 'president',
         email: 'manjunath.banakar@gmail.com',
         phone: '+919591382942'
     },
-    'PB002': {  // Pratap Banakar
+    'Pratap': {  // Pratap Banakar
         id: '002',
-        password: 'pb002',
+        password: '7259907409',
         name: 'Pratap Banakar',
         role: 'vice-president',
         email: 'pratap.banakar@gmail.com',
         phone: '+917259907409'
     },
-    'SB003': {  // Sarpabhushana Banakar
+    'Sarpabhushan': {  // Sarpabhushana Banakar
         id: '003',
-        password: 'sb003',
+        password: '9740373454',
         name: 'Sarpabhushana Banakar',
         role: 'member',
         email: 'sarpabhushana.banakar@gmail.com',
         phone: '+919740373454'
     },
-    '8618600807': {  // Mukkanna Banakar
+    'Mukkanna': {  // Mukkanna Banakar
         id: '004',
-        password: '00000',
+        password: '8147279081',
         name: 'Mukkanna Banakar',
         role: 'member',
         email: 'mukkanna.banakar@gmail.com',
         phone: '+918618600807'
     },
-    'SB005': {  // Santosh Banakar
+    'Santosh': {  // Santosh Banakar
         id: '005',
-        password: 'sb005',
+        password: '9739678816',
         name: 'Santosh Banakar',
         role: 'member',
         email: 'santosh.banakar@gmail.com',
         phone: '+919739678816'
     },
-    'PB006': {  // Pradeep Banakar
+    'Pradeep': {  // Pradeep Banakar
         id: '006',
-        password: 'pb006',
+        password: '9663644751',
         name: 'Pradeep Banakar',
         role: 'member',
         email: 'pradeep.banakar@gmail.com',
         phone: '+919663644751'
     },
-    'PB007': {  // Praveen Banakar
+    'Praveen': {  // Praveen Banakar
         id: '007',
-        password: 'pb007',
+        password: '9538913204',
         name: 'Praveen Banakar',
         role: 'member',
         email: 'praveen.banakar@gmail.com',
