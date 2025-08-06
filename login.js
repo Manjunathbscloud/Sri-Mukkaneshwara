@@ -1,14 +1,14 @@
 // Member database with credentials
 const memberDatabase = {
-    'Manjunath': {  // Manjunath Banakar
+    'Manjunath': {
         id: '001',
-        password: '9591382942',  // You should use more secure passwords
+        password: '9591382942',
         name: 'Manjunath Banakar',
         role: 'president',
         email: 'manjunath.banakar@gmail.com',
         phone: '+919591382942'
     },
-    'Pratap': {  // Pratap Banakar
+    'Pratap': {
         id: '002',
         password: '7259907409',
         name: 'Pratap Banakar',
@@ -16,7 +16,7 @@ const memberDatabase = {
         email: 'pratap.banakar@gmail.com',
         phone: '+917259907409'
     },
-    'Sarpabhushan': {  // Sarpabhushana Banakar
+    'Sarpabhushan': {
         id: '003',
         password: '9740373454',
         name: 'Sarpabhushana Banakar',
@@ -24,7 +24,7 @@ const memberDatabase = {
         email: 'sarpabhushana.banakar@gmail.com',
         phone: '+919740373454'
     },
-    'Mukkanna': {  // Mukkanna Banakar
+    'Mukkanna': {
         id: '004',
         password: '8147279081',
         name: 'Mukkanna Banakar',
@@ -32,7 +32,7 @@ const memberDatabase = {
         email: 'mukkanna.banakar@gmail.com',
         phone: '+918618600807'
     },
-    'Santosh': {  // Santosh Banakar
+    'Santosh': {
         id: '005',
         password: '9739678816',
         name: 'Santosh Banakar',
@@ -40,7 +40,7 @@ const memberDatabase = {
         email: 'santosh.banakar@gmail.com',
         phone: '+919739678816'
     },
-    'Pradeep': {  // Pradeep Banakar
+    'Pradeep': {
         id: '006',
         password: '9663644751',
         name: 'Pradeep Banakar',
@@ -48,7 +48,7 @@ const memberDatabase = {
         email: 'pradeep.banakar@gmail.com',
         phone: '+919663644751'
     },
-    'Praveen': {  // Praveen Banakar
+    'Praveen': {
         id: '007',
         password: '9538913204',
         name: 'Praveen Banakar',
@@ -75,6 +75,10 @@ document.getElementById('loginBtn').addEventListener('click', function(e) {
         sessionStorage.setItem('userEmail', member.email);
         sessionStorage.setItem('userName', member.name);
         sessionStorage.setItem('memberId', member.id);
+        sessionStorage.setItem('userPhone', member.phone);
+
+        // ✅ Store full user object for future use (loan form etc.)
+        sessionStorage.setItem('userDetails', JSON.stringify(member));
         
         // Set president status if applicable
         if (member.role === 'president') {

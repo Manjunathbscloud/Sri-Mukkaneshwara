@@ -1,196 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loan Applications Review - Sri Mukkanneshwara Associate</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script>
-        // Check if user is authenticated
-        if (!sessionStorage.getItem('isAuthenticated')) {
-            window.location.href = 'login.html';
-        }
-    </script>
+  <meta charset="UTF-8">
+  <title>Admin - Loan Applications</title>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("SzudKZaiAMaLDKRpt");
+    })();
+  </script>
 </head>
 <body>
-    <header>
-        <h1>Sri Mukkanneshwara Associate</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Overview</a></li>
-                <li><a href="members.html">Members</a></li>
-                <li><a href="login.html">Accounts</a></li>
-                <li><a href="meetings.html">Meetings</a></li>
-                <li><a href="rules.html">Rules</a></li>
-            </ul>
-        </nav>
-    </header>
+  <h2>Pending Loan Application</h2>
+  <form id="statusForm">
+    <label>Applicant Email:</label><input type="email" name="email" required><br>
+    <label>Status:</label>
+    <select name="status" required>
+      <option value="Approved">Approve</option>
+      <option value="Rejected">Reject</option>
+    </select><br>
+    <label>Remarks:</label><textarea name="remarks"></textarea><br>
+    <button type="submit">Send Status</button>
+  </form>
 
-    <main>
-        <div class="header-with-nav">
-            <a href="accounts.html" class="nav-button back-nav-button">
-                <i class="fas fa-arrow-left nav-arrow"></i>
-                <span class="nav-text">Back to Account</span>
-            </a>
-            
-            <h2 class="page-title">
-                <i class="fas fa-file-invoice"></i> 
-                Loan Applications Review
-            </h2>
-        </div>
-
-        <section class="admin-loan-applications">
-            <!-- Pending Applications -->
-            <div class="application-section">
-                <h3><i class="fas fa-clock"></i> Pending Applications</h3>
-                <div class="applications-grid" id="pendingApplications">
-                    <!-- Applications will be loaded dynamically -->
-                </div>
-            </div>
-
-            <!-- Processed Applications -->
-            <div class="application-section">
-                <h3><i class="fas fa-history"></i> Recent Processed Applications</h3>
-                <div class="applications-grid" id="processedApplications">
-                    <!-- Processed applications will be loaded dynamically -->
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
-    </footer>
-
-    <script src="database.js"></script>
-    <script src="notifications.js"></script>
-    <script>
-        // Get user role from session
-        const isPresident = sessionStorage.getItem('isPresident') === 'true';
-        const currentUserId = sessionStorage.getItem('memberId');
-
-        function displayApplications() {
-            const pendingContainer = document.getElementById('pendingApplications');
-            const processedContainer = document.getElementById('processedApplications');
-
-            // Display pending applications
-            Object.entries(loanDatabase.applications).forEach(([id, application]) => {
-                const member = memberDatabase[application.applicantId];
-                const card = createApplicationCard(id, application, member);
-                
-                if (application.status === 'pending') {
-                    pendingContainer.appendChild(card);
-                } else {
-                    processedContainer.appendChild(card);
-                }
-            });
-        }
-
-        function createApplicationCard(id, application, member) {
-            const card = document.createElement('div');
-            card.className = `application-card ${application.status}`;
-            
-            card.innerHTML = `
-                <div class="application-header">
-                    <span class="application-id">#${id}</span>
-                    <span class="status-badge ${application.status}">${application.status}</span>
-                </div>
-                <div class="application-content">
-                    <div class="applicant-info">
-                        <p><strong>Applicant:</strong> ${member.name}</p>
-                        <p><strong>Member ID:</strong> ${application.applicantId}</p>
-                        <p><strong>Amount:</strong> ₹${application.amount}</p>
-                        <p><strong>Purpose:</strong> ${application.purpose}</p>
-                        <p><strong>Applied on:</strong> ${new Date(application.applicationDate).toLocaleDateString()}</p>
-                    </div>
-                    <div class="application-actions">
-                        ${getActionButtons(id, application.status)}
-                    </div>
-                </div>
-            `;
-            return card;
-        }
-
-        function getActionButtons(id, status) {
-            // Always show view button
-            let buttons = `
-                <button class="view-btn" onclick="viewDetails('${id}')">
-                    <i class="fas fa-eye"></i> View Details
-                </button>
-            `;
-
-            // Only show approve/reject buttons to president for pending applications
-            if (isPresident && status === 'pending') {
-                buttons += `
-                    <button class="approve-btn" onclick="approveApplication('${id}')">
-                        <i class="fas fa-check"></i> Approve
-                    </button>
-                    <button class="reject-btn" onclick="rejectApplication('${id}')">
-                        <i class="fas fa-times"></i> Reject
-                    </button>
-                `;
-            }
-
-            return buttons;
-        }
-
-        async function approveApplication(id) {
-            if (!isPresident) {
-                alert('Only the president can approve applications');
-                return;
-            }
-
-            if(confirm('Are you sure you want to approve this application?')) {
-                const application = loanDatabase.applications[id];
-                application.status = 'approved';
-                
-                // Create notification
-                const notification = {
-                    id: 'N' + Date.now(),
-                    type: 'application_status',
-                    message: 'Your loan application has been approved!',
-                    date: new Date().toISOString(),
-                    read: false,
-                    relatedId: id
-                };
-                
-                await NotificationSystem.sendNotification(application.applicantId, notification);
-                location.reload();
-            }
-        }
-
-        async function rejectApplication(id) {
-            if (!isPresident) {
-                alert('Only the president can reject applications');
-                return;
-            }
-
-            if(confirm('Are you sure you want to reject this application?')) {
-                const application = loanDatabase.applications[id];
-                application.status = 'rejected';
-                
-                const notification = {
-                    id: 'N' + Date.now(),
-                    type: 'application_status',
-                    message: 'Your loan application has been rejected.',
-                    date: new Date().toISOString(),
-                    read: false,
-                    relatedId: id
-                };
-                
-                await NotificationSystem.sendNotification(application.applicantId, notification);
-                location.reload();
-            }
-        }
-
-        function viewDetails(id) {
-            // Add view details logic here
-            alert('Viewing details for application ' + id);
-        }
-
-        // Load applications when page loads
-        displayApplications();
-    </script>
+  <script>
+    document.getElementById('statusForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      emailjs.sendForm('service_rc79av9', 'template_t5gufdp', this)
+        .then(function() {
+          alert('Status email sent successfully!');
+        }, function(error) {
+          alert('Failed to send: ' + JSON.stringify(error));
+        });
+    });
+  </script>
 </body>
-</html> 
+</html>
