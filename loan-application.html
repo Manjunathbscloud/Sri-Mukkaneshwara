@@ -127,6 +127,14 @@
   </footer>
 
   <script>
+    // ✅ Auto-fill Name, Email, Phone from logged-in user
+    document.addEventListener("DOMContentLoaded", () => {
+      const userDetails = JSON.parse(sessionStorage.getItem("userDetails")) || {};
+      if (userDetails.name) document.querySelector("input[name='name']").value = userDetails.name;
+      if (userDetails.email) document.querySelector("input[name='email']").value = userDetails.email;
+      if (userDetails.phone) document.querySelector("input[name='phone']").value = userDetails.phone;
+    });
+
     const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwDj233nzBk_ue0xFG4F_TgPAIXPQ2HDrN9w8wOsLh0EOpyJcVFmG-A3Kem3f-hf7M/exec";
 
     document.getElementById("loanForm").addEventListener("submit", async function(event) {
