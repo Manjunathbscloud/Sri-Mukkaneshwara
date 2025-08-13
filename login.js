@@ -75,17 +75,12 @@ document.getElementById('loginBtn').addEventListener('click', function(e) {
         sessionStorage.setItem('userName', member.name);
         sessionStorage.setItem('memberId', member.id);
         sessionStorage.setItem('userPhone', member.phone);
-        sessionStorage.setItem('role', member.role); // ✅ store role
+        sessionStorage.setItem('role', member.role); // store role
         sessionStorage.setItem('userDetails', JSON.stringify(member));
 
-        // Role-specific redirect
-        if (member.role === 'president') {
-            sessionStorage.setItem('isPresident', 'true');
-            window.location.href = 'president-view.html';
-        } else {
-            sessionStorage.setItem('isPresident', 'false');
-            window.location.href = 'accounts.html';
-        }
+        // Everyone lands on accounts.html
+        sessionStorage.setItem('isPresident', member.role === 'president');
+        window.location.href = 'accounts.html';
     } else {
         errorMessage.textContent = 'Invalid username or password';
     }

@@ -135,7 +135,8 @@
                             <i class="fas fa-list-ul"></i>
                             View Loan Status
                         </button>
-                        <button class="admin-loan-btn">
+                        <!-- Review Applications button hidden by default -->
+                        <button class="admin-loan-btn" style="display:none;">
                             <i class="fas fa-tasks"></i>
                             Review Applications
                         </button>
@@ -154,18 +155,31 @@
             const isPresident = sessionStorage.getItem('isPresident') === 'true';
             const reviewBtn = document.querySelector('.admin-loan-btn');
 
-            if (reviewBtn) {
-                if (isPresident) {
-                    reviewBtn.onclick = function () {
-                        window.location.href = 'president-view.html';
-                    };
-                } else {
-                    reviewBtn.onclick = function () {
-                        window.location.href = 'loan-applications-admin.html';
-                    };
-                }
+            // Show Review Applications button only if president
+            if (isPresident && reviewBtn) {
+                reviewBtn.style.display = 'inline-block';
+                reviewBtn.onclick = function () {
+                    window.location.href = 'president-view.html';
+                };
             }
         });
     </script>
+
+    <!-- Loan List button (only for President) -->
+    <button id="loanListBtn" style="display:none; margin:10px; padding:8px 16px; background-color:#4CAF50; color:white; border:none; border-radius:4px; cursor:pointer;">
+        Loan List
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('isPresident') === 'true') {
+                document.getElementById('loanListBtn').style.display = 'inline-block';
+                document.getElementById('loanListBtn').addEventListener('click', function() {
+                    window.location.href = 'president-view.html';
+                });
+            }
+        });
+    </script>
+
 </body>
 </html>
