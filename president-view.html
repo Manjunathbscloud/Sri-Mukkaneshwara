@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Applications - President View</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // ✅ Prevent non-presidents from accessing this page
+    if (sessionStorage.getItem('isAuthenticated') !== 'true' || sessionStorage.getItem('isPresident') !== 'true') {
+      window.location.href = 'login.html';
+    }
+  </script>
+
+  <h1>All Loan Applications</h1>
+  <table id="applicationsTable">
+    <thead>
+      <tr id="tableHeader"></tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <script>
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQH5D5qbHyFlOledHydH-bLgvhyPsEW7nSFtyLxr8ViMTmiHXHi2dG--qzs-6om_c85alfQCMBcmrgP/pub?output=csv";
+
+    fetch(CSV_URL)
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.split("\n").map(row => row.split(","));
+        const headerRow = rows[0];
+        const tableHeader = document.getElementById("tableHeader");
+        const tableBody = document.getElementById("tableBody");
+
+        // Create table header
+        headerRow.forEach(header => {
+          const th = document.createElement("th");
+          th.textContent = header;
+          tableHeader.appendChild(th);
+        });
+
+        // Create table body
+        rows.slice(1).forEach(row => {
+          if (row.length > 1) { // avoid empty rows
+            const tr = document.createElement("tr");
+            row.forEach(cell => {
+              const td = document.createElement("td");
+              td.textContent = cell;
+              tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+          }
+        });
+      })
+      .catch(error => console.error("Error loading CSV:", error));
+  </script>
+</body>
+</html>

@@ -135,7 +135,7 @@
                             <i class="fas fa-list-ul"></i>
                             View Loan Status
                         </button>
-                        <button class="admin-loan-btn" onclick="window.location.href='loan-applications-admin.html'">
+                        <button class="admin-loan-btn">
                             <i class="fas fa-tasks"></i>
                             Review Applications
                         </button>
@@ -148,5 +148,24 @@
     <footer>
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const isPresident = sessionStorage.getItem('isPresident') === 'true';
+            const reviewBtn = document.querySelector('.admin-loan-btn');
+
+            if (reviewBtn) {
+                if (isPresident) {
+                    reviewBtn.onclick = function () {
+                        window.location.href = 'president-view.html';
+                    };
+                } else {
+                    reviewBtn.onclick = function () {
+                        window.location.href = 'loan-applications-admin.html';
+                    };
+                }
+            }
+        });
+    </script>
 </body>
 </html>

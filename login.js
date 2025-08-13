@@ -62,37 +62,28 @@ const memberDatabase = {
 document.getElementById('loginBtn').addEventListener('click', function(e) {
     e.preventDefault();
     
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
     const errorMessage = document.getElementById('errorMessage');
 
-    // Check if user exists
     const member = memberDatabase[username];
     
     if (member && member.password === password) {
-        // Store user info in session
+        // Store user session data
         sessionStorage.setItem('isAuthenticated', 'true');
         sessionStorage.setItem('userEmail', member.email);
         sessionStorage.setItem('userName', member.name);
         sessionStorage.setItem('memberId', member.id);
         sessionStorage.setItem('userPhone', member.phone);
-
-        // ✅ Store full user object for future use (loan form etc.)
+        sessionStorage.setItem('role', member.role); // ✅ store role
         sessionStorage.setItem('userDetails', JSON.stringify(member));
-        
-        // Set president status if applicable
+
+        // Role-specific redirect
         if (member.role === 'president') {
             sessionStorage.setItem('isPresident', 'true');
+            window.location.href = 'president-view.html';
         } else {
             sessionStorage.setItem('isPresident', 'false');
-        }
-
-        // Redirect to accounts page
-        const returnUrl = sessionStorage.getItem('returnUrl');
-        if (returnUrl) {
-            sessionStorage.removeItem('returnUrl');
-            window.location.href = returnUrl;
-        } else {
             window.location.href = 'accounts.html';
         }
     } else {
@@ -100,7 +91,7 @@ document.getElementById('loginBtn').addEventListener('click', function(e) {
     }
 });
 
-// Clear error message when typing
+// Clear error when typing
 document.getElementById('username').addEventListener('input', clearError);
 document.getElementById('password').addEventListener('input', clearError);
 
