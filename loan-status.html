@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Status - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://apis.google.com/js/api.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Sri Mukkanneshwara Associate</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="accounts.html">Accounts</a></li>
+                <li><a href="meetings.html">Meetings</a></li>
+                <li><a href="rules.html">Rules</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="loan-status-section">
+            <h2 class="page-title">
+                <i class="fas fa-file-invoice-dollar"></i> Loan Status
+            </h2>
+            <div class="info-card">
+                <h3>Loan Applications</h3>
+                <table class="loan-table">
+                    <thead>
+                        <tr>
+                            <th>Loan ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Loan Amount</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Reviewed By</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loanTableBody">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function initClient() {
+            gapi.client.init({
+                apiKey: 'YOUR_API_KEY',
+                discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+            }).then(function() {
+                return gapi.client.sheets.spreadsheets.values.get({
+                    spreadsheetId: '1Dog1tayY_QaYPhwhf11I57bUcGD_YqiamdRApGUT5HQ',
+                    range: 'Sheet1!A2:H',
+                });
+            }).then(function(response) {
+                const data = response.result.values;
+                const tableBody = document.getElementById('loanTableBody');
+                data.forEach(function(row) {
+                    const tr = document.createElement('tr');
+                    row.forEach(function(cell, index) {
+                        const td = document.createElement('td');
+                        td.textContent = cell;
+                        tr.appendChild(td);
+                    });
+                    tableBody.appendChild(tr);
+                });
+            }, function(error) {
+                console.error('Error fetching data: ', error);
+            });
+        }
+
+        gapi.load('client', initClient);
+    </script>
+</body>
+</html>
