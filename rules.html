@@ -14,7 +14,7 @@
             <ul>
                 <li><a href="index.html">Overview</a></li>
                 <li><a href="members.html">Members</a></li>
-                <li><a href="login.html">Accounts</a></li>
+                <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
                 <li><a href="rules.html">Rules</a></li>
             </ul>
@@ -33,42 +33,21 @@
                     <div class="rule-header">
                         <h3><i class="fas fa-users"></i> Membership Rules</h3>
                     </div>
-                    <ul>
-                        <li><i class="fas fa-check"></i> Membership is valid for 5 years, members who want to exit this association within this period will not get any interest or benefit</li>
-                        <li><i class="fas fa-check"></i> Monthly deposit amount should be paid between 10th to 15th of the month</li>
-                        <li><i class="fas fa-check"></i> Every member should attend the annual meeting held in the month of December or November every year</li>
-                        <li><i class="fas fa-check"></i> Dates of annual meeting will be announced after discussion and finalization, every member must attend the meeting otherwise fine will be imposed</li>
-                        <li><i class="fas fa-check"></i> Member who wants to exit from Associate will get only the amount paid by him till date, he will not get any interest or share in profit</li>
-                        <li><i class="fas fa-check"></i> A person managing an associate is exempted from payment for one month</li>
-                        <li><i class="fas fa-check"></i> Minimum balance of ₹5,000 should be maintained in associate account</li>
-                    </ul>
+                    <ul id="rules-membership"></ul>
                 </div>
 
                 <div class="rule-box">
                     <div class="rule-header">
                         <h3><i class="fas fa-money-bill-wave"></i> Loan Rules</h3>
                     </div>
-                    <ul>
-                        <li><i class="fas fa-check"></i> Loans will be given only to fellow members</li>
-                        <li><i class="fas fa-check"></i> Interest rate is ₹1.5 per 100 per month</li>
-                        <li><i class="fas fa-check"></i> Interest must be paid on the loan taken along with the monthly fee</li>
-                        <li><i class="fas fa-check"></i> The loan taken must be repaid to the association within 1 year from the date of taking</li>
-                        <li><i class="fas fa-check"></i> The minimum loan amount available is ₹10,000</li>
-                        <li><i class="fas fa-check"></i> Maximum loan amount is ₹2.5 lakhs</li>
-                        <li><i class="fas fa-check"></i> Member should check associate balance before applying for loan, application will be rejected if requested loan amount is more than available balance</li>
-                        <li><i class="fas fa-check"></i> Borrowing member shall not be eligible for another loan irrespective of the consequences for 3 months</li>
-                    </ul>
+                    <ul id="rules-loan"></ul>
                 </div>
 
                 <div class="rule-box">
                     <div class="rule-header">
                         <h3><i class="fas fa-handshake"></i> Administrative Guidelines</h3>
                     </div>
-                    <ul>
-                        <li><i class="fas fa-check"></i> The decision taken by Manjunath and Pratap on behalf of the Associate in the near future shall be observed by the members and discussed with all the members before finalisation</li>
-                        <li><i class="fas fa-check"></i> Changes to rules require majority committee approval</li>
-                        <li><i class="fas fa-check"></i> Grievances to be addressed to committee in writing</li>
-                    </ul>
+                    <ul id="rules-admin"></ul>
                 </div>
             </div>
 
@@ -82,5 +61,17 @@
     <footer>
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
+    <script src="sheets-config.js"></script>
+    <script src="sheets-utils.js"></script>
+    <script src="rules-render.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            RulesRender.loadRules({
+                membershipListSelector: '#rules-membership',
+                loanListSelector: '#rules-loan',
+                adminListSelector: '#rules-admin'
+            });
+        });
+    </script>
 </body>
 </html>

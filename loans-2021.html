@@ -14,7 +14,7 @@
             <ul>
                 <li><a href="index.html">Overview</a></li>
                 <li><a href="members.html">Members</a></li>
-                <li><a href="login.html">Accounts</a></li>
+                <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
                 <li><a href="rules.html">Rules</a></li>
             </ul>
@@ -22,12 +22,43 @@
     </header>
 
     <main>
+        <script>
+            (function() {
+                function hasValidUser() {
+                    var raw = localStorage.getItem('userDetails') || sessionStorage.getItem('userDetails');
+                    if (!raw) return false;
+                    try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
+                }
+                var isAuth = (localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true') && hasValidUser();
+                if (!isAuth) {
+                    sessionStorage.setItem('returnUrl', window.location.href);
+                    window.location.href = 'login.html';
+                }
+            })();
+        </script>
         <section class="loans-section">
-            
-
             <h2 class="page-title"><i class="fas fa-hand-holding-usd"></i> Loans 2021-22</h2>
 
-            <div class="info-card no-records">
+            <div class="info-card">
+                <h3>Loan List 2021-22</h3>
+                <table class="member-table">
+                    <thead>
+                        <tr>
+                            <th>Loan ID</th>
+                            <th>Loan Taken by</th>
+                            <th>From</th>
+                            <th>Amount (₹)</th>
+                            <th>Interest (₹)</th>
+                            <th>Renewal Month</th>
+                            <th>Status</th>
+                            <th>Total Amount Paid (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="info-card no-records" style="display:none;">
                 <div class="no-data-content">
                     <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" alt="No Records" class="no-data-image">
                     <h3>No Records Found</h3>
@@ -48,5 +79,13 @@
     <footer>
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
+    <script src="sheets-config.js"></script>
+    <script src="sheets-utils.js"></script>
+    <script src="loans-render.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            LoansRender.loadLoans('2021-22', { tbodySelector: '.member-table tbody' });
+        });
+    </script>
 </body>
 </html> 

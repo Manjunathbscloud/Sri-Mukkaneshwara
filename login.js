@@ -69,17 +69,21 @@ document.getElementById('loginBtn').addEventListener('click', function(e) {
     const member = memberDatabase[username];
     
     if (member && member.password === password) {
-        // Store user session data
-        sessionStorage.setItem('isAuthenticated', 'true');
-        sessionStorage.setItem('userEmail', member.email);
-        sessionStorage.setItem('userName', member.name);
-        sessionStorage.setItem('memberId', member.id);
-        sessionStorage.setItem('userPhone', member.phone);
-        sessionStorage.setItem('role', member.role); // store role
-        sessionStorage.setItem('userDetails', JSON.stringify(member));
+        // Store user session data (both sessionStorage and localStorage for cross-tab persistence)
+        const set = (store) => {
+            store.setItem('isAuthenticated', 'true');
+            store.setItem('userEmail', member.email);
+            store.setItem('userName', member.name);
+            store.setItem('memberId', member.id);
+            store.setItem('userPhone', member.phone);
+            store.setItem('role', member.role);
+            store.setItem('userDetails', JSON.stringify(member));
+            store.setItem('isPresident', String(member.role === 'president'));
+        };
+        set(sessionStorage);
+        set(localStorage);
 
         // Everyone lands on accounts.html
-        sessionStorage.setItem('isPresident', member.role === 'president');
         window.location.href = 'accounts.html';
     } else {
         errorMessage.textContent = 'Invalid username or password';

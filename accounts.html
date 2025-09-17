@@ -8,6 +8,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 </head>
 <body>
+    <script>
+        (function() {
+            function hasValidUser() {
+                var raw = localStorage.getItem('userDetails') || sessionStorage.getItem('userDetails');
+                if (!raw) return false;
+                try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
+            }
+            var isAuth = (localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true') && hasValidUser();
+            if (!isAuth) {
+                sessionStorage.setItem('returnUrl', window.location.href);
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
         <nav>
@@ -120,10 +134,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const isPresident = sessionStorage.getItem('isPresident') === 'true';
+            const isPresident = (localStorage.getItem('isPresident') === 'true') || (sessionStorage.getItem('isPresident') === 'true');
             const reviewBtn = document.querySelector('.admin-loan-btn');
 
-            // Show Review Applications button only if president
             if (isPresident && reviewBtn) {
                 reviewBtn.style.display = 'inline-block';
                 reviewBtn.onclick = function () {
@@ -140,7 +153,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            if (sessionStorage.getItem('isPresident') === 'true') {
+            if ((localStorage.getItem('isPresident') === 'true') || (sessionStorage.getItem('isPresident') === 'true')) {
                 document.getElementById('loanListBtn').style.display = 'inline-block';
                 document.getElementById('loanListBtn').addEventListener('click', function() {
                     window.location.href = 'president-view.html';

@@ -96,6 +96,15 @@
   </header>
 
   <main>
+    <script>
+      (function() {
+        var isAuth = localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true';
+        if (!isAuth) {
+          sessionStorage.setItem('returnUrl', window.location.href);
+          window.location.href = 'login.html';
+        }
+      })();
+    </script>
     <section>
       <div class="form-container">
         <h2><i class="fas fa-hand-holding-usd"></i> Loan Application</h2>
