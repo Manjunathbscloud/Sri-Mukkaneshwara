@@ -84,18 +84,27 @@
 <body>
   <header>
     <h1>Sri Mukkanneshwara Associate</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Overview</a></li>
-        <li><a href="members.html">Members</a></li>
-        <li><a href="accounts.html">Accounts</a></li>
-        <li><a href="meetings.html">Meetings</a></li>
-        <li><a href="rules.html">Rules</a></li>
-      </ul>
-    </nav>
+  <nav>
+    <ul>
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="members.html">Members</a></li>
+      <li><a href="accounts.html">Accounts</a></li>
+      <li><a href="meetings.html">Meetings</a></li>
+      <li><a href="rules.html">Rules</a></li>
+    </ul>
+  </nav>
   </header>
 
   <main>
+    <script>
+      (function() {
+        var isAuth = localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true';
+        if (!isAuth) {
+          sessionStorage.setItem('returnUrl', window.location.href);
+          window.location.href = 'login.html';
+        }
+      })();
+    </script>
     <section>
       <div class="form-container">
         <h2><i class="fas fa-hand-holding-usd"></i> Loan Application</h2>
@@ -171,6 +180,7 @@
       document.getElementById("successMsg").style.display = "block";
       form.reset();
     });
+
   </script>
 </body>
 </html>

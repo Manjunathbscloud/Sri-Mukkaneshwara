@@ -23,6 +23,15 @@
     </header>
 
     <main>
+        <script>
+            (function() {
+                var isAuth = localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true';
+                if (!isAuth) {
+                    sessionStorage.setItem('returnUrl', window.location.href);
+                    window.location.href = 'login.html';
+                }
+            })();
+        </script>
         <section class="loan-status-section">
             <h2 class="page-title">
                 <i class="fas fa-file-invoice-dollar"></i> Loan Status
@@ -82,6 +91,7 @@
         }
 
         gapi.load('client', initClient);
+
     </script>
 </body>
 </html>

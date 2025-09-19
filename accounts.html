@@ -8,6 +8,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 </head>
 <body>
+    <script>
+        (function() {
+            function hasValidUser() {
+                var raw = localStorage.getItem('userDetails') || sessionStorage.getItem('userDetails');
+                if (!raw) return false;
+                try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
+            }
+            var isAuth = (localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true') && hasValidUser();
+            if (!isAuth) {
+                sessionStorage.setItem('returnUrl', window.location.href);
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
         <nav>
@@ -17,6 +31,7 @@
                 <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
                 <li><a href="rules.html">Rules</a></li>
+                <li><a href="#" id="logoutBtn" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -120,34 +135,48 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const isPresident = sessionStorage.getItem('isPresident') === 'true';
+            const isPresident = (localStorage.getItem('isPresident') === 'true') || (sessionStorage.getItem('isPresident') === 'true');
             const reviewBtn = document.querySelector('.admin-loan-btn');
 
-            // Show Review Applications button only if president
             if (isPresident && reviewBtn) {
                 reviewBtn.style.display = 'inline-block';
                 reviewBtn.onclick = function () {
                     window.location.href = 'president-view.html';
                 };
             }
-        });
-    </script>
 
-    <!-- Loan List button (only for President) -->
-    <button id="loanListBtn" style="display:none; margin:10px; padding:8px 16px; background-color:#4CAF50; color:white; border:none; border-radius:4px; cursor:pointer;">
-        Loan List
-    </button>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if (sessionStorage.getItem('isPresident') === 'true') {
-                document.getElementById('loanListBtn').style.display = 'inline-block';
-                document.getElementById('loanListBtn').addEventListener('click', function() {
-                    window.location.href = 'president-view.html';
+            // Logout functionality
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Clear all authentication data
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userName');
+                    localStorage.removeItem('memberId');
+                    localStorage.removeItem('userPhone');
+                    localStorage.removeItem('role');
+                    localStorage.removeItem('userDetails');
+                    localStorage.removeItem('isPresident');
+                    
+                    sessionStorage.removeItem('isAuthenticated');
+                    sessionStorage.removeItem('userEmail');
+                    sessionStorage.removeItem('userName');
+                    sessionStorage.removeItem('memberId');
+                    sessionStorage.removeItem('userPhone');
+                    sessionStorage.removeItem('role');
+                    sessionStorage.removeItem('userDetails');
+                    sessionStorage.removeItem('isPresident');
+                    
+                    // Redirect to login page
+                    window.location.href = 'login.html';
                 });
             }
         });
     </script>
+
 
 </body>
 </html>
