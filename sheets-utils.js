@@ -1,7 +1,17 @@
 // Lightweight CSV fetch and parse utilities
 
 async function fetchCsv(url) {
-    const response = await fetch(url, { cache: 'no-store' });
+    // Add cache-busting parameter to ensure fresh data
+    const cacheBuster = '?t=' + Date.now();
+    const urlWithCacheBuster = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
+    
+    console.log('Fetching CSV from URL:', urlWithCacheBuster);
+    const response = await fetch(urlWithCacheBuster, { 
+        cache: 'no-store',
+        headers: {
+            'Cache-Control': 'no-cache'
+        }
+    });
     if (!response.ok) throw new Error(`Failed to fetch CSV: ${response.status}`);
     return await response.text();
 }

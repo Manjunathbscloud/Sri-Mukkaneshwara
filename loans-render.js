@@ -26,6 +26,11 @@
             document.querySelectorAll('.no-records').forEach(el => el.style.display = 'none');
         }
 
+        // Call onDataLoaded callback if provided
+        if (selectors.onDataLoaded && typeof selectors.onDataLoaded === 'function') {
+            selectors.onDataLoaded(items || []);
+        }
+
         if (!items || items.length === 0) {
             const tr = document.createElement('tr');
             const td = document.createElement('td');

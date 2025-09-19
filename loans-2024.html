@@ -6,6 +6,155 @@
     <title>2024-25 Loans - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Enhanced table styling for loans-2024 */
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.25rem;
+        }
+        
+        .table-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .record-count {
+            background: #f8f9fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.875rem;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .loans-table {
+            margin: 0;
+            min-width: 800px;
+        }
+        
+        .loans-table th {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            padding: 1rem 0.75rem;
+            white-space: nowrap;
+        }
+        
+        .loans-table th i {
+            margin-right: 0.5rem;
+            opacity: 0.8;
+        }
+        
+        .loans-table td {
+            padding: 1rem 0.75rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .loans-table tr:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .loans-table tr.completed {
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+        
+        .loans-table tr.completed:hover {
+            background-color: #e9ecef;
+        }
+        
+        .loan-id {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #2c3e50;
+            background: #f8f9fa;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        
+        .status-clear, .status-active {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-clear {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-active {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .total-row {
+            background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%) !important;
+            font-weight: bold;
+            border-top: 3px solid #2c3e50;
+        }
+        
+        .total-row td {
+            padding: 1rem 0.75rem;
+            font-size: 1.1rem;
+        }
+        
+        .total-row td:first-child {
+            text-align: right;
+            color: #2c3e50;
+        }
+        
+        .total-row td:last-child {
+            color: #28a745;
+            font-size: 1.2rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .loans-table {
+                font-size: 0.85rem;
+            }
+            
+            .loans-table th,
+            .loans-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
     
 </head>
 <body>
@@ -43,23 +192,30 @@
             <h2 class="page-title"><i class="fas fa-hand-holding-usd"></i> Loans 2024-25</h2>
 
             <div class="info-card">
-                <h3>Loan List 2024-25</h3>
-                <table class="member-table">
-                    <thead>
-                        <tr>
-                            <th>Loan ID</th>
-                            <th>Loan Taken by</th>
-                            <th>From</th>
-                            <th>Amount (₹)</th>
-                            <th>Interest (₹)</th>
-                            <th>Renewal/Returned Month</th>
-                            <th>Status</th>
-                            <th>Total Amount Paid (₹)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <div class="table-header">
+                    <h3><i class="fas fa-list-alt"></i> Loan List 2024-25</h3>
+                    <div class="table-actions">
+                        <span class="record-count" id="recordCount">Loading...</span>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="member-table loans-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-hashtag"></i> Loan ID</th>
+                                <th><i class="fas fa-user"></i> Member</th>
+                                <th><i class="fas fa-calendar"></i> From</th>
+                                <th><i class="fas fa-rupee-sign"></i> Amount</th>
+                                <th><i class="fas fa-percentage"></i> Interest</th>
+                                <th><i class="fas fa-calendar-check"></i> Renewal/Return</th>
+                                <th><i class="fas fa-info-circle"></i> Status</th>
+                                <th><i class="fas fa-money-bill-wave"></i> Total Paid</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="info-card no-records" style="display:none;">
                 <div class="no-data-content">
@@ -87,7 +243,16 @@
     <script src="loans-render.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            LoansRender.loadLoans('2024-25', { tbodySelector: '.member-table tbody' });
+            LoansRender.loadLoans('2024-25', { 
+                tbodySelector: '.loans-table tbody',
+                onDataLoaded: function(items) {
+                    // Update record count
+                    const recordCount = document.getElementById('recordCount');
+                    if (recordCount) {
+                        recordCount.textContent = `${items.length} record${items.length !== 1 ? 's' : ''} found`;
+                    }
+                }
+            });
         });
     </script>
 </body>
