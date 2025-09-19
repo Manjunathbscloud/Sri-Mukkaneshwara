@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loan Applications - President View</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -120,10 +120,14 @@
 </head>
 <body>
   <script>
-    // ✅ Prevent non-presidents from accessing this page
-    if (sessionStorage.getItem('isAuthenticated') !== 'true' || sessionStorage.getItem('isPresident') !== 'true') {
-      window.location.href = 'login.html';
-    }
+    // Prevent non-presidents from accessing this page
+    (function() {
+      var isAuth = localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true';
+      var isPresident = localStorage.getItem('isPresident') === 'true' || sessionStorage.getItem('isPresident') === 'true';
+      if (!isAuth || !isPresident) {
+        window.location.href = 'login.html';
+      }
+    })();
   </script>
 
   <h1>All Loan Applications</h1>
