@@ -58,17 +58,185 @@ const memberDatabase = {
     }
 };
 
-// Handle login form submission
-document.getElementById('loginBtn').addEventListener('click', function(e) {
+// OTP storage and management
+let currentOtp = null;
+let otpExpiry = null;
+let currentMember = null;
+let otpTimer = null;
+
+// Generate 6-digit OTP
+function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Send OTP (simulated - in real implementation, this would send SMS)
+function sendOTP(phone, otp) {
+    console.log(`OTP sent to ${phone}: ${otp}`);
+    // In a real implementation, you would integrate with SMS service like:
+    // - Twilio
+    // - AWS SNS
+    // - Firebase Auth
+    // - Custom SMS gateway
+    
+    // For demo purposes, we'll show the OTP in console and alert
+    alert(`OTP for ${phone}: ${otp}\n\n(This is a demo - in production, OTP would be sent via SMS)`);
+}
+
+// Start OTP timer
+function startOTPTimer() {
+    let timeLeft = 60; // 60 seconds
+    const timerElement = document.getElementById('otpTimer');
+    
+    if (timerElement) {
+        timerElement.textContent = `Resend OTP in ${timeLeft}s`;
+    }
+    
+    otpTimer = setInterval(() => {
+        timeLeft--;
+        if (timerElement) {
+            timerElement.textContent = `Resend OTP in ${timeLeft}s`;
+        }
+        
+        if (timeLeft <= 0) {
+            clearInterval(otpTimer);
+            if (timerElement) {
+                timerElement.textContent = '';
+            }
+            document.getElementById('resendOtpBtn').disabled = false;
+        }
+    }, 1000);
+}
+
+// Clear OTP timer
+function clearOTPTimer() {
+    if (otpTimer) {
+        clearInterval(otpTimer);
+        otpTimer = null;
+    }
+}
+
+// Show error message
+function showError(message) {
+    const errorElement = document.getElementById('errorMessage');
+    const successElement = document.getElementById('successMessage');
+    
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+    if (successElement) {
+        successElement.style.display = 'none';
+    }
+}
+
+// Show success message
+function showSuccess(message) {
+    const successElement = document.getElementById('successMessage');
+    const errorElement = document.getElementById('errorMessage');
+    
+    if (successElement) {
+        successElement.textContent = message;
+        successElement.style.display = 'block';
+    }
+    if (errorElement) {
+        errorElement.style.display = 'none';
+    }
+}
+
+// Clear messages
+function clearMessages() {
+    const errorElement = document.getElementById('errorMessage');
+    const successElement = document.getElementById('successMessage');
+    
+    if (errorElement) {
+        errorElement.style.display = 'none';
+    }
+    if (successElement) {
+        successElement.style.display = 'none';
+    }
+}
+
+// Show phone step
+function showPhoneStep() {
+    document.getElementById('phoneStep').style.display = 'block';
+    document.getElementById('otpStep').style.display = 'none';
+    document.getElementById('phone').value = '';
+    clearMessages();
+    clearOTPTimer();
+}
+
+// Show OTP step
+function showOTPStep(phone) {
+    document.getElementById('phoneStep').style.display = 'none';
+    document.getElementById('otpStep').style.display = 'block';
+    document.getElementById('phoneDisplay').textContent = phone;
+    document.getElementById('otp').value = '';
+    document.getElementById('resendOtpBtn').disabled = true;
+    clearMessages();
+}
+
+// Handle send OTP button click
+document.getElementById('sendOtpBtn').addEventListener('click', function(e) {
     e.preventDefault();
     
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
+    const phone = document.getElementById('phone').value.trim();
     const errorMessage = document.getElementById('errorMessage');
 
-    const member = memberDatabase[username];
+    if (!phone) {
+        showError('Please enter your phone number');
+        return;
+    }
+
+    // Find member by phone number
+    const member = Object.values(memberDatabase).find(m => m.phone === phone);
     
-    if (member && member.password === password) {
+    if (member) {
+        currentMember = member;
+        currentOtp = generateOTP();
+        otpExpiry = Date.now() + (5 * 60 * 1000); // 5 minutes from now
+        
+        // Send OTP
+        sendOTP(phone, currentOtp);
+        
+        // Show OTP step
+        showOTPStep(phone);
+        showSuccess('OTP sent successfully!');
+        
+        // Start timer
+        startOTPTimer();
+        
+    } else {
+        showError('Phone number not found. Please check your number.');
+    }
+});
+
+// Handle verify OTP button click
+document.getElementById('verifyOtpBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    const enteredOtp = document.getElementById('otp').value.trim();
+    
+    if (!enteredOtp) {
+        showError('Please enter the OTP');
+        return;
+    }
+    
+    if (enteredOtp.length !== 6) {
+        showError('OTP must be 6 digits');
+        return;
+    }
+    
+    // Check if OTP is expired
+    if (Date.now() > otpExpiry) {
+        showError('OTP has expired. Please request a new one.');
+        return;
+    }
+    
+    // Verify OTP
+    if (enteredOtp === currentOtp) {
+        // OTP is correct, proceed with login
+        const member = currentMember;
+        
         // Store user session data (both sessionStorage and localStorage for cross-tab persistence)
         const set = (store) => {
             store.setItem('isAuthenticated', 'true');
@@ -83,17 +251,65 @@ document.getElementById('loginBtn').addEventListener('click', function(e) {
         set(sessionStorage);
         set(localStorage);
 
-        // Everyone lands on accounts.html
-        window.location.href = 'accounts.html';
+        showSuccess('Login successful! Redirecting...');
+        
+        // Clear OTP data
+        currentOtp = null;
+        currentMember = null;
+        clearOTPTimer();
+        
+        // Redirect after a short delay
+        setTimeout(() => {
+            window.location.href = 'accounts.html';
+        }, 1500);
+        
     } else {
-        errorMessage.textContent = 'Invalid username or password';
+        showError('Invalid OTP. Please try again.');
     }
 });
 
-// Clear error when typing
-document.getElementById('username').addEventListener('input', clearError);
-document.getElementById('password').addEventListener('input', clearError);
+// Handle resend OTP button click
+document.getElementById('resendOtpBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    if (currentMember) {
+        currentOtp = generateOTP();
+        otpExpiry = Date.now() + (5 * 60 * 1000); // 5 minutes from now
+        
+        // Send new OTP
+        sendOTP(currentMember.phone, currentOtp);
+        
+        showSuccess('New OTP sent successfully!');
+        
+        // Reset timer
+        clearOTPTimer();
+        startOTPTimer();
+        document.getElementById('resendOtpBtn').disabled = true;
+    }
+});
 
-function clearError() {
-    document.getElementById('errorMessage').textContent = '';
-}
+// Clear error when typing in phone field
+document.getElementById('phone').addEventListener('input', function() {
+    clearMessages();
+});
+
+// Clear error when typing in OTP field
+document.getElementById('otp').addEventListener('input', function() {
+    clearMessages();
+});
+
+// Auto-format OTP input (only numbers)
+document.getElementById('otp').addEventListener('input', function(e) {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+});
+
+// Add timer display element
+document.addEventListener('DOMContentLoaded', function() {
+    const otpInfo = document.querySelector('.otp-info');
+    if (otpInfo) {
+        const timerElement = document.createElement('div');
+        timerElement.id = 'otpTimer';
+        timerElement.className = 'otp-timer';
+        otpInfo.appendChild(timerElement);
+    }
+});
