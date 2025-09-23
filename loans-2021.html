@@ -188,24 +188,49 @@
         <section class="loans-section">
             <h2 class="page-title"><i class="fas fa-hand-holding-usd"></i> Loans 2021-22</h2>
 
+
             <div class="info-card">
                 <div class="table-header">
                     <h3><i class="fas fa-list-alt"></i> Loan List 2021-22</h3>
-                    <div class="table-actions">
-                        <span class="record-count" id="recordCount">Loading...</span>
+                <div class="table-actions">
+                    <span class="record-count" id="recordCount">Loading...</span>
+                </div>
+                
+                <!-- Active Filter Badges -->
+                <div class="filter-badges" id="filterBadges" style="display: none;">
+                    <!-- Filter badges will be dynamically added here -->
+                </div>
+                </div>
+                <!-- Floating Filter Dropdowns -->
+                <div class="floating-filters">
+                    <div class="member-filter-dropdown" id="memberFilterDropdown" style="display: none;">
+                        <div class="filter-options">
+                        </div>
+                    </div>
+                    <div class="status-filter-dropdown" id="statusFilterDropdown" style="display: none;">
+                        <div class="filter-options">
+                            <div class="filter-option clear-filter" onclick="selectStatusFilter('')">Clear Filter</div>
+                            <div class="filter-option" onclick="selectStatusFilter('active')">Active</div>
+                            <div class="filter-option" onclick="selectStatusFilter('clear')">Clear</div>
+                        </div>
                     </div>
                 </div>
+
                 <div class="table-container">
                     <table class="member-table loans-table">
                         <thead>
                             <tr>
                                 <th><i class="fas fa-hashtag"></i> Loan ID</th>
-                                <th><i class="fas fa-user"></i> Member</th>
+                                <th>
+                                    <i class="fas fa-user"></i> Member <i class="fas fa-chevron-down filter-arrow" id="memberArrow" onclick="toggleMemberFilter()"></i>
+                                </th>
                                 <th><i class="fas fa-calendar"></i> From</th>
                                 <th><i class="fas fa-rupee-sign"></i> Amount</th>
                                 <th><i class="fas fa-percentage"></i> Interest</th>
                                 <th><i class="fas fa-calendar-check"></i> Renewal</th>
-                                <th><i class="fas fa-info-circle"></i> Status</th>
+                                <th>
+                                    <i class="fas fa-info-circle"></i> Status <i class="fas fa-chevron-down filter-arrow" id="statusArrow" onclick="toggleStatusFilter()"></i>
+                                </th>
                                 <th><i class="fas fa-money-bill-wave"></i> Total Paid</th>
                             </tr>
                         </thead>
@@ -239,16 +264,283 @@
     <script src="sheets-utils.js"></script>
     <script src="loans-render.js"></script>
     <script>
+        // Table filtering functionality
+        let allTableData = [];
+        let selectedMemberFilter = '';
+        let selectedStatusFilter = '';
+
+        // Toggle member filter dropdown
+        function toggleMemberFilter() {
+            const memberDropdown = document.getElementById('memberFilterDropdown');
+            const statusDropdown = document.getElementById('statusFilterDropdown');
+            
+            // Close status dropdown if open
+            statusDropdown.style.display = 'none';
+            
+            // Toggle member dropdown
+            if (memberDropdown.style.display === 'none') {
+                memberDropdown.style.display = 'block';
+                populateMemberFilter();
+            } else {
+                memberDropdown.style.display = 'none';
+            }
+        }
+
+        // Toggle status filter dropdown
+        function toggleStatusFilter() {
+            const memberDropdown = document.getElementById('memberFilterDropdown');
+            const statusDropdown = document.getElementById('statusFilterDropdown');
+            
+            // Close member dropdown if open
+            memberDropdown.style.display = 'none';
+            
+            // Toggle status dropdown
+            if (statusDropdown.style.display === 'none') {
+                statusDropdown.style.display = 'block';
+            } else {
+                statusDropdown.style.display = 'none';
+            }
+        }
+
+        // Populate member filter dropdown
+        function populateMemberFilter() {
+            const memberDropdown = document.getElementById('memberFilterDropdown');
+            const filterOptions = memberDropdown.querySelector('.filter-options');
+            
+            // Clear existing options
+            filterOptions.innerHTML = '';
+            
+            // Add "Clear Filter" option
+            const clearOption = document.createElement('div');
+            clearOption.className = 'filter-option clear-filter';
+            clearOption.textContent = 'Clear Filter';
+            clearOption.onclick = () => selectMemberFilter('');
+            filterOptions.appendChild(clearOption);
+            
+            // Get unique member names from table data
+            const uniqueMembers = [...new Set(allTableData.map(loan => loan.member).filter(name => name))];
+            
+            // Add member options
+            uniqueMembers.forEach(member => {
+                const option = document.createElement('div');
+                option.className = 'filter-option';
+                option.textContent = member;
+                option.onclick = () => selectMemberFilter(member);
+                filterOptions.appendChild(option);
+            });
+        }
+
+        // Select member filter
+        function selectMemberFilter(member) {
+            selectedMemberFilter = member;
+            document.getElementById('memberFilterDropdown').style.display = 'none';
+            applyFilters();
+        }
+
+        // Select status filter
+        function selectStatusFilter(status) {
+            selectedStatusFilter = status;
+            document.getElementById('statusFilterDropdown').style.display = 'none';
+            applyFilters();
+        }
+
+        // Apply filters
+        function applyFilters() {
+            // Filter table rows based on selected criteria
+            const tableRows = document.querySelectorAll('.loans-table tbody tr');
+            
+            tableRows.forEach(row => {
+                const memberCell = row.cells[1]; // Member column (index 1)
+                const statusCell = row.cells[6]; // Status column (index 6)
+                
+                if (!memberCell || !statusCell) return;
+                
+                const memberText = memberCell.textContent.toLowerCase().trim();
+                const statusText = statusCell.textContent.toLowerCase().trim();
+                
+                // Check member filter
+                const memberMatch = !selectedMemberFilter || 
+                    memberText.includes(selectedMemberFilter.toLowerCase());
+                
+                // Check status filter
+                const statusMatch = !selectedStatusFilter || 
+                    statusText.includes(selectedStatusFilter.toLowerCase());
+                
+                // Show/hide row based on filters
+                if (memberMatch && statusMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Update record count
+            const visibleRows = document.querySelectorAll('.loans-table tbody tr:not([style*="display: none"])');
+            const recordCount = document.getElementById('recordCount');
+            if (recordCount) {
+                recordCount.textContent = `${visibleRows.length} record${visibleRows.length !== 1 ? 's' : ''} found`;
+            }
+            
+            // Update total interest for visible rows
+            updateTotalInterest();
+            
+            // Update visual indicators
+            updateFilterIndicators();
+        }
+
+        // Update total interest and amount based on visible rows
+        function updateTotalInterest() {
+            const visibleRows = document.querySelectorAll('.loans-table tbody tr:not([style*="display: none"])');
+            const table = document.querySelector('.loans-table');
+            const tfoot = table.querySelector('tfoot');
+            
+            if (!tfoot) return;
+            
+            // Calculate total interest from visible rows only
+            let totalInterest = 0;
+            
+            // Get all table rows (including hidden ones)
+            const allTableRows = document.querySelectorAll('.loans-table tbody tr');
+            
+            allTableRows.forEach(row => {
+                // Check if row is visible (not filtered out)
+                const isVisible = row.style.display !== 'none';
+                
+                if (isVisible) {
+                    // Calculate total interest (Total Paid column - index 7)
+                    const totalPaidCell = row.cells[7];
+                    if (totalPaidCell) {
+                        const totalPaidText = totalPaidCell.textContent.trim();
+                        const totalPaidValue = parseFloat(totalPaidText.replace(/[₹,\s]/g, '')) || 0;
+                        totalInterest += totalPaidValue;
+                    }
+                }
+            });
+            
+            // Update the total interest in the footer
+            const totalRows = tfoot.querySelectorAll('tr');
+            if (totalRows.length >= 1) {
+                // Update Total Interest (first row)
+                const interestTd = totalRows[0].cells[7]; // Total Paid column (index 7)
+                if (interestTd) {
+                    interestTd.innerHTML = `<strong>₹${totalInterest.toLocaleString('en-IN')}</strong>`;
+                }
+            }
+        }
+
+        // Update filter indicators
+        function updateFilterIndicators() {
+            const filterBadges = document.getElementById('filterBadges');
+            const memberArrow = document.getElementById('memberArrow');
+            const statusArrow = document.getElementById('statusArrow');
+            
+            // Clear existing badges
+            filterBadges.innerHTML = '';
+            
+            // Check if any filters are active
+            const hasActiveFilters = selectedMemberFilter || selectedStatusFilter;
+            
+            if (hasActiveFilters) {
+                filterBadges.style.display = 'flex';
+                
+                // Add member filter badge
+                if (selectedMemberFilter) {
+                    const memberBadge = document.createElement('div');
+                    memberBadge.className = 'filter-badge member-filter';
+                    memberBadge.innerHTML = `
+                        <i class="fas fa-user"></i>
+                        <span>Member: ${selectedMemberFilter}</span>
+                        <i class="fas fa-times remove-filter" onclick="clearMemberFilter()"></i>
+                    `;
+                    filterBadges.appendChild(memberBadge);
+                }
+                
+                // Add status filter badge
+                if (selectedStatusFilter) {
+                    const statusBadge = document.createElement('div');
+                    statusBadge.className = 'filter-badge status-filter';
+                    statusBadge.innerHTML = `
+                        <i class="fas fa-info-circle"></i>
+                        <span>Status: ${selectedStatusFilter}</span>
+                        <i class="fas fa-times remove-filter" onclick="clearStatusFilter()"></i>
+                    `;
+                    filterBadges.appendChild(statusBadge);
+                }
+                
+                // Add clear all button
+                const clearAllBtn = document.createElement('div');
+                clearAllBtn.className = 'clear-all-filters';
+                clearAllBtn.innerHTML = '<i class="fas fa-times"></i> Clear All';
+                clearAllBtn.onclick = clearAllFilters;
+                filterBadges.appendChild(clearAllBtn);
+            } else {
+                filterBadges.style.display = 'none';
+            }
+            
+            // Update arrow styles
+            if (selectedMemberFilter) {
+                memberArrow.classList.add('active-filter');
+            } else {
+                memberArrow.classList.remove('active-filter');
+            }
+            
+            if (selectedStatusFilter) {
+                statusArrow.classList.add('active-filter');
+            } else {
+                statusArrow.classList.remove('active-filter');
+            }
+        }
+
+        // Clear member filter
+        function clearMemberFilter() {
+            selectedMemberFilter = '';
+            applyFilters();
+        }
+
+        // Clear status filter
+        function clearStatusFilter() {
+            selectedStatusFilter = '';
+            applyFilters();
+        }
+
+        // Clear all filters
+        function clearAllFilters() {
+            selectedMemberFilter = '';
+            selectedStatusFilter = '';
+            applyFilters();
+        }
+
+        // Store original data when data is loaded
+        function onDataLoaded(items) {
+            allTableData = items;
+            
+            // Update record count
+            const recordCount = document.getElementById('recordCount');
+            if (recordCount) {
+                recordCount.textContent = `${items.length} record${items.length !== 1 ? 's' : ''} found`;
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const memberDropdown = document.getElementById('memberFilterDropdown');
+            const statusDropdown = document.getElementById('statusFilterDropdown');
+            const memberArrow = document.getElementById('memberArrow');
+            const statusArrow = document.getElementById('statusArrow');
+            
+            if (!memberDropdown.contains(event.target) && !memberArrow.contains(event.target)) {
+                memberDropdown.style.display = 'none';
+            }
+            
+            if (!statusDropdown.contains(event.target) && !statusArrow.contains(event.target)) {
+                statusDropdown.style.display = 'none';
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             LoansRender.loadLoans('2021-22', { 
                 tbodySelector: '.loans-table tbody',
-                onDataLoaded: function(items) {
-                    // Update record count
-                    const recordCount = document.getElementById('recordCount');
-                    if (recordCount) {
-                        recordCount.textContent = `${items.length} record${items.length !== 1 ? 's' : ''} found`;
-                    }
-                }
+                onDataLoaded: onDataLoaded
             });
         });
     </script>
