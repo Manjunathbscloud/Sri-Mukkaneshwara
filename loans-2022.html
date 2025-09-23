@@ -191,9 +191,9 @@
             <div class="info-card">
                 <div class="table-header">
                     <h3><i class="fas fa-list-alt"></i> Loan List 2022-23</h3>
-                <div class="table-actions">
-                    <span class="record-count" id="recordCount">Loading...</span>
-                </div>
+                    <div class="table-actions">
+                        <span class="record-count" id="recordCount">Loading...</span>
+                    </div>
                 
                 <!-- Active Filter Badges -->
                 <div class="filter-badges" id="filterBadges" style="display: none;">
@@ -387,7 +387,7 @@
             updateFilterIndicators();
         }
 
-        // Update total interest based on visible rows
+        // Update total interest and amount based on visible rows
         function updateTotalInterest() {
             const visibleRows = document.querySelectorAll('.loans-table tbody tr:not([style*="display: none"])');
             const table = document.querySelector('.loans-table');
@@ -395,21 +395,35 @@
             
             if (!tfoot) return;
             
-            // Calculate total from visible rows
+            // Calculate total interest from visible rows only
             let totalInterest = 0;
-            visibleRows.forEach(row => {
-                const totalPaidCell = row.cells[7]; // Total Paid column (index 7)
-                if (totalPaidCell) {
-                    const totalPaidText = totalPaidCell.textContent.trim();
-                    const totalPaidValue = parseFloat(totalPaidText.replace(/[₹,\s]/g, '')) || 0;
-                    totalInterest += totalPaidValue;
+            
+            // Get all table rows (including hidden ones)
+            const allTableRows = document.querySelectorAll('.loans-table tbody tr');
+            
+            allTableRows.forEach(row => {
+                // Check if row is visible (not filtered out)
+                const isVisible = row.style.display !== 'none';
+                
+                if (isVisible) {
+                    // Calculate total interest (Total Paid column - index 7)
+                    const totalPaidCell = row.cells[7];
+                    if (totalPaidCell) {
+                        const totalPaidText = totalPaidCell.textContent.trim();
+                        const totalPaidValue = parseFloat(totalPaidText.replace(/[₹,\s]/g, '')) || 0;
+                        totalInterest += totalPaidValue;
+                    }
                 }
             });
             
-            // Update the total in the footer
-            const totalTd = tfoot.querySelector('td:last-child');
-            if (totalTd) {
-                totalTd.innerHTML = `<strong>₹${totalInterest.toLocaleString('en-IN')}</strong>`;
+            // Update the total interest in the footer
+            const totalRows = tfoot.querySelectorAll('tr');
+            if (totalRows.length >= 1) {
+                // Update Total Interest (first row)
+                const interestTd = totalRows[0].cells[7]; // Total Paid column (index 7)
+                if (interestTd) {
+                    interestTd.innerHTML = `<strong>₹${totalInterest.toLocaleString('en-IN')}</strong>`;
+                }
             }
         }
 
@@ -499,12 +513,12 @@
         function onDataLoaded(items) {
             allTableData = items;
             
-            // Update record count
-            const recordCount = document.getElementById('recordCount');
-            if (recordCount) {
-                recordCount.textContent = `${items.length} record${items.length !== 1 ? 's' : ''} found`;
-            }
-        }
+                    // Update record count
+                    const recordCount = document.getElementById('recordCount');
+                    if (recordCount) {
+                        recordCount.textContent = `${items.length} record${items.length !== 1 ? 's' : ''} found`;
+                    }
+                }
 
         // Close dropdowns when clicking outside
         document.addEventListener('click', function(event) {

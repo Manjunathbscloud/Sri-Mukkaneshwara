@@ -2170,6 +2170,65 @@ th i.fa-chevron-down.active-filter {
     border-color: #adb5bd;
 }
 
+/* Admin buttons styling */
+.admin-financial-btn,
+.admin-settings-btn {
+    background: var(--gradient-accent);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-financial-btn:hover,
+.admin-settings-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.admin-settings-btn {
+    background: var(--gradient-secondary);
+}
+
+/* Admin service card styling */
+.service-card h3 i.fa-cog {
+    color: var(--accent);
+}
+
+/* President badge styling */
+.president-badge {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile responsive for admin buttons */
+@media (max-width: 768px) {
+    .admin-financial-btn,
+    .admin-settings-btn {
+        width: 100%;
+        justify-content: center;
+        margin: 0.25rem 0;
+    }
+}
+
 /* Floating filter dropdowns */
 .floating-filters {
     position: relative;

@@ -49,14 +49,14 @@
         <button class="mobile-nav-close" onclick="toggleMobileNav()">
             <i class="fas fa-times"></i>
         </button>
-        <ul>
-            <li><a href="index.html" onclick="toggleMobileNav()">Overview</a></li>
-            <li><a href="members.html" onclick="toggleMobileNav()">Members</a></li>
-            <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
-            <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
-            <li><a href="rules.html" onclick="toggleMobileNav()">Rules</a></li>
-            <li><a href="#" id="mobileLogoutBtn" onclick="toggleMobileNav()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
+            <ul>
+                <li><a href="index.html" onclick="toggleMobileNav()">Overview</a></li>
+                <li><a href="members.html" onclick="toggleMobileNav()">Members</a></li>
+                <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
+                <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
+                <li><a href="rules.html" onclick="toggleMobileNav()">Rules</a></li>
+                <li><a href="#" id="mobileLogoutBtn" onclick="toggleMobileNav()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
     </div>
 
     <main>
@@ -148,6 +148,23 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Admin Tools - Only visible to President -->
+                <div class="service-card" id="adminToolsCard" style="display: none;">
+                    <h3><i class="fas fa-cog"></i> Admin Tools <span class="president-badge">President Only</span></h3>
+                    <p>Manage financial data and system settings</p>
+
+                    <div class="action-buttons">
+                        <button class="admin-financial-btn" onclick="window.location.href='admin-financial.html'">
+                            <i class="fas fa-calculator"></i>
+                            Update Financial Data
+                        </button>
+                        <button class="admin-settings-btn" onclick="alert('Settings page coming soon!')">
+                            <i class="fas fa-cogs"></i>
+                            System Settings
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -214,8 +231,42 @@
                 mobileNav.classList.remove('active');
             }
         });
+
+        // Role-based access control
+        function checkUserRole() {
+            try {
+                const userDetails = JSON.parse(localStorage.getItem('userDetails') || sessionStorage.getItem('userDetails') || '{}');
+                const userRole = userDetails.role || userDetails.position || '';
+                
+                // Show admin tools only for president
+                const adminToolsCard = document.getElementById('adminToolsCard');
+                if (adminToolsCard) {
+                    if (userRole.toLowerCase() === 'president') {
+                        adminToolsCard.style.display = 'block';
+                        console.log('Admin tools visible for President');
+                    } else {
+                        adminToolsCard.style.display = 'none';
+                        console.log('Admin tools hidden for non-President role:', userRole);
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking user role:', error);
+                // Hide admin tools by default if there's an error
+                const adminToolsCard = document.getElementById('adminToolsCard');
+                if (adminToolsCard) {
+                    adminToolsCard.style.display = 'none';
+                }
+            }
+        }
+
+        // Check role when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkUserRole();
+        });
     </script>
 
+    <!-- Financial Data Management -->
+    <script src="financial-data.js"></script>
 
 </body>
 </html>
