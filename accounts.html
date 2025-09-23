@@ -36,10 +36,33 @@
         </nav>
     </header>
 
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <h1>Sri Mukkanneshwara Associate</h1>
+        <button class="mobile-nav-toggle" onclick="toggleMobileNav()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav-close" onclick="toggleMobileNav()">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul>
+            <li><a href="index.html" onclick="toggleMobileNav()">Overview</a></li>
+            <li><a href="members.html" onclick="toggleMobileNav()">Members</a></li>
+            <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
+            <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
+            <li><a href="rules.html" onclick="toggleMobileNav()">Rules</a></li>
+            <li><a href="#" id="mobileLogoutBtn" onclick="toggleMobileNav()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
     <main>
-        <section class="account-overview">
-            <div class="account-stats">
-                <div class="stat-card">
+        <section class="account-overview mobile-dashboard">
+            <div class="account-stats mobile-dashboard-grid">
+                <div class="stat-card mobile-dashboard-card">
                     <div class="stat-icon">
                         <i class="fas fa-university"></i>
                     </div>
@@ -49,7 +72,7 @@
                         <span class="stat-date">As of Sepetember 15th 2025</span>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card mobile-dashboard-card">
                     <div class="stat-icon">
                         <i class="fas fa-hand-holding-usd"></i>
                     </div>
@@ -173,6 +196,22 @@
                     // Redirect to login page
                     window.location.href = 'login.html';
                 });
+            }
+        });
+
+        // Mobile Navigation Functions
+        function toggleMobileNav() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+        }
+
+        // Close mobile nav when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+            
+            if (!mobileNav.contains(event.target) && !mobileNavToggle.contains(event.target)) {
+                mobileNav.classList.remove('active');
             }
         });
     </script>
