@@ -57,31 +57,55 @@
             tbody.appendChild(tr);
         }
 
-        // Append footer with total interest collected (sum of numeric total_paid)
+        // Append footer with total interest collected and total amount
         const table = tbody.closest('table');
         if (table) {
             const existingFoot = table.querySelector('tfoot');
             if (existingFoot) existingFoot.remove();
 
             const tfoot = document.createElement('tfoot');
-            const tr = document.createElement('tr');
-            tr.className = 'total-row';
-
-            const labelTd = document.createElement('td');
-            labelTd.colSpan = 7;
-            labelTd.innerHTML = '<strong>Total Interest Collected</strong>';
-
-            const totalTd = document.createElement('td');
+            
+            // Calculate totals
             const totalPaid = (items || []).reduce((sum, r) => {
                 const raw = (r.total_paid || '').toString().replace(/[,\s]/g, '');
                 const num = raw === '' ? NaN : Number(raw);
                 return sum + (Number.isFinite(num) ? num : 0);
             }, 0);
-            totalTd.innerHTML = `<strong>${formatAmount(totalPaid)}</strong>`;
+            
+            const totalAmount = (items || []).reduce((sum, r) => {
+                const raw = (r.amount || '').toString().replace(/[,\s]/g, '');
+                const num = raw === '' ? NaN : Number(raw);
+                return sum + (Number.isFinite(num) ? num : 0);
+            }, 0);
 
-            tr.appendChild(labelTd);
-            tr.appendChild(totalTd);
-            tfoot.appendChild(tr);
+            // First row - Total Amount (hidden by default, shown only when filters are applied)
+            const tr1 = document.createElement('tr');
+            tr1.className = 'total-row total-amount-row';
+            tr1.style.display = 'none'; // Hidden by default
+            const labelTd1 = document.createElement('td');
+            labelTd1.colSpan = 3;
+            labelTd1.innerHTML = '<strong>Total Amount (Filtered)</strong>';
+            const amountTd = document.createElement('td');
+            amountTd.innerHTML = `<strong>${formatAmount(totalAmount)}</strong>`;
+            const emptyTd1 = document.createElement('td');
+            emptyTd1.colSpan = 4;
+            tr1.appendChild(labelTd1);
+            tr1.appendChild(amountTd);
+            tr1.appendChild(emptyTd1);
+            tfoot.appendChild(tr1);
+
+            // Second row - Total Interest Collected
+            const tr2 = document.createElement('tr');
+            tr2.className = 'total-row';
+            const labelTd2 = document.createElement('td');
+            labelTd2.colSpan = 7;
+            labelTd2.innerHTML = '<strong>Total Interest Collected</strong>';
+            const totalTd = document.createElement('td');
+            totalTd.innerHTML = `<strong>${formatAmount(totalPaid)}</strong>`;
+            tr2.appendChild(labelTd2);
+            tr2.appendChild(totalTd);
+            tfoot.appendChild(tr2);
+            
             table.appendChild(tfoot);
         }
     }

@@ -21,6 +21,28 @@
         </nav>
     </header>
 
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <h1>Sri Mukkanneshwara Associate</h1>
+        <button class="mobile-nav-toggle" onclick="toggleMobileNav()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav-close" onclick="toggleMobileNav()">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul>
+            <li><a href="index.html" onclick="toggleMobileNav()">Overview</a></li>
+            <li><a href="members.html" onclick="toggleMobileNav()">Members</a></li>
+            <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
+            <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
+            <li><a href="rules.html" onclick="toggleMobileNav()">Rules</a></li>
+        </ul>
+    </div>
+
     <main>
         <section class="overview-section">
             <h2 class="page-title">
@@ -176,6 +198,22 @@ IFSC Code: ICIC0004376</textarea>
             const qrcodeContainer = document.getElementById('qrcode');
             qrcodeContainer.style.display = 'none';
         }
+
+        // Mobile Navigation Functions
+        function toggleMobileNav() {
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNav.classList.toggle('active');
+        }
+
+        // Close mobile nav when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileNav = document.getElementById('mobileNav');
+            const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+            
+            if (!mobileNav.contains(event.target) && !mobileNavToggle.contains(event.target)) {
+                mobileNav.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
