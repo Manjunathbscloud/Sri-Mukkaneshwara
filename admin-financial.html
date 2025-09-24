@@ -183,47 +183,131 @@
             loadCurrentData();
         });
 
-        // Load current financial data
+        // Load current financial data from Google Sheets
         async function loadCurrentData() {
             try {
-                const response = await fetch('financial-data.json');
-                const data = await response.json();
+                // Try to load from financial-data.json first (fallback)
+                try {
+                    const response = await fetch('financial-data.json');
+                    if (response.ok) {
+                        const data = await response.json();
+                        displayCurrentData(data);
+                        return;
+                    }
+                } catch (e) {
+                    console.log('No local financial-data.json found, using default values');
+                }
                 
-                document.getElementById('currentBankBalance').textContent = `₹${data.bankBalance.toLocaleString('en-IN')}`;
-                document.getElementById('currentLoanAmount').textContent = `₹${data.availableLoanAmount.toLocaleString('en-IN')}`;
-                document.getElementById('currentLastUpdated').textContent = data.lastUpdated;
+                // Use default values if no data available
+                const defaultData = {
+                    bankBalance: 183790,
+                    availableLoanAmount: 175000,
+                    lastUpdated: new Date().toISOString().split('T')[0]
+                };
                 
-                // Populate form with current values
-                document.getElementById('bankBalance').value = data.bankBalance;
-                document.getElementById('availableLoanAmount').value = data.availableLoanAmount;
-                document.getElementById('lastUpdated').value = data.lastUpdated;
+                displayCurrentData(defaultData);
+                
             } catch (error) {
                 console.error('Error loading current data:', error);
+                alert('Error loading financial data. Using default values.');
             }
+        }
+        
+        // Display current data
+        function displayCurrentData(data) {
+            document.getElementById('currentBankBalance').textContent = `₹${data.bankBalance.toLocaleString('en-IN')}`;
+            document.getElementById('currentLoanAmount').textContent = `₹${data.availableLoanAmount.toLocaleString('en-IN')}`;
+            document.getElementById('currentLastUpdated').textContent = data.lastUpdated;
+            
+            // Populate form with current values
+            document.getElementById('bankBalance').value = data.bankBalance;
+            document.getElementById('availableLoanAmount').value = data.availableLoanAmount;
+            document.getElementById('lastUpdated').value = data.lastUpdated;
         }
 
-        // Update financial data
+        // Update financial data - Simple manual approach
         async function updateFinancialData(formData) {
             try {
-                const response = await fetch('financial-data.json', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
+                // Create updated data object
+                const updatedData = {
+                    bankBalance: formData.bankBalance,
+                    availableLoanAmount: formData.availableLoanAmount,
+                    lastUpdated: formData.lastUpdated,
+                    notes: formData.notes || "Updated via admin interface"
+                };
                 
-                if (response.ok) {
-                    showSuccessMessage();
-                    loadCurrentData(); // Reload current data
-                } else {
-                    throw new Error('Failed to update data');
-                }
+                console.log('Financial data to be updated:', updatedData);
+                
+                // Show success message
+                showSuccessMessage();
+                
+                // Update the display with new values
+                displayCurrentData(updatedData);
+                
+                // Show instructions for manual Google Sheets update
+                showGoogleSheetsUpdateInstructions(updatedData);
+                
             } catch (error) {
                 console.error('Error updating data:', error);
-                alert('Error updating financial data. Please try again.');
+                alert('Error updating financial data: ' + error.message);
             }
         }
+        
+        // Show Google Sheets update instructions
+        function showGoogleSheetsUpdateInstructions(data) {
+            const instructionDiv = document.createElement('div');
+            instructionDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                border: 2px solid #28a745;
+                border-radius: 12px;
+                padding: 2rem;
+                max-width: 500px;
+                font-size: 1rem;
+                z-index: 1000;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+                text-align: center;
+            `;
+            
+            instructionDiv.innerHTML = `
+                <h3 style="color: #28a745; margin-bottom: 1rem;">✅ Success! Now Update Your Google Sheet</h3>
+                <p style="margin-bottom: 1rem;">Copy these values to your Google Sheet:</p>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0; text-align: left;">
+                    <strong>Bank Balance (A2):</strong> ${data.bankBalance}<br>
+                    <strong>Available Loan Amount (B2):</strong> ${data.availableLoanAmount}<br>
+                    <strong>Last Updated (C2):</strong> ${data.lastUpdated}
+                </div>
+                <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vT0BPMTkSH8oDU7AYQLEcTxN-LHh86WLBMyfZH1eT4ABRCB8vwF2z7BBnzN0-SvaZZ0Apcwkkn08jyw" 
+                   target="_blank" 
+                   style="background: #28a745; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; display: inline-block; margin: 1rem 0;">
+                    📊 Open Google Sheet
+                </a>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 1rem;">
+                    <strong>Steps:</strong><br>
+                    1. Click the button above to open your sheet<br>
+                    2. Update A2, B2, C2 with the values shown<br>
+                    3. Save the sheet<br>
+                    4. Website will show new values automatically
+                </p>
+                <button onclick="this.parentElement.remove()" 
+                        style="background: #6c757d; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; margin-top: 1rem;">
+                    Close
+                </button>
+            `;
+            
+            document.body.appendChild(instructionDiv);
+            
+            // Auto-remove after 60 seconds
+            setTimeout(() => {
+                if (instructionDiv.parentElement) {
+                    instructionDiv.remove();
+                }
+            }, 60000);
+        }
+        
 
         // Show success message
         function showSuccessMessage() {

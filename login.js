@@ -179,11 +179,26 @@ function showOTPStep(phone) {
 document.getElementById('sendOtpBtn').addEventListener('click', function(e) {
     e.preventDefault();
     
-    const phone = document.getElementById('phone').value.trim();
+    let phone = document.getElementById('phone').value.trim();
     const errorMessage = document.getElementById('errorMessage');
 
     if (!phone) {
         showError('Please enter your phone number');
+        return;
+    }
+
+    // Format phone number - add +91 if not present and ensure it's 10 digits
+    if (phone.length === 10 && !phone.startsWith('+')) {
+        phone = '+91' + phone;
+    } else if (phone.startsWith('91') && phone.length === 12) {
+        phone = '+' + phone;
+    } else if (!phone.startsWith('+91') && phone.length === 13 && phone.startsWith('91')) {
+        phone = '+' + phone;
+    }
+
+    // Validate phone number format
+    if (!phone.match(/^\+91[6-9]\d{9}$/)) {
+        showError('Please enter a valid 10-digit Indian phone number');
         return;
     }
 
@@ -288,9 +303,16 @@ document.getElementById('resendOtpBtn').addEventListener('click', function(e) {
     }
 });
 
-// Clear error when typing in phone field
-document.getElementById('phone').addEventListener('input', function() {
+// Clear error when typing in phone field and format input
+document.getElementById('phone').addEventListener('input', function(e) {
     clearMessages();
+    
+    // Only allow numbers and limit to 10 digits
+    let value = e.target.value.replace(/[^0-9]/g, '');
+    if (value.length > 10) {
+        value = value.substring(0, 10);
+    }
+    e.target.value = value;
 });
 
 // Clear error when typing in OTP field
