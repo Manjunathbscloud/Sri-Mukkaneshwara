@@ -22,6 +22,53 @@
             }
         })();
     </script>
+
+    <!-- Auto-logout script -->
+    <script>
+        (function() {
+            let inactivityTimer;
+            const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
+            
+            // Function to reset the inactivity timer
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(logoutUser, INACTIVITY_TIMEOUT);
+            }
+            
+            // Function to logout user
+            function logoutUser() {
+                // Clear authentication data
+                localStorage.removeItem('isAuthenticated');
+                localStorage.removeItem('userDetails');
+                sessionStorage.removeItem('isAuthenticated');
+                sessionStorage.removeItem('userDetails');
+                
+                // Show logout message
+                alert('You have been logged out due to inactivity. Please login again.');
+                
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+            
+            // Events that reset the timer
+            const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+            
+            // Add event listeners
+            events.forEach(function(event) {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+            
+            // Start the timer when page loads
+            resetInactivityTimer();
+            
+            // Also reset timer on page visibility change (when user comes back to tab)
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    resetInactivityTimer();
+                }
+            });
+        })();
+    </script>
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
         <nav>

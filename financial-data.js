@@ -7,8 +7,8 @@
         // JSON file path (simplest option)
         jsonDataUrl: 'financial-data.json',
         
-        // Google Sheets CSV URL (optional - more advanced)
-        financialDataUrl: 'https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/export?format=csv&gid=0',
+        // Google Sheets CSV URL (your actual sheet)
+        financialDataUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT0BPMTkSH8oDU7AYQLEcTxN-LHh86WLBMyfZH1eT4ABRCB8vwF2z7BBnzN0-SvaZZ0Apcwkkn08jyw/pub?output=csv',
         
         // Update frequency (in milliseconds)
         updateInterval: 24 * 60 * 60 * 1000, // 24 hours
@@ -25,10 +25,32 @@
     let financialData = null;
     let lastUpdateTime = null;
 
-    // Fetch financial data from JSON file (simplest method)
+    // Fetch financial data from Google Sheets (preferred method)
     async function fetchFinancialData() {
         try {
-            // Try JSON file first (simplest)
+            // Try Google Sheets first (preferred)
+            if (!FINANCIAL_DATA_CONFIG.financialDataUrl.includes('YOUR_SHEET_ID')) {
+                const response = await fetch(FINANCIAL_DATA_CONFIG.financialDataUrl);
+                const csv = await response.text();
+                const rows = csv.split('\n');
+                
+                if (rows.length >= 2) {
+                    const headers = rows[0].split(',');
+                    const data = rows[1].split(',');
+                    
+                    return {
+                        bankBalance: parseFloat(data[0]) || FINANCIAL_DATA_CONFIG.defaultValues.bankBalance,
+                        availableLoanAmount: parseFloat(data[1]) || FINANCIAL_DATA_CONFIG.defaultValues.availableLoanAmount,
+                        lastUpdated: data[2] || new Date().toISOString()
+                    };
+                }
+            }
+        } catch (error) {
+            console.warn('Could not fetch financial data from Google Sheets, trying JSON file...', error);
+        }
+
+        try {
+            // Fallback to JSON file
             const response = await fetch(FINANCIAL_DATA_CONFIG.jsonDataUrl);
             if (response.ok) {
                 const data = await response.json();
@@ -39,7 +61,7 @@
                 };
             }
         } catch (error) {
-            console.warn('Could not fetch financial data from JSON file, trying Google Sheets...', error);
+            console.warn('Could not fetch financial data from JSON file, using defaults...', error);
         }
 
         // Fallback to Google Sheets if JSON fails

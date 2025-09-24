@@ -3170,12 +3170,53 @@ th i.fa-chevron-down.active-filter {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Phone number input styling */
 .mobile-otp-input {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    letter-spacing: 0.5rem;
+    text-align: left;
+    font-size: 1rem;
+    font-weight: normal;
+    letter-spacing: normal;
     height: 60px;
+    padding: 0 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+.mobile-otp-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+}
+
+/* OTP input styling - centered and spaced for better readability */
+#otp.mobile-otp-input {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 0.3rem;
+    font-family: 'Courier New', monospace;
+    background-color: #f8f9fa;
+    border: 2px solid #e0e0e0;
+}
+
+#otp.mobile-otp-input:focus {
+    border-color: var(--primary);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
+}
+
+/* Phone number input specific styling */
+#phone.mobile-otp-input {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #ffffff;
+}
+
+#phone.mobile-otp-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.1);
 }
 
 .mobile-otp-timer {
