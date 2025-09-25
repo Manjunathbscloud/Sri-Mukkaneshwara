@@ -4336,3 +4336,111 @@ th i.fa-chevron-down.active-filter {
         justify-content: center;
     }
 }
+
+/* ===== STANDARDIZED BUTTON STYLES ===== */
+/* Override all existing button styles with consistent design */
+
+/* Primary Button (Default) */
+.btn, button, .nav-button, .account-btn, .apply-loan-btn, .view-loans-btn, .admin-loan-btn, .admin-financial-btn, .admin-settings-btn, .submit-btn, .clear-btn, .filter-btn {
+    background: #2c3e50 !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.8rem 1.5rem !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    text-align: center !important;
+    box-shadow: 0 2px 4px rgba(44, 62, 80, 0.2) !important;
+    min-height: 44px !important;
+}
+
+.btn:hover, button:hover, .nav-button:hover, .account-btn:hover, .apply-loan-btn:hover, .view-loans-btn:hover, .admin-loan-btn:hover, .admin-financial-btn:hover, .admin-settings-btn:hover, .submit-btn:hover, .clear-btn:hover, .filter-btn:hover {
+    background: #34495e !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3) !important;
+}
+
+/* Success Button */
+.btn-success, .success-btn, .accept {
+    background: #27ae60 !important;
+}
+
+.btn-success:hover, .success-btn:hover, .accept:hover {
+    background: #2ecc71 !important;
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3) !important;
+}
+
+/* Warning Button */
+.btn-warning, .warning-btn {
+    background: #f39c12 !important;
+}
+
+.btn-warning:hover, .warning-btn:hover {
+    background: #e67e22 !important;
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3) !important;
+}
+
+/* Danger Button */
+.btn-danger, .danger-btn, .reject {
+    background: #e74c3c !important;
+}
+
+.btn-danger:hover, .danger-btn:hover, .reject:hover {
+    background: #ec7063 !important;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3) !important;
+}
+
+/* Info Button */
+.btn-info, .info-btn {
+    background: #3498db !important;
+}
+
+.btn-info:hover, .info-btn:hover {
+    background: #5dade2 !important;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3) !important;
+}
+
+/* Button Sizes */
+.btn-sm, .btn-small {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    min-height: 36px !important;
+}
+
+.btn-lg, .btn-large {
+    padding: 1rem 2rem !important;
+    font-size: 1.125rem !important;
+    min-height: 52px !important;
+}
+
+/* Button States */
+.btn:disabled, button:disabled {
+    background: #bdc3c7 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn:disabled:hover, button:disabled:hover {
+    background: #bdc3c7 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Refresh Button Specific */
+button[onclick*="refresh"], button[onclick*="FinancialData"] {
+    background: #007bff !important;
+    font-size: 0.9rem !important;
+    padding: 0.5rem 1rem !important;
+}
+
+button[onclick*="refresh"]:hover, button[onclick*="FinancialData"]:hover {
+    background: #0056b3 !important;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3) !important;
+}
