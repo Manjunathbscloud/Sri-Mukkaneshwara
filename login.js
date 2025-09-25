@@ -253,6 +253,7 @@ document.getElementById('verifyOtpBtn').addEventListener('click', function(e) {
         const member = currentMember;
         
         // Store user session data (both sessionStorage and localStorage for cross-tab persistence)
+        const sessionStartTime = Date.now().toString();
         const set = (store) => {
             store.setItem('isAuthenticated', 'true');
             store.setItem('userEmail', member.email);
@@ -262,6 +263,7 @@ document.getElementById('verifyOtpBtn').addEventListener('click', function(e) {
             store.setItem('role', member.role);
             store.setItem('userDetails', JSON.stringify(member));
             store.setItem('isPresident', String(member.role === 'president'));
+            store.setItem('sessionStartTime', sessionStartTime);
         };
         set(sessionStorage);
         set(localStorage);

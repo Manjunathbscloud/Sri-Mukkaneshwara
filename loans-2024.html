@@ -196,6 +196,9 @@
                 <div class="table-header">
                     <h3><i class="fas fa-list-alt"></i> Loan List 2024-25</h3>
                     <div class="table-actions">
+                        <button id="downloadPdfBtn" class="download-btn" onclick="downloadLoanPDF()" title="Download as PDF">
+                            <i class="fas fa-download"></i> Download PDF
+                        </button>
                         <span class="record-count" id="recordCount">Loading...</span>
                 </div>
                 
@@ -238,6 +241,12 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr id="tableLoader" style="display: none;">
+                                <td colspan="8" class="table-loader">
+                                    <div class="spinner"></div>
+                                    <p>Loading loan data...</p>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -517,6 +526,12 @@
         function onDataLoaded(items) {
             allTableData = items;
             
+            // Hide loader
+            const tableLoader = document.getElementById('tableLoader');
+            if (tableLoader) {
+                tableLoader.style.display = 'none';
+            }
+            
                     // Update record count
                     const recordCount = document.getElementById('recordCount');
                     if (recordCount) {
@@ -541,6 +556,12 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Show loader
+            const tableLoader = document.getElementById('tableLoader');
+            if (tableLoader) {
+                tableLoader.style.display = 'table-row';
+            }
+            
             LoansRender.loadLoans('2024-25', { 
                 tbodySelector: '.loans-table tbody',
                 onDataLoaded: onDataLoaded
@@ -548,6 +569,97 @@
         });
 
 
+    </script>
+    
+    <!-- PDF Generator -->
+    <script src="js/pdf-generator.js"></script>
+    
+    <script>
+        // Global variable to store loan data
+        let currentLoanData = [];
+        
+        // Download PDF function
+        async function downloadLoanPDF() {
+            const downloadBtn = document.getElementById('downloadPdfBtn');
+            const originalText = downloadBtn.innerHTML;
+            
+            try {
+                // Show loading state
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+                downloadBtn.disabled = true;
+                
+                // Get current loan data
+                const loanData = getCurrentLoanData();
+                
+                if (!loanData || loanData.length === 0) {
+                    alert('No loan data available to download.');
+                    return;
+                }
+                
+                // Generate PDF
+                const success = await PDFGenerator.generateLoanPDF('2024-25', loanData, 'Loan Records 2024-25');
+                
+                if (success) {
+                    console.log('PDF generated successfully');
+                }
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF. Please try again.');
+            } finally {
+                // Reset button state
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+            }
+        }
+        
+        // Function to get current loan data
+        function getCurrentLoanData() {
+            // Try to get data from the table
+            const table = document.querySelector('.loans-table tbody');
+            if (!table) return [];
+            
+            const rows = table.querySelectorAll('tr:not([id="tableLoader"])');
+            const loanData = [];
+            
+            rows.forEach(row => {
+                if (row.style.display !== 'none') { // Only include visible rows
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 8) {
+                        loanData.push({
+                            loan_id: cells[0].textContent.trim(),
+                            member: cells[1].textContent.trim(),
+                            from: cells[2].textContent.trim(),
+                            amount: cells[3].textContent.trim(),
+                            interest: cells[4].textContent.trim(),
+                            renewal_or_return_month: cells[5].textContent.trim(),
+                            status: cells[6].textContent.trim(),
+                            total_paid: cells[7].textContent.trim(),
+                            year: '2024-25'
+                        });
+                    }
+                }
+            });
+            
+            return loanData;
+        }
+        
+        // Store loan data when it's loaded (for PDF generation)
+        function onDataLoaded(items) {
+            currentLoanData = items;
+            
+            // Hide loader
+            const tableLoader = document.getElementById('tableLoader');
+            if (tableLoader) {
+                tableLoader.style.display = 'none';
+            }
+            
+            // Update record count
+            const recordCount = document.getElementById('recordCount');
+            if (recordCount) {
+                recordCount.textContent = `${items.length} record${items.length !== 1 ? 's' : ''} found`;
+            }
+        }
     </script>
 </body>
 </html> 

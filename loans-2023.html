@@ -192,8 +192,11 @@
                 <div class="table-header">
                     <h3><i class="fas fa-list-alt"></i> Loan List 2023-24</h3>
                     <div class="table-actions">
+                    <button id="downloadPdfBtn" class="download-btn" onclick="downloadLoanPDF()" title="Download as PDF">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
                         <span class="record-count" id="recordCount">Loading...</span>
-                    </div>
+                </div>
                 
                 <!-- Active Filter Badges -->
                 <div class="filter-badges" id="filterBadges" style="display: none;">
@@ -263,6 +266,7 @@
     <script src="sheets-config.js"></script>
     <script src="sheets-utils.js"></script>
     <script src="loans-render.js"></script>
+    <script src="js/pdf-generator.js"></script>
     <script>
         // Table filtering functionality
         let allTableData = [];
@@ -543,6 +547,72 @@
                 onDataLoaded: onDataLoaded
             });
         });
+
+        // PDF Download functionality
+        async function downloadLoanPDF() {
+            const downloadBtn = document.getElementById('downloadPdfBtn');
+            const originalText = downloadBtn.innerHTML;
+            
+            try {
+                // Show loading state
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+                downloadBtn.disabled = true;
+                
+                // Get current loan data
+                const loanData = getCurrentLoanData();
+                
+                if (loanData.length === 0) {
+                    alert('No data available to generate PDF');
+                    return;
+                }
+                
+                // Generate PDF
+                const success = await PDFGenerator.generateLoanPDF('2023-24', loanData, 'Loan Records 2023-24');
+                
+                if (success) {
+                    console.log('PDF generated successfully');
+                }
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF. Please try again.');
+            } finally {
+                // Reset button state
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+            }
+        }
+        
+        // Function to get current loan data
+        function getCurrentLoanData() {
+            // Try to get data from the table
+            const table = document.querySelector('.loans-table tbody');
+            if (!table) return [];
+            
+            const rows = table.querySelectorAll('tr');
+            const loanData = [];
+            
+            rows.forEach(row => {
+                if (row.style.display !== 'none') { // Only include visible rows
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 8) {
+                        loanData.push({
+                            loan_id: cells[0].textContent.trim(),
+                            member: cells[1].textContent.trim(),
+                            from: cells[2].textContent.trim(),
+                            amount: cells[3].textContent.trim(),
+                            interest: cells[4].textContent.trim(),
+                            renewal_or_return_month: cells[5].textContent.trim(),
+                            status: cells[6].textContent.trim(),
+                            total_paid: cells[7].textContent.trim(),
+                            year: '2023-24'
+                        });
+                    }
+                }
+            });
+            
+            return loanData;
+        }
     </script>
 </body>
 </html> 

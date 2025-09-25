@@ -124,7 +124,12 @@
           <label>Reason for Loan:</label>
           <textarea name="loan_reason" required></textarea>
 
-          <button type="submit" class="submit-btn">Submit Application</button>
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <span id="btnText">Submit Application</span>
+            <div id="btnLoader" style="display: none;">
+              <div class="spinner"></div>
+            </div>
+          </button>
           <div class="success-message" id="successMsg">✅ Your application has been submitted!</div>
         </form>
       </div>
@@ -149,6 +154,14 @@
     document.getElementById("loanForm").addEventListener("submit", async function(event) {
       event.preventDefault();
       const form = event.target;
+      const submitBtn = document.getElementById("submitBtn");
+      const btnText = document.getElementById("btnText");
+      const btnLoader = document.getElementById("btnLoader");
+
+      // Show loader
+      submitBtn.disabled = true;
+      btnText.style.display = "none";
+      btnLoader.style.display = "inline-block";
 
       const formData = {
         name: form.name.value,
@@ -177,6 +190,11 @@
         console.error("Google Sheets POST error:", err);
       }
 
+      // Hide loader and show success
+      submitBtn.disabled = false;
+      btnText.style.display = "inline";
+      btnLoader.style.display = "none";
+      
       document.getElementById("successMsg").style.display = "block";
       form.reset();
     });

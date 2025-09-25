@@ -81,32 +81,28 @@
     // Update the financial data on the page
     function updateFinancialDisplay(data) {
         // Update bank balance
-        const bankBalanceElement = document.querySelector('.stat-card:nth-child(1) .stat-value');
+        const bankBalanceElement = document.getElementById('bankBalance');
         if (bankBalanceElement) {
             bankBalanceElement.textContent = `₹${data.bankBalance.toLocaleString('en-IN')}`;
         }
 
         // Update available loan amount
-        const loanAmountElement = document.querySelector('.stat-card:nth-child(2) .stat-value');
+        const loanAmountElement = document.getElementById('availableLoanAmount');
         if (loanAmountElement) {
             loanAmountElement.textContent = `₹${data.availableLoanAmount.toLocaleString('en-IN')}`;
         }
 
         // Update last updated date
-        const dateElements = document.querySelectorAll('.stat-date');
-        dateElements.forEach(element => {
-            if (element.textContent.includes('As of') || element.textContent.includes('For')) {
-                const date = new Date(data.lastUpdated);
-                const formattedDate = date.toLocaleDateString('en-IN', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                });
-                element.textContent = element.textContent.includes('As of') 
-                    ? `As of ${formattedDate}` 
-                    : `For ${formattedDate}`;
-            }
-        });
+        const lastUpdatedElement = document.getElementById('lastUpdated');
+        if (lastUpdatedElement) {
+            const date = new Date(data.lastUpdated);
+            const formattedDate = date.toLocaleDateString('en-IN', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            lastUpdatedElement.textContent = `As of ${formattedDate}`;
+        }
     }
 
     // Load and update financial data

@@ -23,52 +23,8 @@
         })();
     </script>
 
-    <!-- Auto-logout script -->
-    <script>
-        (function() {
-            let inactivityTimer;
-            const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
-            
-            // Function to reset the inactivity timer
-            function resetInactivityTimer() {
-                clearTimeout(inactivityTimer);
-                inactivityTimer = setTimeout(logoutUser, INACTIVITY_TIMEOUT);
-            }
-            
-            // Function to logout user
-            function logoutUser() {
-                // Clear authentication data
-                localStorage.removeItem('isAuthenticated');
-                localStorage.removeItem('userDetails');
-                sessionStorage.removeItem('isAuthenticated');
-                sessionStorage.removeItem('userDetails');
-                
-                // Show logout message
-                alert('You have been logged out due to inactivity. Please login again.');
-                
-                // Redirect to login page
-                window.location.href = 'login.html';
-            }
-            
-            // Events that reset the timer
-            const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
-            
-            // Add event listeners
-            events.forEach(function(event) {
-                document.addEventListener(event, resetInactivityTimer, true);
-            });
-            
-            // Start the timer when page loads
-            resetInactivityTimer();
-            
-            // Also reset timer on page visibility change (when user comes back to tab)
-            document.addEventListener('visibilitychange', function() {
-                if (!document.hidden) {
-                    resetInactivityTimer();
-                }
-            });
-        })();
-    </script>
+    <!-- Enhanced Session Management -->
+    <!-- <script src="js/session-manager.js"></script> -->
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
         <nav>
@@ -107,32 +63,42 @@
     </div>
 
     <main>
+        <!-- Page Loader -->
+        <div id="pageLoader" class="page-loader" style="display: none;">
+            <div class="spinner"></div>
+        </div>
+        
         <section class="account-overview mobile-dashboard">
-            <div style="text-align: center; margin-bottom: 1rem;">
-                <button onclick="window.FinancialData.refresh()" 
-                        style="background: #007bff; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">
-                    <i class="fas fa-sync-alt"></i> Refresh Financial Data
-                </button>
-            </div>
             <div class="account-stats mobile-dashboard-grid">
-                <div class="stat-card mobile-dashboard-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-university"></i>
+                <div class="stat-card mobile-dashboard-card financial-summary">
+                    <div class="financial-info">
+                        <div class="financial-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>Current Bank Balance</h4>
+                                <span class="stat-value" id="bankBalance">₹1,83,790</span>
+                            </div>
+                        </div>
+                        <div class="financial-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-hand-holding-usd"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>Available Loan Amount</h4>
+                                <span class="stat-value" id="availableLoanAmount">₹1,75,000</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="stat-info">
-                        <h4>Current Bank Balance</h4>
-                        <span class="stat-value">₹1,83,790</span>
-                        <span class="stat-date">As of Sepetember 15th 2025</span>
-                    </div>
-                </div>
-                <div class="stat-card mobile-dashboard-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-hand-holding-usd"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h4>Available Loan Amount</h4>
-                        <span class="stat-value">₹1,75,000</span>
-                        <span class="stat-date">For Sepetember 15th 2025</span>
+                    <div class="financial-actions">
+                        <button onclick="refreshFinancialData()" id="refreshBtn" class="refresh-btn" title="Refresh Financial Data">
+                            <i class="fas fa-sync-alt" id="refreshIcon"></i>
+                            <div id="refreshLoader" style="display: none;">
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                        <span class="stat-date" id="lastUpdated">As of September 15th 2025</span>
                     </div>
                 </div>
             </div>
@@ -246,22 +212,24 @@
                     
                     // Clear all authentication data
                     localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userDetails');
                     localStorage.removeItem('userEmail');
                     localStorage.removeItem('userName');
                     localStorage.removeItem('memberId');
                     localStorage.removeItem('userPhone');
                     localStorage.removeItem('role');
-                    localStorage.removeItem('userDetails');
                     localStorage.removeItem('isPresident');
+                    localStorage.removeItem('sessionStartTime');
                     
                     sessionStorage.removeItem('isAuthenticated');
+                    sessionStorage.removeItem('userDetails');
                     sessionStorage.removeItem('userEmail');
                     sessionStorage.removeItem('userName');
                     sessionStorage.removeItem('memberId');
                     sessionStorage.removeItem('userPhone');
                     sessionStorage.removeItem('role');
-                    sessionStorage.removeItem('userDetails');
                     sessionStorage.removeItem('isPresident');
+                    sessionStorage.removeItem('sessionStartTime');
                     
                     // Redirect to login page
                     window.location.href = 'login.html';
@@ -316,6 +284,30 @@
         document.addEventListener('DOMContentLoaded', function() {
             checkUserRole();
         });
+
+        // Refresh financial data with loader
+        function refreshFinancialData() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            const refreshIcon = document.getElementById('refreshIcon');
+            const refreshLoader = document.getElementById('refreshLoader');
+            
+            // Show loader
+            refreshBtn.disabled = true;
+            refreshIcon.style.display = 'none';
+            refreshLoader.style.display = 'inline-block';
+            
+            // Call refresh function
+            if (window.FinancialData && window.FinancialData.refresh) {
+                window.FinancialData.refresh();
+            }
+            
+            // Hide loader after a delay
+            setTimeout(() => {
+                refreshBtn.disabled = false;
+                refreshIcon.style.display = 'inline';
+                refreshLoader.style.display = 'none';
+            }, 2000);
+        }
     </script>
 
     <!-- Financial Data Management -->

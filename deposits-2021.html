@@ -30,6 +30,12 @@
         <section class="deposits-section">
             <h2 class="page-title"><i class="fas fa-piggy-bank"></i> Deposits 2021-22</h2>
 
+            <div class="table-actions" style="margin-bottom: 1rem; text-align: right;">
+                <button id="downloadPdfBtn" class="download-btn" onclick="downloadDepositPDF()" title="Download as PDF">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+            </div>
+
             <div class="info-card">
                 <h3 class="mt-4">First Year History (2021-2022)</h3>
                 <div class="history-summary">
@@ -104,5 +110,76 @@
     <footer>
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
+    
+    <script src="js/pdf-generator.js"></script>
+    <script>
+        // PDF Download functionality for deposits
+        async function downloadDepositPDF() {
+            const downloadBtn = document.getElementById('downloadPdfBtn');
+            const originalText = downloadBtn.innerHTML;
+            
+            try {
+                // Show loading state
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+                downloadBtn.disabled = true;
+                
+                // Get deposit data from the page
+                const depositData = getDepositData();
+                
+                if (depositData.length === 0) {
+                    alert('No data available to generate PDF');
+                    return;
+                }
+                
+                // Generate PDF
+                const success = await PDFGenerator.generateDepositPDF('2021-22', depositData, 'Deposit Records 2021-22');
+                
+                if (success) {
+                    console.log('PDF generated successfully');
+                }
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF. Please try again.');
+            } finally {
+                // Reset button state
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+            }
+        }
+        
+        // Function to get deposit data from the page
+        function getDepositData() {
+            const depositData = [
+                {
+                    description: 'Initial Contribution',
+                    details: 'February 2021 (₹5,000 × 7 members)',
+                    amount: '₹35,000'
+                },
+                {
+                    description: 'Monthly Deposits',
+                    details: 'March 2021 to January 2022 (₹1,000 × 7 members × 11 months)',
+                    amount: '₹77,000'
+                },
+                {
+                    description: 'Interest Earned',
+                    details: 'Bank interest on deposits',
+                    amount: '₹8,700'
+                },
+                {
+                    description: 'Annual Meeting Expenses',
+                    details: 'Year-end meeting costs',
+                    amount: '₹5,600'
+                },
+                {
+                    description: 'Total Balance',
+                    details: 'End of year balance',
+                    amount: '₹1,14,100'
+                }
+            ];
+            
+            return depositData;
+        }
+    </script>
 </body>
 </html>
