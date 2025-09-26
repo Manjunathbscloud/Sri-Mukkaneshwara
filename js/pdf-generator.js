@@ -77,58 +77,46 @@ class PDFGenerator {
     }
 
     addHeader(title, year) {
-        // Background color for header
-        this.pdf.setFillColor(52, 152, 219); // Blue background
-        this.pdf.rect(0, 0, 210, 70, 'F');
-        
-        // Title with white text
-        this.pdf.setTextColor(255, 255, 255); // White text
-        this.pdf.setFontSize(22);
+        // Simple header with clean design
+        this.pdf.setFontSize(18);
         this.pdf.setFont(undefined, 'bold');
-        this.pdf.text(title, this.margin, 25);
+        this.pdf.setTextColor(0, 0, 0);
+        this.pdf.text(title, this.margin, 20);
         
-        // Year with white text
-        this.pdf.setFontSize(16);
-        this.pdf.setFont(undefined, 'normal');
-        this.pdf.text(`Year: ${year}`, this.margin, 35);
-        
-        // Date with white text
+        // Year and date
         this.pdf.setFontSize(12);
-        this.pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, this.margin, 45);
+        this.pdf.setFont(undefined, 'normal');
+        this.pdf.text(`Year: ${year}`, this.margin, 30);
+        this.pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, this.margin, 35);
         
-        // Organization with white text
-        this.pdf.setFontSize(14);
-        this.pdf.setFont(undefined, 'bold');
-        this.pdf.text('Sri Mukkanneshwara Associate', this.margin, 55);
+        // Organization
+        this.pdf.setFontSize(10);
+        this.pdf.text('Sri Mukkanneshwara Associate', this.margin, 42);
         
-        // Reset text color for content
-        this.pdf.setTextColor(0, 0, 0); // Black text
-        
-        // Decorative line separator
-        this.pdf.setLineWidth(2);
-        this.pdf.setDrawColor(52, 152, 219);
-        this.pdf.line(this.margin, 75, 190, 75);
+        // Simple line separator
+        this.pdf.setLineWidth(0.5);
+        this.pdf.setDrawColor(0, 0, 0);
+        this.pdf.line(this.margin, 45, 190, 45);
     }
 
     addLoanTable(loanData) {
         if (!loanData || loanData.length === 0) {
             this.pdf.setFontSize(12);
-            this.pdf.setTextColor(127, 140, 141); // Gray text
-            this.pdf.text('No loan records found for this period.', this.margin, 90);
+            this.pdf.text('No loan records found for this period.', this.margin, 60);
             return;
         }
 
-        // Table headers with enhanced styling
+        // Simple table headers
         const headers = ['Loan ID', 'Member', 'From', 'Amount', 'Interest', 'Renewal/Return', 'Status', 'Total Paid'];
         const columnWidths = [25, 30, 20, 25, 20, 25, 15, 25];
-        const startY = 90;
+        const startY = 60;
         let currentY = startY;
 
-        // Add table headers with gradient background
+        // Add table headers with simple styling
         this.pdf.setFontSize(10);
         this.pdf.setFont(undefined, 'bold');
-        this.pdf.setFillColor(44, 62, 80); // Dark blue background
-        this.pdf.setTextColor(255, 255, 255); // White text
+        this.pdf.setFillColor(240, 240, 240); // Light gray background
+        this.pdf.setTextColor(0, 0, 0); // Black text
         
         let xPosition = this.margin;
         for (let i = 0; i < headers.length; i++) {
@@ -139,9 +127,9 @@ class PDFGenerator {
 
         currentY += 10;
 
-        // Add table data with alternating row colors
+        // Add table data with simple formatting
         this.pdf.setFont(undefined, 'normal');
-        this.pdf.setTextColor(0, 0, 0); // Black text
+        this.pdf.setTextColor(0, 0, 0);
         let rowCount = 0;
 
         for (let i = 0; i < loanData.length; i++) {
@@ -151,13 +139,13 @@ class PDFGenerator {
             if (rowCount >= this.maxRowsPerPage) {
                 this.pdf.addPage();
                 this.addHeader('Loan Records (Continued)', loan.year || '');
-                currentY = 90;
+                currentY = 60;
                 rowCount = 0;
                 
                 // Re-add headers
                 this.pdf.setFont(undefined, 'bold');
-                this.pdf.setFillColor(44, 62, 80);
-                this.pdf.setTextColor(255, 255, 255);
+                this.pdf.setFillColor(240, 240, 240);
+                this.pdf.setTextColor(0, 0, 0);
                 xPosition = this.margin;
                 for (let j = 0; j < headers.length; j++) {
                     this.pdf.rect(xPosition, currentY - 5, columnWidths[j], 8, 'F');
@@ -166,10 +154,9 @@ class PDFGenerator {
                 }
                 currentY += 10;
                 this.pdf.setFont(undefined, 'normal');
-                this.pdf.setTextColor(0, 0, 0);
             }
 
-            // Alternating row background colors
+            // Simple alternating row colors
             if (i % 2 === 0) {
                 this.pdf.setFillColor(248, 249, 250); // Light gray
             } else {
@@ -183,7 +170,7 @@ class PDFGenerator {
                 xPosition += columnWidths[j];
             }
 
-            // Add row data with enhanced formatting
+            // Add row data
             const rowData = [
                 loan.loan_id || '',
                 this.truncateText(loan.member || '', 25),
@@ -195,23 +182,9 @@ class PDFGenerator {
                 this.formatCurrency(loan.total_paid || 0)
             ];
 
-            // Color-code status
-            const statusIndex = 6; // Status column index
+            // Add text to cells
             xPosition = this.margin;
             for (let j = 0; j < rowData.length; j++) {
-                if (j === statusIndex) {
-                    // Color-code status
-                    if (loan.status === 'Active') {
-                        this.pdf.setTextColor(39, 174, 96); // Green for Active
-                    } else if (loan.status === 'Clear') {
-                        this.pdf.setTextColor(52, 152, 219); // Blue for Clear
-                    } else {
-                        this.pdf.setTextColor(0, 0, 0); // Black for others
-                    }
-                } else {
-                    this.pdf.setTextColor(0, 0, 0); // Black for other columns
-                }
-                
                 this.pdf.text(rowData[j], xPosition + 2, currentY);
                 xPosition += columnWidths[j];
             }
@@ -256,54 +229,32 @@ class PDFGenerator {
         const activeLoans = loanData.filter(loan => loan.status === 'Active').length;
         const clearLoans = loanData.filter(loan => loan.status === 'Clear').length;
 
-        // Summary section with enhanced styling
-        this.pdf.setFillColor(52, 152, 219); // Blue background
-        this.pdf.rect(this.margin - 5, currentY - 8, 190 - this.margin + 10, 12, 'F');
-        
-        this.pdf.setFontSize(14);
+        // Simple summary section
+        this.pdf.setFontSize(12);
         this.pdf.setFont(undefined, 'bold');
-        this.pdf.setTextColor(255, 255, 255); // White text
-        this.pdf.text('📊 Summary Report', this.margin, currentY);
-        currentY += 15;
-
-        // Summary cards with background colors
-        const summaryItems = [
-            { label: 'Total Records', value: loanData.length, color: [39, 174, 96] },
-            { label: 'Active Loans', value: activeLoans, color: [231, 76, 60] },
-            { label: 'Clear Loans', value: clearLoans, color: [52, 152, 219] },
-            { label: 'Total Amount', value: totalAmount > 0 ? `₹${this.formatNumber(totalAmount)}` : 'N/A', color: [155, 89, 182] },
-            { label: 'Total Interest', value: totalInterest > 0 ? `₹${this.formatNumber(totalInterest)}` : 'N/A', color: [230, 126, 34] },
-            { label: 'Total Paid', value: totalPaid > 0 ? `₹${this.formatNumber(totalPaid)}` : 'N/A', color: [46, 204, 113] }
-        ];
+        this.pdf.setTextColor(0, 0, 0);
+        this.pdf.text('Summary', this.margin, currentY);
+        currentY += 10;
 
         this.pdf.setFontSize(10);
         this.pdf.setFont(undefined, 'normal');
         
-        let xPos = this.margin;
-        let yPos = currentY;
-        const cardWidth = 60;
-        const cardHeight = 20;
-        const cardsPerRow = 3;
+        this.pdf.text(`Total Records: ${loanData.length}`, this.margin, currentY);
+        currentY += 8;
         
-        summaryItems.forEach((item, index) => {
-            if (index > 0 && index % cardsPerRow === 0) {
-                xPos = this.margin;
-                yPos += cardHeight + 5;
-            }
-            
-            // Card background
-            this.pdf.setFillColor(item.color[0], item.color[1], item.color[2]);
-            this.pdf.rect(xPos, yPos - 5, cardWidth, cardHeight, 'F');
-            
-            // Card text
-            this.pdf.setTextColor(255, 255, 255);
-            this.pdf.setFont(undefined, 'bold');
-            this.pdf.text(item.label, xPos + 3, yPos + 3);
-            this.pdf.setFont(undefined, 'normal');
-            this.pdf.text(item.value.toString(), xPos + 3, yPos + 10);
-            
-            xPos += cardWidth + 5;
-        });
+        this.pdf.text(`Active Loans: ${activeLoans}`, this.margin, currentY);
+        currentY += 8;
+        
+        this.pdf.text(`Clear Loans: ${clearLoans}`, this.margin, currentY);
+        currentY += 8;
+        
+        this.pdf.text(`Total Amount: ${totalAmount > 0 ? `₹${this.formatNumber(totalAmount)}` : 'N/A'}`, this.margin, currentY);
+        currentY += 8;
+        
+        this.pdf.text(`Total Interest: ${totalInterest > 0 ? `₹${this.formatNumber(totalInterest)}` : 'N/A'}`, this.margin, currentY);
+        currentY += 8;
+        
+        this.pdf.text(`Total Paid: ${totalPaid > 0 ? `₹${this.formatNumber(totalPaid)}` : 'N/A'}`, this.margin, currentY);
     }
 
     addFooter() {
@@ -312,17 +263,70 @@ class PDFGenerator {
         for (let i = 1; i <= pageCount; i++) {
             this.pdf.setPage(i);
             
-            // Footer background
-            this.pdf.setFillColor(44, 62, 80);
-            this.pdf.rect(0, this.pageHeight - 15, 210, 15, 'F');
-            
-            // Footer text
+            // Simple footer
             this.pdf.setFontSize(8);
-            this.pdf.setTextColor(255, 255, 255);
-            this.pdf.text(`Page ${i} of ${pageCount}`, this.margin, this.pageHeight - 8);
-            this.pdf.text(`Generated by Sri Mukkanneshwara Associate`, 190 - 60, this.pageHeight - 8);
-            this.pdf.text(`Generated on ${new Date().toLocaleDateString()}`, this.margin, this.pageHeight - 4);
+            this.pdf.setTextColor(0, 0, 0);
+            this.pdf.text(`Page ${i} of ${pageCount}`, this.margin, this.pageHeight - 10);
+            this.pdf.text(`Generated by Sri Mukkanneshwara Associate`, 190 - 60, this.pageHeight - 10);
+            
+            // Add official seal
+            this.addOfficialSeal();
         }
+    }
+
+    addOfficialSeal() {
+        // Position seal in bottom right corner - medium size
+        const sealX = 170; // Right side
+        const sealY = this.pageHeight - 25; // Bottom area
+        
+        // Draw outer circular seal border (medium thickness)
+        this.pdf.setDrawColor(0, 0, 0);
+        this.pdf.setLineWidth(1.5);
+        this.pdf.circle(sealX, sealY, 12, 'S'); // Outer circle - reduced size
+        
+        // Middle circle
+        this.pdf.setLineWidth(0.8);
+        this.pdf.circle(sealX, sealY, 9, 'S');
+        
+        // Inner circle
+        this.pdf.setLineWidth(0.4);
+        this.pdf.circle(sealX, sealY, 6, 'S');
+        
+        // Add organization name in circular format - professional layout
+        this.pdf.setFontSize(5);
+        this.pdf.setFont(undefined, 'bold');
+        this.pdf.setTextColor(0, 0, 0);
+        
+        // Center text with proper spacing - more compact
+        this.pdf.text('SRI', sealX - 1.5, sealY - 3);
+        this.pdf.text('MUKKANNESHWARA', sealX - 5, sealY + 0.5);
+        this.pdf.text('ASSOCIATE', sealX - 3, sealY + 4);
+        
+        // Add decorative border dots around the outer circle - fewer dots
+        this.pdf.setFillColor(0, 0, 0);
+        for (let i = 0; i < 8; i++) {
+            const angle = (i * 45) * (Math.PI / 180);
+            const dotX = sealX + Math.cos(angle) * 14;
+            const dotY = sealY + Math.sin(angle) * 14;
+            this.pdf.circle(dotX, dotY, 0.5, 'F');
+        }
+        
+        // Add "OFFICIAL SEAL" text below the seal - more professional
+        this.pdf.setFontSize(4);
+        this.pdf.setFont(undefined, 'bold');
+        this.pdf.text('OFFICIAL SEAL', sealX - 4, sealY + 8);
+        
+        // Add date and signature line - compact
+        this.pdf.setFontSize(3.5);
+        this.pdf.setFont(undefined, 'normal');
+        this.pdf.text('Date:', sealX - 5, sealY + 11);
+        this.pdf.text(new Date().toLocaleDateString('en-IN'), sealX - 5, sealY + 13);
+        
+        // Signature line - shorter
+        this.pdf.setLineWidth(0.3);
+        this.pdf.line(sealX - 8, sealY + 16, sealX + 8, sealY + 16);
+        this.pdf.setFontSize(3);
+        this.pdf.text('Authorized Signature', sealX - 4, sealY + 18);
     }
 
     formatCurrency(amount) {
@@ -415,58 +419,46 @@ class PDFGenerator {
     }
 
     addDepositHeader(title, year) {
-        // Background color for header
-        this.pdf.setFillColor(46, 204, 113); // Green background for deposits
-        this.pdf.rect(0, 0, 210, 70, 'F');
-        
-        // Title with white text
-        this.pdf.setTextColor(255, 255, 255); // White text
-        this.pdf.setFontSize(22);
+        // Simple header for deposits
+        this.pdf.setFontSize(18);
         this.pdf.setFont(undefined, 'bold');
-        this.pdf.text(title, this.margin, 25);
+        this.pdf.setTextColor(0, 0, 0);
+        this.pdf.text(title, this.margin, 20);
         
-        // Year with white text
-        this.pdf.setFontSize(16);
-        this.pdf.setFont(undefined, 'normal');
-        this.pdf.text(`Year: ${year}`, this.margin, 35);
-        
-        // Date with white text
+        // Year and date
         this.pdf.setFontSize(12);
-        this.pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, this.margin, 45);
+        this.pdf.setFont(undefined, 'normal');
+        this.pdf.text(`Year: ${year}`, this.margin, 30);
+        this.pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, this.margin, 35);
         
-        // Organization with white text
-        this.pdf.setFontSize(14);
-        this.pdf.setFont(undefined, 'bold');
-        this.pdf.text('Sri Mukkanneshwara Associate', this.margin, 55);
+        // Organization
+        this.pdf.setFontSize(10);
+        this.pdf.text('Sri Mukkanneshwara Associate', this.margin, 42);
         
-        // Reset text color for content
-        this.pdf.setTextColor(0, 0, 0); // Black text
-        
-        // Decorative line separator
-        this.pdf.setLineWidth(2);
-        this.pdf.setDrawColor(46, 204, 113);
-        this.pdf.line(this.margin, 75, 190, 75);
+        // Simple line separator
+        this.pdf.setLineWidth(0.5);
+        this.pdf.setDrawColor(0, 0, 0);
+        this.pdf.line(this.margin, 45, 190, 45);
     }
 
     addDepositTable(depositData) {
         if (!depositData || depositData.length === 0) {
             this.pdf.setFontSize(12);
-            this.pdf.setTextColor(127, 140, 141); // Gray text
-            this.pdf.text('No deposit records found for this period.', this.margin, 90);
+            this.pdf.text('No deposit records found for this period.', this.margin, 60);
             return;
         }
 
-        // Table headers with enhanced styling
+        // Simple table headers
         const headers = ['Description', 'Details', 'Amount'];
         const columnWidths = [60, 80, 40];
-        const startY = 90;
+        const startY = 60;
         let currentY = startY;
 
-        // Add table headers with gradient background
+        // Add table headers with simple styling
         this.pdf.setFontSize(10);
         this.pdf.setFont(undefined, 'bold');
-        this.pdf.setFillColor(46, 204, 113); // Green background for deposits
-        this.pdf.setTextColor(255, 255, 255); // White text
+        this.pdf.setFillColor(240, 240, 240); // Light gray background
+        this.pdf.setTextColor(0, 0, 0); // Black text
         
         let xPosition = this.margin;
         for (let i = 0; i < headers.length; i++) {
@@ -477,14 +469,14 @@ class PDFGenerator {
 
         currentY += 10;
 
-        // Add table data with alternating row colors
+        // Add table data with simple formatting
         this.pdf.setFont(undefined, 'normal');
-        this.pdf.setTextColor(0, 0, 0); // Black text
+        this.pdf.setTextColor(0, 0, 0);
         
         for (let i = 0; i < depositData.length; i++) {
             const deposit = depositData[i];
             
-            // Alternating row background colors
+            // Simple alternating row colors
             if (i % 2 === 0) {
                 this.pdf.setFillColor(248, 249, 250); // Light gray
             } else {
@@ -529,44 +521,20 @@ class PDFGenerator {
             return sum + amount;
         }, 0);
 
-        // Summary section with enhanced styling
-        this.pdf.setFillColor(46, 204, 113); // Green background for deposits
-        this.pdf.rect(this.margin - 5, currentY - 8, 190 - this.margin + 10, 12, 'F');
-        
-        this.pdf.setFontSize(14);
+        // Simple summary section
+        this.pdf.setFontSize(12);
         this.pdf.setFont(undefined, 'bold');
-        this.pdf.setTextColor(255, 255, 255); // White text
-        this.pdf.text('💰 Deposit Summary', this.margin, currentY);
-        currentY += 15;
-
-        // Summary cards with background colors
-        const summaryItems = [
-            { label: 'Total Records', value: depositData.length, color: [39, 174, 96] },
-            { label: 'Total Amount', value: `₹${this.formatNumber(totalAmount)}`, color: [46, 204, 113] }
-        ];
+        this.pdf.setTextColor(0, 0, 0);
+        this.pdf.text('Summary', this.margin, currentY);
+        currentY += 10;
 
         this.pdf.setFontSize(10);
         this.pdf.setFont(undefined, 'normal');
         
-        let xPos = this.margin;
-        let yPos = currentY;
-        const cardWidth = 80;
-        const cardHeight = 20;
+        this.pdf.text(`Total Records: ${depositData.length}`, this.margin, currentY);
+        currentY += 8;
         
-        summaryItems.forEach((item, index) => {
-            // Card background
-            this.pdf.setFillColor(item.color[0], item.color[1], item.color[2]);
-            this.pdf.rect(xPos, yPos - 5, cardWidth, cardHeight, 'F');
-            
-            // Card text
-            this.pdf.setTextColor(255, 255, 255);
-            this.pdf.setFont(undefined, 'bold');
-            this.pdf.text(item.label, xPos + 3, yPos + 3);
-            this.pdf.setFont(undefined, 'normal');
-            this.pdf.text(item.value.toString(), xPos + 3, yPos + 10);
-            
-            xPos += cardWidth + 10;
-        });
+        this.pdf.text(`Total Amount: ${totalAmount > 0 ? `₹${this.formatNumber(totalAmount)}` : 'N/A'}`, this.margin, currentY);
     }
 
     // Static method to generate PDF for any deposit page

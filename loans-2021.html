@@ -249,13 +249,10 @@
                     <p class="no-data-emoji">¯\_(ツ)_/¯</p>
                 </div>
             </div>
-            <div style="display: flex; justify-content: center; width: 100%;">
-                <div class="bottom-nav">
-                    <a href="loans.html" class="back-button">
-                        <i class="fas fa-arrow-left"></i>
-                        Back to Loans Overview
-                    </a>
-                </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="loans.html" style="color: #007bff; text-decoration: none; font-size: 0.9rem;">
+                    ← Back to Loans Overview
+                </a>
             </div>
         </section>
     </main>
@@ -277,13 +274,29 @@
         function toggleMemberFilter() {
             const memberDropdown = document.getElementById('memberFilterDropdown');
             const statusDropdown = document.getElementById('statusFilterDropdown');
+            const memberArrow = document.getElementById('memberArrow');
             
             // Close status dropdown if open
             statusDropdown.style.display = 'none';
             
             // Toggle member dropdown
             if (memberDropdown.style.display === 'none') {
+                // Position dropdown relative to the member column
+                const memberHeader = memberArrow.closest('th');
+                const rect = memberHeader.getBoundingClientRect();
+                const tableContainer = document.querySelector('.table-container');
+                const containerRect = tableContainer.getBoundingClientRect();
+                
+                // Calculate position relative to table container
+                const left = rect.left - containerRect.left;
+                const top = rect.bottom - containerRect.top + 5;
+                
+                memberDropdown.style.position = 'absolute';
+                memberDropdown.style.left = left + 'px';
+                memberDropdown.style.top = top + 'px';
                 memberDropdown.style.display = 'block';
+                memberDropdown.style.zIndex = '1000';
+                
                 populateMemberFilter();
             } else {
                 memberDropdown.style.display = 'none';

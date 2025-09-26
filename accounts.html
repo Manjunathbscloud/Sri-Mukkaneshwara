@@ -160,11 +160,6 @@
                             <i class="fas fa-list-ul"></i>
                             View Loan Status
                         </button>
-                        <!-- Review Applications button hidden by default -->
-                        <button class="admin-loan-btn" style="display:none;">
-                            <i class="fas fa-tasks"></i>
-                            Review Applications
-                        </button>
                     </div>
                 </div>
 
@@ -177,6 +172,10 @@
                         <button class="admin-financial-btn" onclick="window.location.href='admin-financial.html'">
                             <i class="fas fa-calculator"></i>
                             Update Financial Data
+                        </button>
+                        <button class="admin-loan-btn" onclick="window.location.href='president-view.html'">
+                            <i class="fas fa-tasks"></i>
+                            View Loan Applications
                         </button>
                         <button class="admin-settings-btn" onclick="alert('Settings page coming soon!')">
                             <i class="fas fa-cogs"></i>
@@ -261,11 +260,14 @@
                 
                 // Show admin tools only for president
                 const adminToolsCard = document.getElementById('adminToolsCard');
-                if (adminToolsCard) {
-                    if (userRole.toLowerCase() === 'president') {
+                
+                if (userRole.toLowerCase() === 'president') {
+                    if (adminToolsCard) {
                         adminToolsCard.style.display = 'block';
                         console.log('Admin tools visible for President');
-                    } else {
+                    }
+                } else {
+                    if (adminToolsCard) {
                         adminToolsCard.style.display = 'none';
                         console.log('Admin tools hidden for non-President role:', userRole);
                     }

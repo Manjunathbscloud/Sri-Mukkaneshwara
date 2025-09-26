@@ -9,7 +9,8 @@ const SHEETS_CONFIG = {
 
     // Rules CSV should contain a header row with columns:
     // section, item
-    rulesCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRfIK3sa1N4kZgTWvYct5zWIGiURl8SZF4Xgf4d76FqPZS3cyMNNnURqm8UutszummyJ05V-_KUzhgQ/pub?output=csv'
+    rulesCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRfIK3sa1N4kZgTWvYct5zWIGiURl8SZF4Xgf4d76FqPZS3cyMNNnURqm8UutszummyJ05V-_KUzhgQ/pub?output=csv',
+
 };
 
 // Optional: basic validation helper

@@ -17,6 +17,20 @@
     --shadow: rgba(0, 0, 0, 0.1);
     --shadow-hover: rgba(0, 0, 0, 0.15);
     
+    /* Button Color System */
+    --btn-primary: #007bff;     /* Blue - Primary actions */
+    --btn-primary-hover: #0056b3;
+    --btn-success: #28a745;     /* Green - Success/Accept actions */
+    --btn-success-hover: #218838;
+    --btn-danger: #dc3545;       /* Red - Danger/Reject actions */
+    --btn-danger-hover: #c82333;
+    --btn-warning: #ffc107;     /* Yellow - Warning actions */
+    --btn-warning-hover: #e0a800;
+    --btn-info: #17a2b8;        /* Cyan - Info actions */
+    --btn-info-hover: #138496;
+    --btn-secondary: #6c757d;    /* Gray - Secondary actions */
+    --btn-secondary-hover: #545b62;
+    
     /* Gradient Colors */
     --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
@@ -683,6 +697,214 @@ footer {
 /* Specific styles for View Deposits button (left-aligned with left arrow) */
 .loans-section .nav-button {
     margin-right: auto; /* Pushes button to left */
+}
+
+/* ========================================
+   COMPREHENSIVE BUTTON SYSTEM
+   ======================================== */
+
+/* Base Button Styles */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Button Sizes */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+.btn-lg {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+}
+
+/* Primary Button (Blue) - Main actions */
+.btn-primary {
+    background-color: var(--btn-primary);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--btn-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Success Button (Green) - Accept, Save, Submit */
+.btn-success {
+    background-color: var(--btn-success);
+    color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+    background-color: var(--btn-success-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+/* Danger Button (Red) - Delete, Reject, Cancel */
+.btn-danger {
+    background-color: var(--btn-danger);
+    color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background-color: var(--btn-danger-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Warning Button (Yellow) - Warning actions */
+.btn-warning {
+    background-color: var(--btn-warning);
+    color: #000;
+}
+
+.btn-warning:hover:not(:disabled) {
+    background-color: var(--btn-warning-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+}
+
+/* Info Button (Cyan) - Information actions */
+.btn-info {
+    background-color: var(--btn-info);
+    color: white;
+}
+
+.btn-info:hover:not(:disabled) {
+    background-color: var(--btn-info-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+}
+
+/* Secondary Button (Gray) - Secondary actions */
+.btn-secondary {
+    background-color: var(--btn-secondary);
+    color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--btn-secondary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+/* Button Groups */
+.btn-group {
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.btn-group .btn {
+    border-radius: 0;
+    margin-right: -1px;
+}
+
+.btn-group .btn:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.btn-group .btn:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    margin-right: 0;
+}
+
+/* Specific Button Classes for Functionality */
+.accept-btn, .btn-accept {
+    @extend .btn-success;
+}
+
+.reject-btn, .btn-reject {
+    @extend .btn-danger;
+}
+
+.save-btn, .btn-save {
+    @extend .btn-success;
+}
+
+.delete-btn, .btn-delete {
+    @extend .btn-danger;
+}
+
+.edit-btn, .btn-edit {
+    @extend .btn-info;
+}
+
+.view-btn, .btn-view {
+    @extend .btn-primary;
+}
+
+.refresh-btn, .btn-refresh {
+    @extend .btn-secondary;
+}
+
+.download-btn, .btn-download {
+    @extend .btn-info;
+}
+
+.submit-btn, .btn-submit {
+    @extend .btn-success;
+}
+
+.cancel-btn, .btn-cancel {
+    @extend .btn-secondary;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    background-color: var(--btn-warning);
+    color: #000;
+}
+
+.status-approved, .status-success {
+    background-color: var(--btn-success);
+    color: white;
+}
+
+.status-rejected, .status-danger {
+    background-color: var(--btn-danger);
+    color: white;
+}
+
+.status-info {
+    background-color: var(--btn-info);
+    color: white;
 }
 
 .nav-icon {
@@ -2246,6 +2468,7 @@ th i.fa-chevron-down.active-filter {
     max-height: 200px;
     overflow-y: auto;
     z-index: 1001;
+    display: none;
 }
 
 .member-filter-dropdown {
