@@ -275,11 +275,69 @@
             }
         }
 
+        // Session Management Functions
+        function initializeSessionManagement() {
+            // Update last activity on any user interaction
+            function updateLastActivity() {
+                sessionStorage.setItem('lastActivity', Date.now().toString());
+            }
+
+            // Track user activity
+            ['click', 'keypress', 'scroll', 'mousemove', 'touchstart'].forEach(function(event) {
+                document.addEventListener(event, updateLastActivity, true);
+            });
+
+            // Check session timeout every 5 minutes
+            setInterval(function() {
+                var lastActivity = sessionStorage.getItem('lastActivity');
+                var sessionStartTime = sessionStorage.getItem('sessionStartTime');
+                
+                if (!lastActivity || !sessionStartTime) {
+                    if (sessionStorage.getItem('isAuthenticated') !== 'true') {
+                        sessionStorage.clear();
+                        window.location.href = 'login.html';
+                    }
+                    return;
+                }
+                
+                var now = Date.now();
+                var lastActivityTime = parseInt(lastActivity);
+                var sessionStart = parseInt(sessionStartTime);
+                
+                // Check for 30 minutes of inactivity
+                var inactivityTimeout = 30 * 60 * 1000; // 30 minutes
+                if (now - lastActivityTime > inactivityTimeout) {
+                    alert('Session expired due to inactivity. Please login again.');
+                    sessionStorage.clear();
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                // Check for total session time (8 hours max)
+                var totalSessionTimeout = 8 * 60 * 60 * 1000; // 8 hours
+                if (now - sessionStart > totalSessionTimeout) {
+                    alert('Session expired. Please login again.');
+                    sessionStorage.clear();
+                    window.location.href = 'login.html';
+                    return;
+                }
+            }, 300000); // Check every 5 minutes
+
+            // Handle page visibility change (tab switching)
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    // Page is hidden, update last activity
+                    updateLastActivity();
+                }
+            });
+        }
+
         // Check access when page loads
         document.addEventListener('DOMContentLoaded', function() {
             if (!checkAdminAccess()) {
                 return; // Stop execution if access is denied
             }
+            initializeSessionManagement();
             loadCurrentData();
         });
 
