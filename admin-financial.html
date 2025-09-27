@@ -191,7 +191,24 @@
 
                 // Check authentication and session
                 var isAuth = sessionStorage.getItem('isAuthenticated') === 'true';
-                if (!isAuth || !checkSessionTimeout()) {
+                console.log('Auth check:', isAuth);
+                console.log('Session data:', {
+                    isAuthenticated: sessionStorage.getItem('isAuthenticated'),
+                    lastActivity: sessionStorage.getItem('lastActivity'),
+                    sessionStartTime: sessionStorage.getItem('sessionStartTime'),
+                    userDetails: sessionStorage.getItem('userDetails')
+                });
+                
+                if (!isAuth) {
+                    console.log('Not authenticated, redirecting to login');
+                    sessionStorage.clear();
+                    alert('Please login to access this page.');
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                
+                if (!checkSessionTimeout()) {
+                    console.log('Session timeout, redirecting to login');
                     sessionStorage.clear();
                     alert('Session expired. Please login again.');
                     window.location.href = 'login.html';
@@ -334,6 +351,14 @@
 
         // Check access when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize session data if missing
+            if (!sessionStorage.getItem('lastActivity')) {
+                sessionStorage.setItem('lastActivity', Date.now().toString());
+            }
+            if (!sessionStorage.getItem('sessionStartTime')) {
+                sessionStorage.setItem('sessionStartTime', Date.now().toString());
+            }
+            
             if (!checkAdminAccess()) {
                 return; // Stop execution if access is denied
             }
