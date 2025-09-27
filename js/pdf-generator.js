@@ -275,58 +275,67 @@ class PDFGenerator {
     }
 
     addOfficialSeal() {
-        // Position seal in bottom right corner - medium size
+        // Position seal in bottom right corner
         const sealX = 170; // Right side
-        const sealY = this.pageHeight - 25; // Bottom area
+        const sealY = this.pageHeight - 35; // Bottom area
         
-        // Draw outer circular seal border (medium thickness)
-        this.pdf.setDrawColor(0, 0, 0);
-        this.pdf.setLineWidth(1.5);
-        this.pdf.circle(sealX, sealY, 12, 'S'); // Outer circle - reduced size
+        // Create the official seal exactly like your image
+        // Outer thick dark blue border circle
+        this.pdf.setDrawColor(0, 0, 139); // Dark blue color
+        this.pdf.setLineWidth(3);
+        this.pdf.circle(sealX, sealY, 20, 'S'); // Outer circle
         
-        // Middle circle
-        this.pdf.setLineWidth(0.8);
-        this.pdf.circle(sealX, sealY, 9, 'S');
+        // Inner dark blue border circle
+        this.pdf.setLineWidth(2);
+        this.pdf.circle(sealX, sealY, 18, 'S');
         
-        // Inner circle
-        this.pdf.setLineWidth(0.4);
-        this.pdf.circle(sealX, sealY, 6, 'S');
+        // Add "MUKKANESHWARA" text in upper arc (dark blue)
+        this.pdf.setFontSize(6);
+        this.pdf.setFont(undefined, 'bold');
+        this.pdf.setTextColor(0, 0, 139); // Dark blue text
         
-        // Add organization name in circular format - professional layout
+        // Position text in circular format like your image
+        this.pdf.text('MUKKANESHWARA', sealX - 9, sealY - 14);
+        
+        // Add decorative dots on sides (dark blue)
+        this.pdf.setFillColor(0, 0, 139);
+        this.pdf.circle(sealX - 12, sealY - 14, 0.4, 'F');
+        this.pdf.circle(sealX + 12, sealY - 14, 0.4, 'F');
+        
+        // ASSOCIATES text in lower arc (dark blue)
+        this.pdf.text('ASSOCIATES', sealX - 6, sealY + 14);
+        
+        // Add decorative dots on sides for ASSOCIATES
+        this.pdf.circle(sealX - 9, sealY + 14, 0.4, 'F');
+        this.pdf.circle(sealX + 9, sealY + 14, 0.4, 'F');
+        
+        // Inner circle (dark blue)
+        this.pdf.setLineWidth(1);
+        this.pdf.circle(sealX, sealY, 14, 'S');
+        
+        // Add "MA" monogram in center (large, bold, dark blue)
+        this.pdf.setFontSize(16);
+        this.pdf.setFont(undefined, 'bold');
+        this.pdf.setTextColor(0, 0, 139); // Dark blue
+        this.pdf.text('MA', sealX - 4, sealY + 2);
+        
+        // Add "OFFICIAL SEAL" text below the seal
         this.pdf.setFontSize(5);
         this.pdf.setFont(undefined, 'bold');
         this.pdf.setTextColor(0, 0, 0);
+        this.pdf.text('OFFICIAL SEAL', sealX - 5, sealY + 25);
         
-        // Center text with proper spacing - more compact
-        this.pdf.text('SRI', sealX - 1.5, sealY - 3);
-        this.pdf.text('MUKKANNESHWARA', sealX - 5, sealY + 0.5);
-        this.pdf.text('ASSOCIATE', sealX - 3, sealY + 4);
-        
-        // Add decorative border dots around the outer circle - fewer dots
-        this.pdf.setFillColor(0, 0, 0);
-        for (let i = 0; i < 8; i++) {
-            const angle = (i * 45) * (Math.PI / 180);
-            const dotX = sealX + Math.cos(angle) * 14;
-            const dotY = sealY + Math.sin(angle) * 14;
-            this.pdf.circle(dotX, dotY, 0.5, 'F');
-        }
-        
-        // Add "OFFICIAL SEAL" text below the seal - more professional
+        // Add date and signature line
         this.pdf.setFontSize(4);
-        this.pdf.setFont(undefined, 'bold');
-        this.pdf.text('OFFICIAL SEAL', sealX - 4, sealY + 8);
-        
-        // Add date and signature line - compact
-        this.pdf.setFontSize(3.5);
         this.pdf.setFont(undefined, 'normal');
-        this.pdf.text('Date:', sealX - 5, sealY + 11);
-        this.pdf.text(new Date().toLocaleDateString('en-IN'), sealX - 5, sealY + 13);
+        this.pdf.text('Date:', sealX - 6, sealY + 28);
+        this.pdf.text(new Date().toLocaleDateString('en-IN'), sealX - 6, sealY + 30);
         
-        // Signature line - shorter
-        this.pdf.setLineWidth(0.3);
-        this.pdf.line(sealX - 8, sealY + 16, sealX + 8, sealY + 16);
-        this.pdf.setFontSize(3);
-        this.pdf.text('Authorized Signature', sealX - 4, sealY + 18);
+        // Signature line
+        this.pdf.setLineWidth(0.4);
+        this.pdf.line(sealX - 12, sealY + 33, sealX + 12, sealY + 33);
+        this.pdf.setFontSize(3.5);
+        this.pdf.text('Authorized Signature', sealX - 5, sealY + 36);
     }
 
     formatCurrency(amount) {

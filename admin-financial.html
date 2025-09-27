@@ -6,6 +6,12 @@
     <title>Financial Data Admin - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("SzudKZaiAMaLDKRpt");
+        })();
+    </script>
     <style>
         .admin-container {
             max-width: 800px;
@@ -175,6 +181,50 @@
             }
         }
 
+        // Member email list for notifications
+        const memberEmails = [
+            'manjunath.banakar@gmail.com',
+            'pratap.banakar@gmail.com',
+            'sarpabhushana.banakar@gmail.com',
+            'mukkanna.banakar@gmail.com',
+            'santosh.banakar@gmail.com',
+            'pradeep.banakar@gmail.com',
+            'praveen.banakar@gmail.com'
+        ];
+
+        // Email notification function
+        async function sendFinancialUpdateNotification(oldData, newData, adminName) {
+            try {
+                console.log('Sending email notifications to all members...');
+                
+                const templateParams = {
+                    admin_name: adminName,
+                    update_time: new Date().toLocaleString('en-IN'),
+                    old_balance: oldData.bankBalance.toLocaleString('en-IN'),
+                    new_balance: newData.bankBalance.toLocaleString('en-IN'),
+                    old_loan: oldData.availableLoanAmount.toLocaleString('en-IN'),
+                    new_loan: newData.availableLoanAmount.toLocaleString('en-IN'),
+                    website_url: 'https://manjunathbscloud.github.io/Sri-Mukkaneshwara/accounts.html'
+                };
+
+                // Send email to all members
+                const emailPromises = memberEmails.map(email => {
+                    return emailjs.send('service_xl1w3wq', 'template_5j2huil', {
+                        ...templateParams,
+                        to_email: email
+                    });
+                });
+
+                // Wait for all emails to be sent
+                await Promise.all(emailPromises);
+                console.log('Email notifications sent successfully to all members');
+                
+            } catch (error) {
+                console.error('Error sending email notifications:', error);
+                // Don't show error to user, just log it
+            }
+        }
+
         // Check access when page loads
         document.addEventListener('DOMContentLoaded', function() {
             if (!checkAdminAccess()) {
@@ -243,11 +293,20 @@
             document.getElementById('currentLoanAmount').textContent = `₹${data.availableLoanAmount.toLocaleString('en-IN')}`;
             document.getElementById('currentLastUpdated').textContent = data.lastUpdated;
             
+            // Store current data for comparison
+            currentFinancialData = {
+                bankBalance: data.bankBalance,
+                availableLoanAmount: data.availableLoanAmount
+            };
+            
             // Clear form fields for new input
             document.getElementById('bankBalance').value = '';
             document.getElementById('availableLoanAmount').value = '';
             document.getElementById('lastUpdated').value = new Date().toISOString().split('T')[0];
         }
+
+        // Store current data for comparison
+        let currentFinancialData = null;
 
         // Update financial data - Google Sheets integration
         async function updateFinancialData(formData) {
@@ -255,6 +314,12 @@
             showLoader();
             
             try {
+                // Capture old data before update
+                const oldData = currentFinancialData || {
+                    bankBalance: 183790,
+                    availableLoanAmount: 175000
+                };
+                
                 // Update Google Sheet via Google Apps Script
                 const response = await fetch('https://script.google.com/macros/s/AKfycbzhDI2gZ2T9wnpUMEeV-niGLJaLxFmhs1jTHDCNyGfLDfwCKjSrlfIQreS3vGYA41fM/exec', {
                     method: 'POST',
@@ -266,6 +331,15 @@
                 });
                 
                 console.log('Financial data updated in Google Sheet');
+                
+                // Get admin name from user details
+                const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
+                console.log('User details from session:', userDetails);
+                const adminName = userDetails.name || 'Manjunath Banakar';
+                console.log('Admin name for email:', adminName);
+                
+                // Send email notifications to all members
+                await sendFinancialUpdateNotification(oldData, formData, adminName);
                 
                 // Hide loader
                 hideLoader();
