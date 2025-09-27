@@ -98,8 +98,40 @@
   <main>
     <script>
       (function() {
-        var isAuth = localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true';
+        function hasValidUser() {
+          var raw = sessionStorage.getItem('userDetails');
+          if (!raw) return false;
+          try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
+        }
+        
+        function checkSessionTimeout() {
+          var lastActivity = sessionStorage.getItem('lastActivity');
+          var sessionStartTime = sessionStorage.getItem('sessionStartTime');
+          
+          if (!lastActivity || !sessionStartTime) return false;
+          
+          var now = Date.now();
+          var lastActivityTime = parseInt(lastActivity);
+          var sessionStart = parseInt(sessionStartTime);
+          
+          // Check for 30 minutes of inactivity (increased from 15)
+          var inactivityTimeout = 30 * 60 * 1000; // 30 minutes in milliseconds
+          if (now - lastActivityTime > inactivityTimeout) {
+            return false;
+          }
+          
+          // Check for total session time (8 hours max - increased from 4)
+          var totalSessionTimeout = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+          if (now - sessionStart > totalSessionTimeout) {
+            return false;
+          }
+          
+          return true;
+        }
+        
+        var isAuth = sessionStorage.getItem('isAuthenticated') === 'true' && hasValidUser() && checkSessionTimeout();
         if (!isAuth) {
+          sessionStorage.clear();
           sessionStorage.setItem('returnUrl', window.location.href);
           window.location.href = 'login.html';
         }
@@ -107,6 +139,12 @@
     </script>
     <section>
       <div class="form-container">
+        <!-- Back Button -->
+        <div style="text-align: center; margin-bottom: 20px;">
+          <a href="accounts.html" style="color: #007bff; text-decoration: none; font-size: 0.9rem;">
+            ← Back to Accounts
+          </a>
+        </div>
         <h2><i class="fas fa-hand-holding-usd"></i> Loan Application</h2>
         <form id="loanForm">
           <label>Name:</label>
@@ -124,7 +162,12 @@
           <label>Reason for Loan:</label>
           <textarea name="loan_reason" required></textarea>
 
-          <button type="submit" class="submit-btn">Submit Application</button>
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <span id="btnText">Submit Application</span>
+            <div id="btnLoader" style="display: none;">
+              <div class="spinner"></div>
+            </div>
+          </button>
           <div class="success-message" id="successMsg">✅ Your application has been submitted!</div>
         </form>
       </div>
@@ -144,11 +187,19 @@
       if (userDetails.phone) document.querySelector("input[name='phone']").value = userDetails.phone;
     });
 
-    const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbx7BAUlIqnKv1pqDoi8h3JYFr8_oZeXIFZwEST8AtTF_g9JwjyAPwU2mrTpwY3Ee1HE/exec";
+    const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw-dVPZtFSPsuwpF9U-oHA3IB9UbAnyLe6l3VqvE9TeX2ed9X5dSVJUaQYAKhbFbB-S/exec";
 
     document.getElementById("loanForm").addEventListener("submit", async function(event) {
       event.preventDefault();
       const form = event.target;
+      const submitBtn = document.getElementById("submitBtn");
+      const btnText = document.getElementById("btnText");
+      const btnLoader = document.getElementById("btnLoader");
+
+      // Show loader
+      submitBtn.disabled = true;
+      btnText.style.display = "none";
+      btnLoader.style.display = "inline-block";
 
       const formData = {
         name: form.name.value,
@@ -177,6 +228,11 @@
         console.error("Google Sheets POST error:", err);
       }
 
+      // Hide loader and show success
+      submitBtn.disabled = false;
+      btnText.style.display = "inline";
+      btnLoader.style.display = "none";
+      
       document.getElementById("successMsg").style.display = "block";
       form.reset();
     });

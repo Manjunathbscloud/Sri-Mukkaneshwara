@@ -5,226 +5,317 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Loan Applications - President View</title>
   <link rel="stylesheet" href="styles.css">
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(120deg, #e0f7fa, #fce4ec);
-      margin: 0;
-      padding: 20px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #444;
-      margin-bottom: 30px;
-      font-size: 2.2em;
-      text-shadow: 1px 1px 2px #aaa;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      border-radius: 10px;
-      overflow: hidden;
-      animation: fadeIn 1s ease-in-out;
-    }
-
-    th, td {
-      padding: 14px 18px;
-      text-align: left;
-      font-size: 0.95rem;
-    }
-
-    th {
-      background: linear-gradient(90deg, #007bff, #00bfff);
-      color: #fff;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      position: sticky;
-      top: 0;
-      z-index: 2;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    tr:hover {
-      background-color: #d0ebff;
-      transition: background-color 0.3s;
-    }
-
-    tbody td {
-      border-bottom: 1px solid #eee;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    button {
-      padding: 6px 12px;
-      border-radius: 4px;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    button.accept {
-      background-color: #28a745;
-      margin-right: 10px;
-    }
-
-    button.reject {
-      background-color: #dc3545;
-    }
-
-    @media (max-width: 768px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-      }
-      tr {
-        margin: 0 0 1rem 0;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        padding: 10px;
-        background: #fff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      }
-      td {
-        border: none;
-        position: relative;
-        padding-left: 50%;
-      }
-      td::before {
-        position: absolute;
-        top: 12px;
-        left: 15px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        font-weight: 600;
-        content: attr(data-label);
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+         <script>
+           // Prevent non-presidents from accessing this page
+           (function() {
+             function hasValidUser() {
+               var raw = sessionStorage.getItem('userDetails');
+               if (!raw) return false;
+               try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
+             }
+             
+             function checkSessionTimeout() {
+               var lastActivity = sessionStorage.getItem('lastActivity');
+               var sessionStartTime = sessionStorage.getItem('sessionStartTime');
+               
+               if (!lastActivity || !sessionStartTime) return false;
+               
+               var now = Date.now();
+               var lastActivityTime = parseInt(lastActivity);
+               var sessionStart = parseInt(sessionStartTime);
+               
+               // Check for 30 minutes of inactivity (increased from 15)
+               var inactivityTimeout = 30 * 60 * 1000; // 30 minutes in milliseconds
+               if (now - lastActivityTime > inactivityTimeout) {
+                 return false;
+               }
+               
+               // Check for total session time (8 hours max - increased from 4)
+               var totalSessionTimeout = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+               if (now - sessionStart > totalSessionTimeout) {
+                 return false;
+               }
+               
+               return true;
+             }
+             
+             var isAuth = sessionStorage.getItem('isAuthenticated') === 'true' && hasValidUser() && checkSessionTimeout();
+             
+             // Check if user is president by checking role in userDetails
+             var userDetails = null;
+             try {
+               userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
+             } catch(e) {
+               console.error('Error parsing user details:', e);
+             }
+             
+             var isPresident = false;
+             if (userDetails && userDetails.role) {
+               isPresident = userDetails.role.toLowerCase() === 'president';
+             } else {
+               // Fallback to isPresident flag
+               isPresident = sessionStorage.getItem('isPresident') === 'true';
+             }
+             
+             console.log('Auth check:', { isAuth, isPresident, userDetails });
+             
+             if (!isAuth || !isPresident) {
+               console.log('Access denied - redirecting to login');
+               sessionStorage.clear();
+               window.location.href = 'login.html';
+             }
+           })();
+         </script>
+
+  <div class="container">
+    <!-- Page Header -->
+    <div style="text-align: center; margin-bottom: 20px; padding: 20px; background: #f8f9fa; border-radius: 5px;">
+      <div style="margin-bottom: 15px;">
+        <a href="accounts.html" style="color: #007bff; text-decoration: none; font-size: 0.9rem;">
+          ← Back to Accounts
+        </a>
+      </div>
+      <h1 style="margin: 0 0 15px 0; font-size: 1.8em; color: #333;">Loan Applications Review</h1>
+      <button id="refreshBtn" onclick="loadApplications()" class="btn btn-secondary">
+        <i class="fas fa-sync-alt"></i> Refresh Data
+      </button>
+    </div>
+
+    <!-- Applications Table -->
+    <div style="background: white; border-radius: 5px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <table id="applicationsTable" style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr id="tableHeader" style="background: #f8f9fa;">
+            <!-- Headers will be populated by JavaScript -->
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Data will be populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <script>
-    // Prevent non-presidents from accessing this page
-    (function() {
-      var isAuth = localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true';
-      var isPresident = localStorage.getItem('isPresident') === 'true' || sessionStorage.getItem('isPresident') === 'true';
-      if (!isAuth || !isPresident) {
-        window.location.href = 'login.html';
-      }
-    })();
-  </script>
+    // Load sheets configuration - Loan Applications CSV URL
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQR1ymgt-5kh7MOtNkRYSxOy8oAdjohe-02rmgh8je6KHNej6e16iIrhY6pRvtl7gPl5kyTIboJdktj/pub?output=csv";
 
-  <h1>All Loan Applications</h1>
+    function loadApplications() {
+      // Add loading indicator
+      const tableBody = document.getElementById("tableBody");
+      const loadingRow = document.createElement("tr");
+      loadingRow.innerHTML = '<td colspan="7" style="text-align: center; padding: 40px; color: #666;"><i class="fas fa-spinner fa-spin"></i> Loading loan applications...</td>';
+      tableBody.innerHTML = '';
+      tableBody.appendChild(loadingRow);
 
-  <table id="applicationsTable">
-    <thead>
-      <tr id="tableHeader"></tr>
-    </thead>
-    <tbody id="tableBody"></tbody>
-  </table>
-
-  <script>
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQH5D5qbHyFlOledHydH-bLgvhyPsEW7nSFtyLxr8ViMTmiHXHi2dG--qzs-6om_c85alfQCMBcmrgP/pub?output=csv";
-
-    fetch(CSV_URL)
-      .then(response => response.text())
-      .then(data => {
-        const rows = data.split("\n").map(row => row.split(","));
-        let headerRow = rows[0];
-
-        // Rename timestamp column to "Time & Date"
-        headerRow = headerRow.map(h => h.toLowerCase() === 'timestamp' ? 'Time & Date' : h);
-
-        // Add "Actions" column
-        headerRow.push('Actions');
-
-        const tableHeader = document.getElementById("tableHeader");
-        const tableBody = document.getElementById("tableBody");
-
-        // Create table header
-        headerRow.forEach(header => {
-          const th = document.createElement("th");
-          th.textContent = header;
-          tableHeader.appendChild(th);
-        });
-
-        // Create table body
-        rows.slice(1).forEach(row => {
-          if (row.length > 1) { // avoid empty rows
-            const tr = document.createElement("tr");
-
-            row.forEach((cell, index) => {
-              const td = document.createElement("td");
-
-              // Format timestamp
-              if (headerRow[index] === "Time & Date") {
-                const date = new Date(cell);
-                if (!isNaN(date)) {
-                  td.textContent = date.toLocaleString('en-IN', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: true
-                  });
-                } else {
-                  td.textContent = cell;
-                }
-              } else {
-                td.textContent = cell;
-              }
-
-              td.setAttribute('data-label', headerRow[index]);
-              tr.appendChild(td);
-            });
-
-            // Add Accept & Reject buttons
-            const actionTd = document.createElement("td");
-            actionTd.setAttribute('data-label', 'Actions');
-
-            const acceptBtn = document.createElement("button");
-            acceptBtn.textContent = "Accept";
-            acceptBtn.classList.add('accept');
-            acceptBtn.onclick = () => {
-              alert(`Loan Accepted for ${row[1]}`);
-              tr.style.backgroundColor = "#d4edda";
-            };
-
-            const rejectBtn = document.createElement("button");
-            rejectBtn.textContent = "Reject";
-            rejectBtn.classList.add('reject');
-            rejectBtn.onclick = () => {
-              alert(`Loan Rejected for ${row[1]}`);
-              tr.style.backgroundColor = "#f8d7da";
-            };
-
-            actionTd.appendChild(acceptBtn);
-            actionTd.appendChild(rejectBtn);
-            tr.appendChild(actionTd);
-
-            tableBody.appendChild(tr);
+      fetch(CSV_URL)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
+          return response.text();
+        })
+        .then(data => {
+          console.log('Raw CSV data:', data);
+          
+          // Clear loading indicator
+          tableBody.innerHTML = '';
+          
+          const rows = data.split("\n").filter(row => row.trim() !== '');
+          console.log('Number of rows:', rows.length);
+          
+          if (rows.length === 0) {
+            const noDataRow = document.createElement("tr");
+            noDataRow.innerHTML = '<td colspan="7" style="text-align: center; padding: 40px; color: #666;">No loan applications found</td>';
+            tableBody.appendChild(noDataRow);
+            return;
+          }
+
+          // Parse CSV properly (handle commas within quoted fields)
+          const parseCSV = (csvText) => {
+            const lines = csvText.split('\n');
+            const result = [];
+            
+            for (let line of lines) {
+              if (line.trim() === '') continue;
+              
+              const row = [];
+              let current = '';
+              let inQuotes = false;
+              
+              for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                  inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                  row.push(current.trim());
+                  current = '';
+                } else {
+                  current += char;
+                }
+              }
+              row.push(current.trim());
+              result.push(row);
+            }
+            return result;
+          };
+
+          const parsedRows = parseCSV(data);
+          console.log('Parsed rows:', parsedRows);
+
+          if (parsedRows.length === 0) {
+            const noDataRow = document.createElement("tr");
+            noDataRow.innerHTML = '<td colspan="7" style="text-align: center; padding: 40px; color: #666;">No loan applications found</td>';
+            tableBody.appendChild(noDataRow);
+            return;
+          }
+
+          let headerRow = parsedRows[0];
+          console.log('Header row:', headerRow);
+
+          // Map headers to display names (based on actual loan applications sheet structure)
+          const headerMap = {
+            'timestamp': 'Applied Date',
+            'name': 'Applicant Name',
+            'email': 'Email',
+            'phone': 'Phone',
+            'loan amount': 'Loan Amount',
+            'reason': 'Reason'
+          };
+
+          // Create display headers
+          const displayHeaders = headerRow.map(h => headerMap[h.toLowerCase()] || h);
+          displayHeaders.push('Actions');
+
+          const tableHeader = document.getElementById("tableHeader");
+          
+          // Clear existing header
+          tableHeader.innerHTML = '';
+
+          // Create table header
+          displayHeaders.forEach(header => {
+            const th = document.createElement("th");
+            th.textContent = header;
+            th.style.padding = '12px';
+            th.style.textAlign = 'left';
+            th.style.fontWeight = '600';
+            th.style.color = '#333';
+            th.style.borderBottom = '1px solid #ddd';
+            tableHeader.appendChild(th);
+          });
+
+          // Create table body
+          parsedRows.slice(1).forEach((row, rowIndex) => {
+            if (row.length > 1 && row.some(cell => cell.trim() !== '')) { // avoid empty rows
+              const tr = document.createElement("tr");
+              tr.setAttribute('data-row-index', rowIndex);
+              tr.style.borderBottom = '1px solid #eee';
+
+              row.forEach((cell, cellIndex) => {
+                const td = document.createElement("td");
+                const headerName = headerRow[cellIndex] ? headerRow[cellIndex].toLowerCase() : '';
+
+                // Format timestamp
+                if (headerName === 'timestamp') {
+                  const date = new Date(cell);
+                  if (!isNaN(date.getTime())) {
+                    td.textContent = date.toLocaleString('en-IN', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      second: '2-digit',
+                      hour12: true
+                    });
+                  } else {
+                    td.textContent = cell;
+                  }
+                } else if (headerName === 'loan amount') {
+                  // Format loan amount
+                  const amount = parseFloat(cell.replace(/[₹,]/g, ''));
+                  if (!isNaN(amount)) {
+                    td.textContent = `₹${amount.toLocaleString('en-IN')}`;
+                  } else {
+                    td.textContent = cell;
+                  }
+                } else {
+                  td.textContent = cell || '-';
+                }
+
+                td.style.padding = '12px';
+                td.style.borderBottom = '1px solid #eee';
+                tr.appendChild(td);
+              });
+
+              // Add Accept & Reject buttons
+              const actionTd = document.createElement("td");
+              actionTd.style.padding = '12px';
+              actionTd.style.borderBottom = '1px solid #eee';
+
+              // Find applicant name (Name column)
+              const nameIndex = headerRow.findIndex(h => h.toLowerCase() === 'name');
+              const applicantName = nameIndex >= 0 ? row[nameIndex] : 'Unknown';
+              
+              const acceptBtn = document.createElement("button");
+              acceptBtn.textContent = "Accept";
+              acceptBtn.classList.add('btn', 'btn-success', 'btn-sm');
+              acceptBtn.style.marginRight = '5px';
+              
+              acceptBtn.onclick = () => {
+                if (confirm(`Accept loan application for ${applicantName}?`)) {
+                  alert(`Loan Accepted for ${applicantName}`);
+                  tr.style.backgroundColor = "#d4edda";
+                  acceptBtn.disabled = true;
+                  rejectBtn.disabled = true;
+                  acceptBtn.textContent = "Accepted";
+                  rejectBtn.textContent = "Rejected";
+                }
+              };
+
+              const rejectBtn = document.createElement("button");
+              rejectBtn.textContent = "Reject";
+              rejectBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+              
+              rejectBtn.onclick = () => {
+                if (confirm(`Reject loan application for ${applicantName}?`)) {
+                  alert(`Loan Rejected for ${applicantName}`);
+                  tr.style.backgroundColor = "#f8d7da";
+                  acceptBtn.disabled = true;
+                  rejectBtn.disabled = true;
+                  acceptBtn.textContent = "Accepted";
+                  rejectBtn.textContent = "Rejected";
+                }
+              };
+
+              actionTd.appendChild(acceptBtn);
+              actionTd.appendChild(rejectBtn);
+              tr.appendChild(actionTd);
+
+              tableBody.appendChild(tr);
+            }
+          });
+
+          // Add summary
+          const summaryRow = document.createElement("tr");
+          summaryRow.style.backgroundColor = "#e9ecef";
+          summaryRow.style.fontWeight = "600";
+          summaryRow.innerHTML = `<td colspan="${displayHeaders.length}" style="text-align: center; padding: 10px; border-top: 2px solid #007bff;">Total Applications: ${parsedRows.length - 1}</td>`;
+          tableBody.appendChild(summaryRow);
+
+        })
+        .catch(error => {
+          console.error("Error loading CSV:", error);
+          tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px; color: #dc3545; background: #f8d7da;">Error loading loan applications. Please try again later.</td></tr>';
         });
-      })
-      .catch(error => console.error("Error loading CSV:", error));
+    }
+
+    // Load applications when page loads
+    loadApplications();
   </script>
 </body>
 </html>

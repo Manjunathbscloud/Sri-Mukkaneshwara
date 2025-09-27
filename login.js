@@ -252,19 +252,18 @@ document.getElementById('verifyOtpBtn').addEventListener('click', function(e) {
         // OTP is correct, proceed with login
         const member = currentMember;
         
-        // Store user session data (both sessionStorage and localStorage for cross-tab persistence)
-        const set = (store) => {
-            store.setItem('isAuthenticated', 'true');
-            store.setItem('userEmail', member.email);
-            store.setItem('userName', member.name);
-            store.setItem('memberId', member.id);
-            store.setItem('userPhone', member.phone);
-            store.setItem('role', member.role);
-            store.setItem('userDetails', JSON.stringify(member));
-            store.setItem('isPresident', String(member.role === 'president'));
-        };
-        set(sessionStorage);
-        set(localStorage);
+        // Store user session data (only sessionStorage for proper session management)
+        const sessionStartTime = Date.now().toString();
+        sessionStorage.setItem('isAuthenticated', 'true');
+        sessionStorage.setItem('userEmail', member.email);
+        sessionStorage.setItem('userName', member.name);
+        sessionStorage.setItem('memberId', member.id);
+        sessionStorage.setItem('userPhone', member.phone);
+        sessionStorage.setItem('role', member.role);
+        sessionStorage.setItem('userDetails', JSON.stringify(member));
+        sessionStorage.setItem('isPresident', String(member.role === 'president'));
+        sessionStorage.setItem('sessionStartTime', sessionStartTime);
+        sessionStorage.setItem('lastActivity', Date.now().toString());
 
         showSuccess('Login successful! Redirecting...');
         
