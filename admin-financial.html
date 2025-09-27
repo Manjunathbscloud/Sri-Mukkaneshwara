@@ -192,10 +192,21 @@
             'praveen.banakar@gmail.com'
         ];
 
+        // Flag to prevent multiple email sends
+        let emailSendingInProgress = false;
+
         // Email notification function
         async function sendFinancialUpdateNotification(oldData, newData, adminName) {
+            // Prevent multiple email sends
+            if (emailSendingInProgress) {
+                console.log('Email sending already in progress, skipping...');
+                return;
+            }
+
             try {
+                emailSendingInProgress = true;
                 console.log('Sending email notifications to all members...');
+                console.log('Number of members:', memberEmails.length);
                 
                 const templateParams = {
                     admin_name: adminName,
@@ -207,8 +218,9 @@
                     website_url: 'https://manjunathbscloud.github.io/Sri-Mukkaneshwara/accounts.html'
                 };
 
-                // Send email to all members
-                const emailPromises = memberEmails.map(email => {
+                // Send email to all members (one email per member)
+                const emailPromises = memberEmails.map((email, index) => {
+                    console.log(`Sending email ${index + 1}/${memberEmails.length} to: ${email}`);
                     return emailjs.send('service_xl1w3wq', 'template_5j2huil', {
                         ...templateParams,
                         to_email: email
@@ -217,11 +229,13 @@
 
                 // Wait for all emails to be sent
                 await Promise.all(emailPromises);
-                console.log('Email notifications sent successfully to all members');
+                console.log(`Email notifications sent successfully to ${memberEmails.length} members`);
                 
             } catch (error) {
                 console.error('Error sending email notifications:', error);
                 // Don't show error to user, just log it
+            } finally {
+                emailSendingInProgress = false;
             }
         }
 
