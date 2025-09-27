@@ -2,11 +2,11 @@
 const memberDatabase = {
     'Manjunath': {
         id: '001',
-        password: '9591392942',
+        password: '9591382942',
         name: 'Manjunath Banakar',
         role: 'president',
         email: 'manjunath.banakar@gmail.com',
-        phone: '+919591392942'
+        phone: '9591382942'
     },
     'Pratap': {
         id: '002',
@@ -14,7 +14,7 @@ const memberDatabase = {
         name: 'Pratap Banakar',
         role: 'vice-president',
         email: 'pratap.banakar@gmail.com',
-        phone: '+917259907409'
+        phone: '7259907409'
     },
     'Sarpabhushan': {
         id: '003',
@@ -22,7 +22,7 @@ const memberDatabase = {
         name: 'Sarpabhushana Banakar',
         role: 'member',
         email: 'sarpabhushana.banakar@gmail.com',
-        phone: '+919740373454'
+        phone: '9740373454'
     },
     'Mukkanna': {
         id: '004',
@@ -30,7 +30,7 @@ const memberDatabase = {
         name: 'Mukkanna Banakar',
         role: 'member',
         email: 'mukkanna.banakar@gmail.com',
-        phone: '+918618600807'
+        phone: '8147279081'
     },
     'Santosh': {
         id: '005',
@@ -38,7 +38,7 @@ const memberDatabase = {
         name: 'Santosh Banakar',
         role: 'member',
         email: 'santosh.banakar@gmail.com',
-        phone: '+919739678816'
+        phone: '9739678816'
     },
     'Pradeep': {
         id: '006',
@@ -46,7 +46,7 @@ const memberDatabase = {
         name: 'Pradeep Banakar',
         role: 'member',
         email: 'pradeep.banakar@gmail.com',
-        phone: '+919663644751'
+        phone: '9663644751'
     },
     'Praveen': {
         id: '007',
@@ -54,7 +54,7 @@ const memberDatabase = {
         name: 'Praveen Banakar',
         role: 'member',
         email: 'praveen.banakar@gmail.com',
-        phone: '+919538913204'
+        phone: '9538913204'
     }
 };
 
@@ -187,23 +187,36 @@ document.getElementById('sendOtpBtn').addEventListener('click', function(e) {
         return;
     }
 
-    // Format phone number - add +91 if not present and ensure it's 10 digits
-    if (phone.length === 10 && !phone.startsWith('+')) {
-        phone = '+91' + phone;
-    } else if (phone.startsWith('91') && phone.length === 12) {
-        phone = '+' + phone;
-    } else if (!phone.startsWith('+91') && phone.length === 13 && phone.startsWith('91')) {
-        phone = '+' + phone;
-    }
-
-    // Validate phone number format
-    if (!phone.match(/^\+91[6-9]\d{9}$/)) {
+    // Clean phone number - remove any non-digit characters
+    phone = phone.replace(/\D/g, '');
+    
+    // Validate phone number format (10 digits starting with 6-9)
+    if (phone.length !== 10 || !phone.match(/^[6-9]\d{9}$/)) {
         showError('Please enter a valid 10-digit Indian phone number');
         return;
     }
 
     // Find member by phone number
-    const member = Object.values(memberDatabase).find(m => m.phone === phone);
+    console.log('Looking for phone:', phone);
+    console.log('Available phones:', Object.values(memberDatabase).map(m => m.phone));
+    
+    // Try exact match first
+    let member = Object.values(memberDatabase).find(m => m.phone === phone);
+    
+    // If no exact match, try with different formats
+    if (!member) {
+        // Try with +91 prefix
+        const phoneWithPrefix = '+91' + phone;
+        member = Object.values(memberDatabase).find(m => m.phone === phoneWithPrefix);
+    }
+    
+    // If still no match, try without any prefix (just in case)
+    if (!member) {
+        const phoneWithoutPrefix = phone.replace(/^\+91/, '');
+        member = Object.values(memberDatabase).find(m => m.phone === phoneWithoutPrefix);
+    }
+    
+    console.log('Found member:', member);
     
     if (member) {
         currentMember = member;
