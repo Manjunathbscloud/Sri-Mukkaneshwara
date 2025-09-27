@@ -2,11 +2,11 @@
 const memberDatabase = {
     'Manjunath': {
         id: '001',
-        password: '9591382942',
+        password: '9591392942',
         name: 'Manjunath Banakar',
         role: 'president',
         email: 'manjunath.banakar@gmail.com',
-        phone: '+919591382942'
+        phone: '+919591392942'
     },
     'Pratap': {
         id: '002',
