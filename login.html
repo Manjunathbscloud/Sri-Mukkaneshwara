@@ -63,7 +63,7 @@
         <script>
             (function() {
                 // If already authenticated, go to accounts directly
-                var isAuth = localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true';
+                var isAuth = sessionStorage.getItem('isAuthenticated') === 'true';
                 if (isAuth) {
                     window.location.href = 'accounts.html';
                 }

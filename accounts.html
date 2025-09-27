@@ -11,64 +11,48 @@
     <script>
         (function() {
             function hasValidUser() {
-                var raw = localStorage.getItem('userDetails') || sessionStorage.getItem('userDetails');
+                var raw = sessionStorage.getItem('userDetails');
                 if (!raw) return false;
                 try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
             }
-            var isAuth = (localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true') && hasValidUser();
+            
+            function checkSessionTimeout() {
+                var lastActivity = sessionStorage.getItem('lastActivity');
+                var sessionStartTime = sessionStorage.getItem('sessionStartTime');
+                
+                if (!lastActivity || !sessionStartTime) return false;
+                
+                var now = Date.now();
+                var lastActivityTime = parseInt(lastActivity);
+                var sessionStart = parseInt(sessionStartTime);
+                
+                // Check for 30 minutes of inactivity (increased from 15)
+                var inactivityTimeout = 30 * 60 * 1000; // 30 minutes in milliseconds
+                if (now - lastActivityTime > inactivityTimeout) {
+                    return false;
+                }
+                
+                // Check for total session time (8 hours max - increased from 4)
+                var totalSessionTimeout = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+                if (now - sessionStart > totalSessionTimeout) {
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            var isAuth = sessionStorage.getItem('isAuthenticated') === 'true' && hasValidUser() && checkSessionTimeout();
             if (!isAuth) {
+                // Clear all session data
+                sessionStorage.clear();
                 sessionStorage.setItem('returnUrl', window.location.href);
                 window.location.href = 'login.html';
             }
         })();
     </script>
 
-    <!-- Auto-logout script -->
-    <script>
-        (function() {
-            let inactivityTimer;
-            const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
-            
-            // Function to reset the inactivity timer
-            function resetInactivityTimer() {
-                clearTimeout(inactivityTimer);
-                inactivityTimer = setTimeout(logoutUser, INACTIVITY_TIMEOUT);
-            }
-            
-            // Function to logout user
-            function logoutUser() {
-                // Clear authentication data
-                localStorage.removeItem('isAuthenticated');
-                localStorage.removeItem('userDetails');
-                sessionStorage.removeItem('isAuthenticated');
-                sessionStorage.removeItem('userDetails');
-                
-                // Show logout message
-                alert('You have been logged out due to inactivity. Please login again.');
-                
-                // Redirect to login page
-                window.location.href = 'login.html';
-            }
-            
-            // Events that reset the timer
-            const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
-            
-            // Add event listeners
-            events.forEach(function(event) {
-                document.addEventListener(event, resetInactivityTimer, true);
-            });
-            
-            // Start the timer when page loads
-            resetInactivityTimer();
-            
-            // Also reset timer on page visibility change (when user comes back to tab)
-            document.addEventListener('visibilitychange', function() {
-                if (!document.hidden) {
-                    resetInactivityTimer();
-                }
-            });
-        })();
-    </script>
+    <!-- Enhanced Session Management -->
+    <!-- <script src="js/session-manager.js"></script> -->
     <header>
         <h1>Sri Mukkanneshwara Associate</h1>
         <nav>
@@ -107,26 +91,42 @@
     </div>
 
     <main>
+        <!-- Page Loader -->
+        <div id="pageLoader" class="page-loader" style="display: none;">
+            <div class="spinner"></div>
+        </div>
+        
         <section class="account-overview mobile-dashboard">
             <div class="account-stats mobile-dashboard-grid">
-                <div class="stat-card mobile-dashboard-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-university"></i>
+                <div class="stat-card mobile-dashboard-card financial-summary">
+                    <div class="financial-info">
+                        <div class="financial-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>Current Bank Balance</h4>
+                                <span class="stat-value" id="bankBalance">₹1,83,790</span>
+                            </div>
+                        </div>
+                        <div class="financial-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-hand-holding-usd"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>Available Loan Amount</h4>
+                                <span class="stat-value" id="availableLoanAmount">₹1,75,000</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="stat-info">
-                        <h4>Current Bank Balance</h4>
-                        <span class="stat-value">₹1,83,790</span>
-                        <span class="stat-date">As of Sepetember 15th 2025</span>
-                    </div>
-                </div>
-                <div class="stat-card mobile-dashboard-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-hand-holding-usd"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h4>Available Loan Amount</h4>
-                        <span class="stat-value">₹1,75,000</span>
-                        <span class="stat-date">For Sepetember 15th 2025</span>
+                    <div class="financial-actions">
+                        <button onclick="refreshFinancialData()" id="refreshBtn" class="refresh-btn" title="Refresh Financial Data">
+                            <i class="fas fa-sync-alt" id="refreshIcon"></i>
+                            <div id="refreshLoader" style="display: none;">
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                        <span class="stat-date" id="lastUpdated">As of September 15th 2025</span>
                     </div>
                 </div>
             </div>
@@ -188,11 +188,6 @@
                             <i class="fas fa-list-ul"></i>
                             View Loan Status
                         </button>
-                        <!-- Review Applications button hidden by default -->
-                        <button class="admin-loan-btn" style="display:none;">
-                            <i class="fas fa-tasks"></i>
-                            Review Applications
-                        </button>
                     </div>
                 </div>
 
@@ -205,6 +200,10 @@
                         <button class="admin-financial-btn" onclick="window.location.href='admin-financial.html'">
                             <i class="fas fa-calculator"></i>
                             Update Financial Data
+                        </button>
+                        <button class="admin-loan-btn" onclick="window.location.href='president-view.html'">
+                            <i class="fas fa-tasks"></i>
+                            View Loan Applications
                         </button>
                         <button class="admin-settings-btn" onclick="alert('Settings page coming soon!')">
                             <i class="fas fa-cogs"></i>
@@ -238,24 +237,8 @@
                 logoutBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // Clear all authentication data
-                    localStorage.removeItem('isAuthenticated');
-                    localStorage.removeItem('userEmail');
-                    localStorage.removeItem('userName');
-                    localStorage.removeItem('memberId');
-                    localStorage.removeItem('userPhone');
-                    localStorage.removeItem('role');
-                    localStorage.removeItem('userDetails');
-                    localStorage.removeItem('isPresident');
-                    
-                    sessionStorage.removeItem('isAuthenticated');
-                    sessionStorage.removeItem('userEmail');
-                    sessionStorage.removeItem('userName');
-                    sessionStorage.removeItem('memberId');
-                    sessionStorage.removeItem('userPhone');
-                    sessionStorage.removeItem('role');
-                    sessionStorage.removeItem('userDetails');
-                    sessionStorage.removeItem('isPresident');
+                    // Clear all session data
+                    sessionStorage.clear();
                     
                     // Redirect to login page
                     window.location.href = 'login.html';
@@ -287,11 +270,14 @@
                 
                 // Show admin tools only for president
                 const adminToolsCard = document.getElementById('adminToolsCard');
-                if (adminToolsCard) {
-                    if (userRole.toLowerCase() === 'president') {
+                
+                if (userRole.toLowerCase() === 'president') {
+                    if (adminToolsCard) {
                         adminToolsCard.style.display = 'block';
                         console.log('Admin tools visible for President');
-                    } else {
+                    }
+                } else {
+                    if (adminToolsCard) {
                         adminToolsCard.style.display = 'none';
                         console.log('Admin tools hidden for non-President role:', userRole);
                     }
@@ -309,7 +295,107 @@
         // Check role when page loads
         document.addEventListener('DOMContentLoaded', function() {
             checkUserRole();
+            initializeSessionManagement();
         });
+
+        // Session Management Functions
+        function initializeSessionManagement() {
+            // Update last activity on any user interaction
+            function updateLastActivity() {
+                sessionStorage.setItem('lastActivity', Date.now().toString());
+            }
+
+            // Track user activity
+            ['click', 'keypress', 'scroll', 'mousemove', 'touchstart'].forEach(function(event) {
+                document.addEventListener(event, updateLastActivity, true);
+            });
+
+            // Check session timeout every 5 minutes (less frequent)
+            setInterval(function() {
+                var lastActivity = sessionStorage.getItem('lastActivity');
+                var sessionStartTime = sessionStorage.getItem('sessionStartTime');
+                
+                if (!lastActivity || !sessionStartTime) {
+                    // Only redirect if we're sure the session is invalid
+                    if (sessionStorage.getItem('isAuthenticated') !== 'true') {
+                        sessionStorage.clear();
+                        window.location.href = 'login.html';
+                    }
+                    return;
+                }
+                
+                var now = Date.now();
+                var lastActivityTime = parseInt(lastActivity);
+                var sessionStart = parseInt(sessionStartTime);
+                
+                // Check for 30 minutes of inactivity (increased from 15)
+                var inactivityTimeout = 30 * 60 * 1000; // 30 minutes
+                if (now - lastActivityTime > inactivityTimeout) {
+                    alert('Session expired due to inactivity. Please login again.');
+                    sessionStorage.clear();
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                // Check for total session time (8 hours max - increased from 4)
+                var totalSessionTimeout = 8 * 60 * 60 * 1000; // 8 hours
+                if (now - sessionStart > totalSessionTimeout) {
+                    alert('Session expired. Please login again.');
+                    sessionStorage.clear();
+                    window.location.href = 'login.html';
+                    return;
+                }
+            }, 300000); // Check every 5 minutes instead of every minute
+
+            // Handle browser close/refresh - only clear on actual browser close
+            var isNavigating = false;
+            
+            // Track internal navigation
+            document.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A' || e.target.closest('a')) {
+                    isNavigating = true;
+                }
+            });
+            
+            window.addEventListener('beforeunload', function(e) {
+                // Only clear session if it's not internal navigation
+                if (!isNavigating) {
+                    sessionStorage.clear();
+                }
+            });
+
+            // Handle page visibility change (tab switching)
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    // Page is hidden, update last activity
+                    updateLastActivity();
+                }
+            });
+        }
+
+        // Refresh financial data with loader
+        function refreshFinancialData() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            const refreshIcon = document.getElementById('refreshIcon');
+            const refreshLoader = document.getElementById('refreshLoader');
+            
+            // Show loader
+            refreshBtn.disabled = true;
+            refreshIcon.style.display = 'none';
+            refreshLoader.style.display = 'inline-block';
+            
+            // Call refresh function
+            if (window.FinancialData && window.FinancialData.refresh) {
+                window.FinancialData.refresh();
+            }
+            
+            // Hide loader after a delay
+            setTimeout(() => {
+                refreshBtn.disabled = false;
+                refreshIcon.style.display = 'inline';
+                refreshLoader.style.display = 'none';
+            }, 2000);
+        }
     </script>
 
     <!-- Financial Data Management -->

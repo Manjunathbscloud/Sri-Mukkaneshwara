@@ -196,6 +196,9 @@
                 <div class="table-header">
                     <h3><i class="fas fa-list-alt"></i> Loan List 2024-25</h3>
                     <div class="table-actions">
+                        <button id="downloadPdfBtn" class="download-btn" onclick="downloadLoanPDF()" title="Download as PDF">
+                            <i class="fas fa-download"></i> Download PDF
+                        </button>
                         <span class="record-count" id="recordCount">Loading...</span>
                 </div>
                 
@@ -238,6 +241,12 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr id="tableLoader" style="display: none;">
+                                <td colspan="8" class="table-loader">
+                                    <div class="spinner"></div>
+                                    <p>Loading loan data...</p>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -249,13 +258,10 @@
                     <p class="no-data-emoji">¯\_(ツ)_/¯</p>
                 </div>
             </div>
-            <div style="display: flex; justify-content: center; width: 100%;">
-                <div class="bottom-nav">
-                    <a href="loans.html" class="back-button">
-                        <i class="fas fa-arrow-left"></i>
-                        Back to Loans Overview
-                    </a>
-                </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="loans.html" style="color: #007bff; text-decoration: none; font-size: 0.9rem;">
+                    ← Back to Loans Overview
+                </a>
             </div>
         </section>
     </main>
@@ -276,13 +282,29 @@
         function toggleMemberFilter() {
             const memberDropdown = document.getElementById('memberFilterDropdown');
             const statusDropdown = document.getElementById('statusFilterDropdown');
+            const memberArrow = document.getElementById('memberArrow');
             
             // Close status dropdown if open
             statusDropdown.style.display = 'none';
             
             // Toggle member dropdown
             if (memberDropdown.style.display === 'none') {
+                // Position dropdown relative to the member column
+                const memberHeader = memberArrow.closest('th');
+                const rect = memberHeader.getBoundingClientRect();
+                const tableContainer = document.querySelector('.table-container');
+                const containerRect = tableContainer.getBoundingClientRect();
+                
+                // Calculate position relative to table container
+                const left = rect.left - containerRect.left;
+                const top = rect.bottom - containerRect.top + 5;
+                
+                memberDropdown.style.position = 'absolute';
+                memberDropdown.style.left = left + 'px';
+                memberDropdown.style.top = top + 'px';
                 memberDropdown.style.display = 'block';
+                memberDropdown.style.zIndex = '1000';
+                
                 populateMemberFilter();
             } else {
                 memberDropdown.style.display = 'none';
@@ -293,13 +315,28 @@
         function toggleStatusFilter() {
             const memberDropdown = document.getElementById('memberFilterDropdown');
             const statusDropdown = document.getElementById('statusFilterDropdown');
+            const statusArrow = document.getElementById('statusArrow');
             
             // Close member dropdown if open
             memberDropdown.style.display = 'none';
             
             // Toggle status dropdown
             if (statusDropdown.style.display === 'none') {
+                // Position dropdown relative to the status column
+                const statusHeader = statusArrow.closest('th');
+                const rect = statusHeader.getBoundingClientRect();
+                const tableContainer = document.querySelector('.table-container');
+                const containerRect = tableContainer.getBoundingClientRect();
+                
+                // Calculate position relative to table container
+                const left = rect.left - containerRect.left;
+                const top = rect.bottom - containerRect.top + 5;
+                
+                statusDropdown.style.position = 'absolute';
+                statusDropdown.style.left = left + 'px';
+                statusDropdown.style.top = top + 'px';
                 statusDropdown.style.display = 'block';
+                statusDropdown.style.zIndex = '1000';
             } else {
                 statusDropdown.style.display = 'none';
             }
@@ -320,11 +357,19 @@
             clearOption.onclick = () => selectMemberFilter('');
             filterOptions.appendChild(clearOption);
             
-            // Get unique member names from table data
-            const uniqueMembers = [...new Set(allTableData.map(loan => loan.member).filter(name => name))];
+            // Get unique member names from visible table rows
+            const tableRows = document.querySelectorAll('.loans-table tbody tr:not([id="tableLoader"])');
+            const memberNames = new Set();
+            
+            tableRows.forEach(row => {
+                const memberCell = row.cells[1]; // Member column (index 1)
+                if (memberCell && memberCell.textContent.trim()) {
+                    memberNames.add(memberCell.textContent.trim());
+                }
+            });
             
             // Add member options
-            uniqueMembers.forEach(member => {
+            Array.from(memberNames).sort().forEach(member => {
                 const option = document.createElement('div');
                 option.className = 'filter-option';
                 option.textContent = member;
@@ -350,7 +395,8 @@
         // Apply filters
         function applyFilters() {
             // Filter table rows based on selected criteria
-            const tableRows = document.querySelectorAll('.loans-table tbody tr');
+            const tableRows = document.querySelectorAll('.loans-table tbody tr:not([id="tableLoader"])');
+            let visibleCount = 0;
             
             tableRows.forEach(row => {
                 const memberCell = row.cells[1]; // Member column (index 1)
@@ -372,16 +418,16 @@
                 // Show/hide row based on filters
                 if (memberMatch && statusMatch) {
                     row.style.display = '';
+                    visibleCount++;
                 } else {
                     row.style.display = 'none';
                 }
             });
             
             // Update record count
-            const visibleRows = document.querySelectorAll('.loans-table tbody tr:not([style*="display: none"])');
             const recordCount = document.getElementById('recordCount');
             if (recordCount) {
-                recordCount.textContent = `${visibleRows.length} record${visibleRows.length !== 1 ? 's' : ''} found`;
+                recordCount.textContent = `${visibleCount} record${visibleCount !== 1 ? 's' : ''} found`;
             }
             
             // Update total interest for visible rows
@@ -517,6 +563,12 @@
         function onDataLoaded(items) {
             allTableData = items;
             
+            // Hide loader
+            const tableLoader = document.getElementById('tableLoader');
+            if (tableLoader) {
+                tableLoader.style.display = 'none';
+            }
+            
                     // Update record count
                     const recordCount = document.getElementById('recordCount');
                     if (recordCount) {
@@ -541,13 +593,128 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Show loader
+            const tableLoader = document.getElementById('tableLoader');
+            if (tableLoader) {
+                tableLoader.style.display = 'table-row';
+            }
+            
             LoansRender.loadLoans('2024-25', { 
                 tbodySelector: '.loans-table tbody',
                 onDataLoaded: onDataLoaded
             });
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(event) {
+                const memberDropdown = document.getElementById('memberFilterDropdown');
+                const statusDropdown = document.getElementById('statusFilterDropdown');
+                const memberArrow = document.getElementById('memberArrow');
+                const statusArrow = document.getElementById('statusArrow');
+                
+                // Close member dropdown if clicking outside
+                if (memberDropdown && !memberDropdown.contains(event.target) && !memberArrow.contains(event.target)) {
+                    memberDropdown.style.display = 'none';
+                }
+                
+                // Close status dropdown if clicking outside
+                if (statusDropdown && !statusDropdown.contains(event.target) && !statusArrow.contains(event.target)) {
+                    statusDropdown.style.display = 'none';
+                }
+            });
         });
 
 
+    </script>
+    
+    <!-- PDF Generator -->
+    <script src="js/pdf-generator.js"></script>
+    
+    <script>
+        // Global variable to store loan data
+        let currentLoanData = [];
+        
+        // Download PDF function
+        async function downloadLoanPDF() {
+            const downloadBtn = document.getElementById('downloadPdfBtn');
+            const originalText = downloadBtn.innerHTML;
+            
+            try {
+                // Show loading state
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+                downloadBtn.disabled = true;
+                
+                // Get current loan data
+                const loanData = getCurrentLoanData();
+                
+                if (!loanData || loanData.length === 0) {
+                    alert('No loan data available to download.');
+                    return;
+                }
+                
+                // Generate PDF
+                const success = await PDFGenerator.generateLoanPDF('2024-25', loanData, 'Loan Records 2024-25');
+                
+                if (success) {
+                    console.log('PDF generated successfully');
+                }
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF. Please try again.');
+            } finally {
+                // Reset button state
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+            }
+        }
+        
+        // Function to get current loan data
+        function getCurrentLoanData() {
+            // Try to get data from the table
+            const table = document.querySelector('.loans-table tbody');
+            if (!table) return [];
+            
+            const rows = table.querySelectorAll('tr:not([id="tableLoader"])');
+            const loanData = [];
+            
+            rows.forEach(row => {
+                if (row.style.display !== 'none') { // Only include visible rows
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 8) {
+                        loanData.push({
+                            loan_id: cells[0].textContent.trim(),
+                            member: cells[1].textContent.trim(),
+                            from: cells[2].textContent.trim(),
+                            amount: cells[3].textContent.trim(),
+                            interest: cells[4].textContent.trim(),
+                            renewal_or_return_month: cells[5].textContent.trim(),
+                            status: cells[6].textContent.trim(),
+                            total_paid: cells[7].textContent.trim(),
+                            year: '2024-25'
+                        });
+                    }
+                }
+            });
+            
+            return loanData;
+        }
+        
+        // Store loan data when it's loaded (for PDF generation)
+        function onDataLoaded(items) {
+            currentLoanData = items;
+            
+            // Hide loader
+            const tableLoader = document.getElementById('tableLoader');
+            if (tableLoader) {
+                tableLoader.style.display = 'none';
+            }
+            
+            // Update record count
+            const recordCount = document.getElementById('recordCount');
+            if (recordCount) {
+                recordCount.textContent = `${items.length} record${items.length !== 1 ? 's' : ''} found`;
+            }
+        }
     </script>
 </body>
 </html> 
