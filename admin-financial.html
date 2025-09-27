@@ -163,7 +163,42 @@
         // Role-based access control
         function checkAdminAccess() {
             try {
-                const userDetails = JSON.parse(localStorage.getItem('userDetails') || sessionStorage.getItem('userDetails') || '{}');
+                // Check session timeout first
+                function checkSessionTimeout() {
+                    var lastActivity = sessionStorage.getItem('lastActivity');
+                    var sessionStartTime = sessionStorage.getItem('sessionStartTime');
+                    
+                    if (!lastActivity || !sessionStartTime) return false;
+                    
+                    var now = Date.now();
+                    var lastActivityTime = parseInt(lastActivity);
+                    var sessionStart = parseInt(sessionStartTime);
+                    
+                    // Check for 30 minutes of inactivity
+                    var inactivityTimeout = 30 * 60 * 1000; // 30 minutes
+                    if (now - lastActivityTime > inactivityTimeout) {
+                        return false;
+                    }
+                    
+                    // Check for total session time (8 hours max)
+                    var totalSessionTimeout = 8 * 60 * 60 * 1000; // 8 hours
+                    if (now - sessionStart > totalSessionTimeout) {
+                        return false;
+                    }
+                    
+                    return true;
+                }
+
+                // Check authentication and session
+                var isAuth = sessionStorage.getItem('isAuthenticated') === 'true';
+                if (!isAuth || !checkSessionTimeout()) {
+                    sessionStorage.clear();
+                    alert('Session expired. Please login again.');
+                    window.location.href = 'login.html';
+                    return false;
+                }
+
+                const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
                 const userRole = userDetails.role || userDetails.position || '';
                 
                 if (userRole.toLowerCase() !== 'president') {
@@ -176,7 +211,8 @@
             } catch (error) {
                 console.error('Error checking user role:', error);
                 alert('Access denied. Unable to verify user role.');
-                window.location.href = 'accounts.html';
+                sessionStorage.clear();
+                window.location.href = 'login.html';
                 return false;
             }
         }
