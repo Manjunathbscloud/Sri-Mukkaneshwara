@@ -265,18 +265,42 @@ document.getElementById('verifyOtpBtn').addEventListener('click', function(e) {
         // OTP is correct, proceed with login
         const member = currentMember;
         
-        // Store user session data (only sessionStorage for proper session management)
+        // Store user session data in both sessionStorage and localStorage
         const sessionStartTime = Date.now().toString();
-        sessionStorage.setItem('isAuthenticated', 'true');
-        sessionStorage.setItem('userEmail', member.email);
-        sessionStorage.setItem('userName', member.name);
-        sessionStorage.setItem('memberId', member.id);
-        sessionStorage.setItem('userPhone', member.phone);
-        sessionStorage.setItem('role', member.role);
-        sessionStorage.setItem('userDetails', JSON.stringify(member));
-        sessionStorage.setItem('isPresident', String(member.role === 'president'));
-        sessionStorage.setItem('sessionStartTime', sessionStartTime);
-        sessionStorage.setItem('lastActivity', Date.now().toString());
+        const userData = {
+            isAuthenticated: 'true',
+            userEmail: member.email,
+            userName: member.name,
+            memberId: member.id,
+            userPhone: member.phone,
+            role: member.role,
+            userDetails: JSON.stringify(member),
+            isPresident: String(member.role === 'president'),
+            sessionStartTime: sessionStartTime,
+            lastActivity: Date.now().toString()
+        };
+        
+        // Store in both sessionStorage and localStorage
+        Object.keys(userData).forEach(key => {
+            sessionStorage.setItem(key, userData[key]);
+            localStorage.setItem(key, userData[key]);
+        });
+        
+        // Debug: Log what was stored
+        console.log('Login successful - Data stored in both session and local storage:', {
+            sessionStorage: {
+                isAuthenticated: sessionStorage.getItem('isAuthenticated'),
+                userDetails: sessionStorage.getItem('userDetails'),
+                role: sessionStorage.getItem('role'),
+                isPresident: sessionStorage.getItem('isPresident')
+            },
+            localStorage: {
+                isAuthenticated: localStorage.getItem('isAuthenticated'),
+                userDetails: localStorage.getItem('userDetails'),
+                role: localStorage.getItem('role'),
+                isPresident: localStorage.getItem('isPresident')
+            }
+        });
 
         showSuccess('Login successful! Redirecting...');
         
