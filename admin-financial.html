@@ -160,110 +160,57 @@
     </main>
 
     <script>
-        // Role-based access control
+        // Independent admin access control
         function checkAdminAccess() {
             try {
-                console.log('Admin Financial - Checking authentication...');
+                console.log('Admin Financial - Checking admin authentication...');
                 
-                // Check both sessionStorage and localStorage for authentication
-                var isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true' || localStorage.getItem('isAuthenticated') === 'true';
-                var hasUserDetails = sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails');
+                // Check for admin access (independent of accounts login)
+                var adminAccess = sessionStorage.getItem('adminAccess') || localStorage.getItem('adminAccess');
+                var adminAccessTime = sessionStorage.getItem('adminAccessTime') || localStorage.getItem('adminAccessTime');
                 
-                console.log('Auth check (session + local):', { 
-                    sessionAuth: sessionStorage.getItem('isAuthenticated'),
-                    localAuth: localStorage.getItem('isAuthenticated'),
-                    sessionUser: !!sessionStorage.getItem('userDetails'),
-                    localUser: !!localStorage.getItem('userDetails'),
-                    isAuthenticated,
-                    hasUserDetails: !!hasUserDetails
+                console.log('Admin access check:', { 
+                    adminAccess,
+                    adminAccessTime,
+                    sessionAdmin: sessionStorage.getItem('adminAccess'),
+                    localAdmin: localStorage.getItem('adminAccess')
                 });
                 
-                if (!isAuthenticated || !hasUserDetails) {
-                    console.log('Not authenticated, redirecting to login');
-                    sessionStorage.clear();
-                    localStorage.clear();
-                    alert('Please login to access this page.');
-                    window.location.href = 'login.html';
+                if (adminAccess !== 'true' || !adminAccessTime) {
+                    console.log('No admin access, redirecting to admin dashboard');
+                    alert('Please login to admin dashboard first.');
+                    window.location.href = 'admin-dashboard.html';
                     return false;
                 }
                 
-                // Sync session data if needed
-                if (sessionStorage.getItem('isAuthenticated') !== 'true' && localStorage.getItem('isAuthenticated') === 'true') {
-                    console.log('Syncing session data from localStorage');
-                    sessionStorage.setItem('isAuthenticated', 'true');
-                    sessionStorage.setItem('userDetails', localStorage.getItem('userDetails'));
-                    sessionStorage.setItem('role', localStorage.getItem('role'));
-                    sessionStorage.setItem('isPresident', localStorage.getItem('isPresident'));
-                }
+                // Check if admin access is still valid (30 minutes)
+                var now = Date.now();
+                var accessTime = parseInt(adminAccessTime);
+                var thirtyMinutes = 30 * 60 * 1000; // 30 minutes
                 
-                // Check session timeout
-                function checkSessionTimeout() {
-                    var lastActivity = sessionStorage.getItem('lastActivity');
-                    var sessionStartTime = sessionStorage.getItem('sessionStartTime');
-                    
-                    if (!lastActivity || !sessionStartTime) return true; // Allow if missing but authenticated
-                    
-                    var now = Date.now();
-                    var lastActivityTime = parseInt(lastActivity);
-                    var sessionStart = parseInt(sessionStartTime);
-                    
-                    // Check for 30 minutes of inactivity
-                    var inactivityTimeout = 30 * 60 * 1000; // 30 minutes
-                    if (now - lastActivityTime > inactivityTimeout) {
-                        return false;
-                    }
-                    
-                    // Check for total session time (8 hours max)
-                    var totalSessionTimeout = 8 * 60 * 60 * 1000; // 8 hours
-                    if (now - sessionStart > totalSessionTimeout) {
-                        return false;
-                    }
-                    
-                    return true;
-                }
-                
-                if (!checkSessionTimeout()) {
-                    console.log('Session timeout, redirecting to login');
-                    sessionStorage.clear();
-                    localStorage.clear();
-                    alert('Session expired. Please login again.');
-                    window.location.href = 'login.html';
-                    return false;
-                }
-
-                // Check if user is president
-                var userDetails = null;
-                try {
-                    userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
-                } catch(e) {
-                    console.error('Error parsing user details:', e);
-                }
-                
-                var isPresident = false;
-                if (userDetails && userDetails.role) {
-                    isPresident = userDetails.role.toLowerCase() === 'president';
-                } else {
-                    // Fallback to isPresident flag
-                    isPresident = sessionStorage.getItem('isPresident') === 'true' || localStorage.getItem('isPresident') === 'true';
-                }
-                
-                console.log('President check:', { isPresident, userDetails });
-                
-                if (!isPresident) {
-                    console.log('Not president, redirecting to accounts');
-                    alert('Access denied. This page is only available to the President.');
-                    window.location.href = 'accounts.html';
+                if (now - accessTime > thirtyMinutes) {
+                    console.log('Admin access expired, redirecting to admin dashboard');
+                    sessionStorage.removeItem('adminAccess');
+                    sessionStorage.removeItem('adminAccessTime');
+                    localStorage.removeItem('adminAccess');
+                    localStorage.removeItem('adminAccessTime');
+                    alert('Admin session expired. Please login again.');
+                    window.location.href = 'admin-dashboard.html';
                     return false;
                 }
                 
-                console.log('Authentication successful, allowing access');
+                // Sync both storages
+                sessionStorage.setItem('adminAccess', 'true');
+                sessionStorage.setItem('adminAccessTime', adminAccessTime);
+                localStorage.setItem('adminAccess', 'true');
+                localStorage.setItem('adminAccessTime', adminAccessTime);
+                
+                console.log('Admin authentication successful, allowing access');
                 return true;
             } catch (error) {
-                console.error('Error checking user role:', error);
-                alert('Access denied. Unable to verify user role.');
-                sessionStorage.clear();
-                localStorage.clear();
-                window.location.href = 'login.html';
+                console.error('Error checking admin access:', error);
+                alert('Access denied. Please login to admin dashboard.');
+                window.location.href = 'admin-dashboard.html';
                 return false;
             }
         }
@@ -370,20 +317,63 @@
             });
         }
 
-        // Check access when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize session data if missing
-            if (!sessionStorage.getItem('lastActivity')) {
-                sessionStorage.setItem('lastActivity', Date.now().toString());
-            }
-            if (!sessionStorage.getItem('sessionStartTime')) {
-                sessionStorage.setItem('sessionStartTime', Date.now().toString());
+        // Auto-logout functionality for admin
+        function initializeAdminAutoLogout() {
+            let inactivityTimer;
+            const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 minutes
+            
+            // Reset timer on user activity
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(() => {
+                    // Auto logout after 5 minutes of inactivity
+                    console.log('Admin session expired due to inactivity');
+                    sessionStorage.removeItem('adminAccess');
+                    sessionStorage.removeItem('adminAccessTime');
+                    localStorage.removeItem('adminAccess');
+                    localStorage.removeItem('adminAccessTime');
+                    alert('Admin session expired due to inactivity. Please login again.');
+                    window.location.href = 'admin-dashboard.html';
+                }, INACTIVITY_TIMEOUT);
             }
             
+            // Track user activity
+            ['click', 'keypress', 'scroll', 'mousemove', 'touchstart'].forEach(function(event) {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+            
+            // Handle tab close/refresh
+            window.addEventListener('beforeunload', function() {
+                // Clear admin access on tab close
+                sessionStorage.removeItem('adminAccess');
+                sessionStorage.removeItem('adminAccessTime');
+                localStorage.removeItem('adminAccess');
+                localStorage.removeItem('adminAccessTime');
+            });
+            
+            // Handle page visibility change (tab switching)
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    // Page is hidden, start inactivity timer
+                    resetInactivityTimer();
+                } else {
+                    // Page is visible, reset timer
+                    resetInactivityTimer();
+                }
+            });
+            
+            // Initialize timer
+            resetInactivityTimer();
+        }
+
+        // Check access when page loads
+        document.addEventListener('DOMContentLoaded', function() {
             if (!checkAdminAccess()) {
                 return; // Stop execution if access is denied
             }
-            initializeSessionManagement();
+            
+            // Initialize admin auto-logout
+            initializeAdminAutoLogout();
             loadCurrentData();
         });
 
