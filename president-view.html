@@ -11,43 +11,43 @@
          <script>
            // Prevent non-presidents from accessing this page
            (function() {
-             function hasValidUser() {
-               var raw = sessionStorage.getItem('userDetails');
-               if (!raw) return false;
-               try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
+             console.log('President View - Checking authentication...');
+             
+             // Check both sessionStorage and localStorage for authentication
+             var isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true' || localStorage.getItem('isAuthenticated') === 'true';
+             var hasUserDetails = sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails');
+             
+             console.log('Auth check (session + local):', { 
+               sessionAuth: sessionStorage.getItem('isAuthenticated'),
+               localAuth: localStorage.getItem('isAuthenticated'),
+               sessionUser: !!sessionStorage.getItem('userDetails'),
+               localUser: !!localStorage.getItem('userDetails'),
+               isAuthenticated,
+               hasUserDetails: !!hasUserDetails
+             });
+             
+             if (!isAuthenticated || !hasUserDetails) {
+               console.log('Not authenticated, redirecting to login');
+               var returnUrl = window.location.href;
+               sessionStorage.setItem('returnUrl', returnUrl);
+               localStorage.setItem('returnUrl', returnUrl);
+               window.location.href = 'login.html';
+               return;
              }
              
-             function checkSessionTimeout() {
-               var lastActivity = sessionStorage.getItem('lastActivity');
-               var sessionStartTime = sessionStorage.getItem('sessionStartTime');
-               
-               if (!lastActivity || !sessionStartTime) return false;
-               
-               var now = Date.now();
-               var lastActivityTime = parseInt(lastActivity);
-               var sessionStart = parseInt(sessionStartTime);
-               
-               // Check for 30 minutes of inactivity (increased from 15)
-               var inactivityTimeout = 30 * 60 * 1000; // 30 minutes in milliseconds
-               if (now - lastActivityTime > inactivityTimeout) {
-                 return false;
-               }
-               
-               // Check for total session time (8 hours max - increased from 4)
-               var totalSessionTimeout = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
-               if (now - sessionStart > totalSessionTimeout) {
-                 return false;
-               }
-               
-               return true;
+             // Sync session data if needed
+             if (sessionStorage.getItem('isAuthenticated') !== 'true' && localStorage.getItem('isAuthenticated') === 'true') {
+               console.log('Syncing session data from localStorage');
+               sessionStorage.setItem('isAuthenticated', 'true');
+               sessionStorage.setItem('userDetails', localStorage.getItem('userDetails'));
+               sessionStorage.setItem('role', localStorage.getItem('role'));
+               sessionStorage.setItem('isPresident', localStorage.getItem('isPresident'));
              }
              
-             var isAuth = sessionStorage.getItem('isAuthenticated') === 'true' && hasValidUser() && checkSessionTimeout();
-             
-             // Check if user is president by checking role in userDetails
+             // Check if user is president
              var userDetails = null;
              try {
-               userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
+               userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
              } catch(e) {
                console.error('Error parsing user details:', e);
              }
@@ -57,16 +57,29 @@
                isPresident = userDetails.role.toLowerCase() === 'president';
              } else {
                // Fallback to isPresident flag
-               isPresident = sessionStorage.getItem('isPresident') === 'true';
+               isPresident = sessionStorage.getItem('isPresident') === 'true' || localStorage.getItem('isPresident') === 'true';
              }
              
-             console.log('Auth check:', { isAuth, isPresident, userDetails });
+             console.log('President check:', { isPresident, userDetails });
              
-             if (!isAuth || !isPresident) {
-               console.log('Access denied - redirecting to login');
-               sessionStorage.clear();
+             if (!isPresident) {
+               console.log('Not president, redirecting to login');
+               var returnUrl = window.location.href;
+               sessionStorage.setItem('returnUrl', returnUrl);
+               localStorage.setItem('returnUrl', returnUrl);
                window.location.href = 'login.html';
+               return;
              }
+             
+             // Initialize session data if missing
+             if (!sessionStorage.getItem('lastActivity')) {
+               sessionStorage.setItem('lastActivity', Date.now().toString());
+             }
+             if (!sessionStorage.getItem('sessionStartTime')) {
+               sessionStorage.setItem('sessionStartTime', Date.now().toString());
+             }
+             
+             console.log('Authentication successful, allowing access');
            })();
          </script>
 

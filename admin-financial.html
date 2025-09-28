@@ -163,12 +163,45 @@
         // Role-based access control
         function checkAdminAccess() {
             try {
-                // Check session timeout first
+                console.log('Admin Financial - Checking authentication...');
+                
+                // Check both sessionStorage and localStorage for authentication
+                var isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true' || localStorage.getItem('isAuthenticated') === 'true';
+                var hasUserDetails = sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails');
+                
+                console.log('Auth check (session + local):', { 
+                    sessionAuth: sessionStorage.getItem('isAuthenticated'),
+                    localAuth: localStorage.getItem('isAuthenticated'),
+                    sessionUser: !!sessionStorage.getItem('userDetails'),
+                    localUser: !!localStorage.getItem('userDetails'),
+                    isAuthenticated,
+                    hasUserDetails: !!hasUserDetails
+                });
+                
+                if (!isAuthenticated || !hasUserDetails) {
+                    console.log('Not authenticated, redirecting to login');
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    alert('Please login to access this page.');
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                
+                // Sync session data if needed
+                if (sessionStorage.getItem('isAuthenticated') !== 'true' && localStorage.getItem('isAuthenticated') === 'true') {
+                    console.log('Syncing session data from localStorage');
+                    sessionStorage.setItem('isAuthenticated', 'true');
+                    sessionStorage.setItem('userDetails', localStorage.getItem('userDetails'));
+                    sessionStorage.setItem('role', localStorage.getItem('role'));
+                    sessionStorage.setItem('isPresident', localStorage.getItem('isPresident'));
+                }
+                
+                // Check session timeout
                 function checkSessionTimeout() {
                     var lastActivity = sessionStorage.getItem('lastActivity');
                     var sessionStartTime = sessionStorage.getItem('sessionStartTime');
                     
-                    if (!lastActivity || !sessionStartTime) return false;
+                    if (!lastActivity || !sessionStartTime) return true; // Allow if missing but authenticated
                     
                     var now = Date.now();
                     var lastActivityTime = parseInt(lastActivity);
@@ -188,45 +221,54 @@
                     
                     return true;
                 }
-
-                // Check authentication and session
-                var isAuth = sessionStorage.getItem('isAuthenticated') === 'true';
-                if (!isAuth || !checkSessionTimeout()) {
+                
+                if (!checkSessionTimeout()) {
+                    console.log('Session timeout, redirecting to login');
                     sessionStorage.clear();
+                    localStorage.clear();
                     alert('Session expired. Please login again.');
                     window.location.href = 'login.html';
                     return false;
                 }
 
-                const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
-                const userRole = userDetails.role || userDetails.position || '';
+                // Check if user is president
+                var userDetails = null;
+                try {
+                    userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
+                } catch(e) {
+                    console.error('Error parsing user details:', e);
+                }
                 
-                if (userRole.toLowerCase() !== 'president') {
-                    // Redirect non-presidents to accounts page
+                var isPresident = false;
+                if (userDetails && userDetails.role) {
+                    isPresident = userDetails.role.toLowerCase() === 'president';
+                } else {
+                    // Fallback to isPresident flag
+                    isPresident = sessionStorage.getItem('isPresident') === 'true' || localStorage.getItem('isPresident') === 'true';
+                }
+                
+                console.log('President check:', { isPresident, userDetails });
+                
+                if (!isPresident) {
+                    console.log('Not president, redirecting to accounts');
                     alert('Access denied. This page is only available to the President.');
                     window.location.href = 'accounts.html';
                     return false;
                 }
+                
+                console.log('Authentication successful, allowing access');
                 return true;
             } catch (error) {
                 console.error('Error checking user role:', error);
                 alert('Access denied. Unable to verify user role.');
                 sessionStorage.clear();
+                localStorage.clear();
                 window.location.href = 'login.html';
                 return false;
             }
         }
 
-        // Member email list for notifications
-        const memberEmails = [
-            'manjunath.banakar@gmail.com',
-            'pratap.banakar@gmail.com',
-            'sarpabhushana.banakar@gmail.com',
-            'mukkanna.banakar@gmail.com',
-            'santosh.banakar@gmail.com',
-            'pradeep.banakar@gmail.com',
-            'praveen.banakar@gmail.com'
-        ];
+        // EmailJS will handle member distribution based on your EmailJS configuration
 
         // Flag to prevent multiple email sends
         let emailSendingInProgress = false;
@@ -241,8 +283,7 @@
 
             try {
                 emailSendingInProgress = true;
-                console.log('Sending email notifications to all members...');
-                console.log('Number of members:', memberEmails.length);
+                console.log('Sending single email notification to all members via EmailJS...');
                 
                 const templateParams = {
                     admin_name: adminName,
@@ -254,21 +295,12 @@
                     website_url: 'https://manjunathbscloud.github.io/Sri-Mukkaneshwara/accounts.html'
                 };
 
-                // Send email to all members (one email per member)
-                const emailPromises = memberEmails.map((email, index) => {
-                    console.log(`Sending email ${index + 1}/${memberEmails.length} to: ${email}`);
-                    return emailjs.send('service_xl1w3wq', 'template_5j2huil', {
-                        ...templateParams,
-                        to_email: email
-                    });
-                });
-
-                // Wait for all emails to be sent
-                await Promise.all(emailPromises);
-                console.log(`Email notifications sent successfully to ${memberEmails.length} members`);
+                // Send single email notification - EmailJS will handle member distribution
+                await emailjs.send('service_xl1w3wq', 'template_5j2huil', templateParams);
+                console.log('Email notification sent successfully to all members via EmailJS');
                 
             } catch (error) {
-                console.error('Error sending email notifications:', error);
+                console.error('Error sending email notification:', error);
                 // Don't show error to user, just log it
             } finally {
                 emailSendingInProgress = false;
@@ -279,7 +311,9 @@
         function initializeSessionManagement() {
             // Update last activity on any user interaction
             function updateLastActivity() {
-                sessionStorage.setItem('lastActivity', Date.now().toString());
+                var now = Date.now().toString();
+                sessionStorage.setItem('lastActivity', now);
+                localStorage.setItem('lastActivity', now);
             }
 
             // Track user activity
@@ -289,12 +323,14 @@
 
             // Check session timeout every 5 minutes
             setInterval(function() {
-                var lastActivity = sessionStorage.getItem('lastActivity');
-                var sessionStartTime = sessionStorage.getItem('sessionStartTime');
+                var lastActivity = sessionStorage.getItem('lastActivity') || localStorage.getItem('lastActivity');
+                var sessionStartTime = sessionStorage.getItem('sessionStartTime') || localStorage.getItem('sessionStartTime');
                 
                 if (!lastActivity || !sessionStartTime) {
-                    if (sessionStorage.getItem('isAuthenticated') !== 'true') {
+                    var isAuth = sessionStorage.getItem('isAuthenticated') === 'true' || localStorage.getItem('isAuthenticated') === 'true';
+                    if (!isAuth) {
                         sessionStorage.clear();
+                        localStorage.clear();
                         window.location.href = 'login.html';
                     }
                     return;
@@ -309,6 +345,7 @@
                 if (now - lastActivityTime > inactivityTimeout) {
                     alert('Session expired due to inactivity. Please login again.');
                     sessionStorage.clear();
+                    localStorage.clear();
                     window.location.href = 'login.html';
                     return;
                 }
@@ -318,6 +355,7 @@
                 if (now - sessionStart > totalSessionTimeout) {
                     alert('Session expired. Please login again.');
                     sessionStorage.clear();
+                    localStorage.clear();
                     window.location.href = 'login.html';
                     return;
                 }
@@ -334,6 +372,14 @@
 
         // Check access when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize session data if missing
+            if (!sessionStorage.getItem('lastActivity')) {
+                sessionStorage.setItem('lastActivity', Date.now().toString());
+            }
+            if (!sessionStorage.getItem('sessionStartTime')) {
+                sessionStorage.setItem('sessionStartTime', Date.now().toString());
+            }
+            
             if (!checkAdminAccess()) {
                 return; // Stop execution if access is denied
             }
