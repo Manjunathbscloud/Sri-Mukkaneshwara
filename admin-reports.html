@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Analytics - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .reports-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .reports-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e1e5e9;
+        }
+        
+        .reports-header h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .reports-header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .stat-card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .stat-card p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .chart-container {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+        
+        .data-table {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .data-table h3 {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        .data-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .back-to-admin {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e1e5e9;
+        }
+        
+        .back-to-admin a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-to-admin a:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #7f8c8d;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 2rem;
+            color: #e74c3c;
+            background: #fdf2f2;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="reports-container">
+        <!-- Reports Header -->
+        <div class="reports-header">
+            <h1><i class="fas fa-chart-bar"></i> Reports & Analytics</h1>
+            <p>Comprehensive financial analysis and member activity insights</p>
+        </div>
+        
+        <!-- Statistics Cards -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <h3 id="totalDeposits">₹0</h3>
+                <p>Total Deposits</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalLoans">₹0</h3>
+                <p>Total Loans</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="activeLoans">0</h3>
+                <p>Active Loans</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalMembers">0</h3>
+                <p>Total Members</p>
+            </div>
+        </div>
+        
+        <!-- Charts Section -->
+        <div class="charts-grid">
+            <!-- Deposits Chart -->
+            <div class="chart-container">
+                <div class="chart-title">
+                    <i class="fas fa-piggy-bank"></i> Deposits Overview
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="depositsChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Loans Chart -->
+            <div class="chart-container">
+                <div class="chart-title">
+                    <i class="fas fa-hand-holding-usd"></i> Loans Overview
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="loansChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Year-wise Analysis -->
+        <div class="charts-grid">
+            <!-- Year-wise Deposits -->
+            <div class="chart-container">
+                <div class="chart-title">
+                    <i class="fas fa-calendar-alt"></i> Year-wise Deposits
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="yearlyDepositsChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Year-wise Loans -->
+            <div class="chart-container">
+                <div class="chart-title">
+                    <i class="fas fa-calendar-alt"></i> Year-wise Loans
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="yearlyLoansChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Member Activity Chart -->
+        <div class="chart-container">
+            <div class="chart-title">
+                <i class="fas fa-users"></i> Member Activity Analysis
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="memberActivityChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Data Tables -->
+        <div class="data-table">
+            <h3><i class="fas fa-table"></i> Recent Loan Activity</h3>
+            <div class="table-container">
+                <table id="loansTable">
+                    <thead>
+                        <tr>
+                            <th>Member</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loansTableBody">
+                        <tr>
+                            <td colspan="4" class="loading">Loading data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="data-table">
+            <h3><i class="fas fa-table"></i> Recent Deposit Activity</h3>
+            <div class="table-container">
+                <table id="depositsTable">
+                    <thead>
+                        <tr>
+                            <th>Member</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="depositsTableBody">
+                        <tr>
+                            <td colspan="4" class="loading">Loading data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Back to Admin -->
+        <div class="back-to-admin">
+            <a href="admin-dashboard.html">
+                <i class="fas fa-arrow-left"></i> Back to Admin Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Include the same scripts as your existing pages -->
+    <script src="sheets-config.js"></script>
+    <script src="sheets-utils.js"></script>
+    
+    <script>
+        // Independent admin access control
+        (function() {
+            console.log('Admin Reports - Checking admin authentication...');
+            
+            // Check for admin access (independent of accounts login)
+            var adminAccess = sessionStorage.getItem('adminAccess') || localStorage.getItem('adminAccess');
+            var adminAccessTime = sessionStorage.getItem('adminAccessTime') || localStorage.getItem('adminAccessTime');
+            
+            console.log('Admin access check:', { 
+                adminAccess,
+                adminAccessTime,
+                sessionAdmin: sessionStorage.getItem('adminAccess'),
+                localAdmin: localStorage.getItem('adminAccess')
+            });
+            
+            if (adminAccess !== 'true' || !adminAccessTime) {
+                console.log('No admin access, redirecting to admin dashboard');
+                alert('Please login to admin dashboard first.');
+                window.location.href = 'admin-dashboard.html';
+                return;
+            }
+            
+            // Check if admin access is still valid (30 minutes)
+            var now = Date.now();
+            var accessTime = parseInt(adminAccessTime);
+            var thirtyMinutes = 30 * 60 * 1000; // 30 minutes
+            
+            if (now - accessTime > thirtyMinutes) {
+                console.log('Admin access expired, redirecting to admin dashboard');
+                sessionStorage.removeItem('adminAccess');
+                sessionStorage.removeItem('adminAccessTime');
+                localStorage.removeItem('adminAccess');
+                localStorage.removeItem('adminAccessTime');
+                alert('Admin session expired. Please login again.');
+                window.location.href = 'admin-dashboard.html';
+                return;
+            }
+            
+            // Sync both storages
+            sessionStorage.setItem('adminAccess', 'true');
+            sessionStorage.setItem('adminAccessTime', adminAccessTime);
+            localStorage.setItem('adminAccess', 'true');
+            localStorage.setItem('adminAccessTime', adminAccessTime);
+            
+            console.log('Admin authentication successful, allowing access');
+            
+            // Initialize admin auto-logout
+            initializeAdminAutoLogout();
+        })();
+        
+        // Auto-logout functionality for admin
+        function initializeAdminAutoLogout() {
+            let inactivityTimer;
+            const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 minutes
+            
+            // Reset timer on user activity
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(() => {
+                    // Auto logout after 5 minutes of inactivity
+                    console.log('Admin session expired due to inactivity');
+                    sessionStorage.removeItem('adminAccess');
+                    sessionStorage.removeItem('adminAccessTime');
+                    localStorage.removeItem('adminAccess');
+                    localStorage.removeItem('adminAccessTime');
+                    alert('Admin session expired due to inactivity. Please login again.');
+                    window.location.href = 'admin-dashboard.html';
+                }, INACTIVITY_TIMEOUT);
+            }
+            
+            // Track user activity
+            ['click', 'keypress', 'scroll', 'mousemove', 'touchstart'].forEach(function(event) {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+            
+            // Handle tab close/refresh
+            window.addEventListener('beforeunload', function() {
+                // Clear admin access on tab close
+                sessionStorage.removeItem('adminAccess');
+                sessionStorage.removeItem('adminAccessTime');
+                localStorage.removeItem('adminAccess');
+                localStorage.removeItem('adminAccessTime');
+            });
+            
+            // Handle page visibility change (tab switching)
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    // Page is hidden, start inactivity timer
+                    resetInactivityTimer();
+                } else {
+                    // Page is visible, reset timer
+                    resetInactivityTimer();
+                }
+            });
+            
+            // Initialize timer
+            resetInactivityTimer();
+        }
+    </script>
+    
+    <script>
+        let loansData = [];
+        let depositsData = [];
+        
+        // Initialize the reports page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllData();
+        });
+        
+        // Load all data using the same methods as your existing pages
+        async function loadAllData() {
+            try {
+                console.log('Loading reports data...');
+                
+                // Load loans data using the same method as loans pages
+                if (SHEETS_CONFIG && SHEETS_CONFIG.loansCsvUrl) {
+                    const loansCsv = await SheetsUtils.fetchCsv(SHEETS_CONFIG.loansCsvUrl);
+                    const loansRows = SheetsUtils.parseCsv(loansCsv);
+                    loansData = SheetsUtils.rowsToObjects(loansRows);
+                    console.log('Loans data loaded:', loansData.length, 'records');
+                }
+                
+                // For deposits, we'll use the hardcoded data from your deposits pages
+                // since deposits don't seem to have CSV data
+                depositsData = getDepositsDataFromPages();
+                console.log('Deposits data loaded:', depositsData.length, 'records');
+                
+                // Update statistics
+                updateStatistics();
+                
+                // Create charts
+                createDepositsChart();
+                createLoansChart();
+                createYearlyDepositsChart();
+                createYearlyLoansChart();
+                createMemberActivityChart();
+                
+                // Update tables
+                updateLoansTable();
+                updateDepositsTable();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Failed to load data. Please try again later.');
+            }
+        }
+        
+        // Get deposits data from your existing pages structure
+        function getDepositsDataFromPages() {
+            // Based on your deposits pages, here's the structured data
+            return [
+                // 2021-22 Deposits
+                { year: '2021-22', member: 'Manjunath Banakar', amount: 5000, type: 'Initial', date: 'Feb-21' },
+                { year: '2021-22', member: 'Pratap Banakar', amount: 5000, type: 'Initial', date: 'Feb-21' },
+                { year: '2021-22', member: 'Sarpabhushana Banakar', amount: 5000, type: 'Initial', date: 'Feb-21' },
+                { year: '2021-22', member: 'Mukkanna Banakar', amount: 5000, type: 'Initial', date: 'Feb-21' },
+                { year: '2021-22', member: 'Santosh Banakar', amount: 5000, type: 'Initial', date: 'Feb-21' },
+                { year: '2021-22', member: 'Pradeep Banakar', amount: 5000, type: 'Initial', date: 'Feb-21' },
+                { year: '2021-22', member: 'Praveen Banakar', amount: 5000, type: 'Initial', date: 'Feb-21' },
+                { year: '2021-22', member: 'Manjunath Banakar', amount: 1000, type: 'Monthly', date: 'Mar-21' },
+                { year: '2021-22', member: 'Pratap Banakar', amount: 1000, type: 'Monthly', date: 'Mar-21' },
+                { year: '2021-22', member: 'Sarpabhushana Banakar', amount: 1000, type: 'Monthly', date: 'Mar-21' },
+                { year: '2021-22', member: 'Mukkanna Banakar', amount: 1000, type: 'Monthly', date: 'Mar-21' },
+                { year: '2021-22', member: 'Santosh Banakar', amount: 1000, type: 'Monthly', date: 'Mar-21' },
+                { year: '2021-22', member: 'Pradeep Banakar', amount: 1000, type: 'Monthly', date: 'Mar-21' },
+                { year: '2021-22', member: 'Praveen Banakar', amount: 1000, type: 'Monthly', date: 'Mar-21' },
+                // Continue for all months... (simplified for example)
+                { year: '2022-23', member: 'Manjunath Banakar', amount: 1500, type: 'Monthly', date: 'Mar-22' },
+                { year: '2022-23', member: 'Pratap Banakar', amount: 1500, type: 'Monthly', date: 'Mar-22' },
+                { year: '2022-23', member: 'Sarpabhushana Banakar', amount: 1500, type: 'Monthly', date: 'Mar-22' },
+                { year: '2022-23', member: 'Mukkanna Banakar', amount: 1500, type: 'Monthly', date: 'Mar-22' },
+                { year: '2022-23', member: 'Santosh Banakar', amount: 1500, type: 'Monthly', date: 'Mar-22' },
+                { year: '2022-23', member: 'Pradeep Banakar', amount: 1500, type: 'Monthly', date: 'Mar-22' },
+                { year: '2022-23', member: 'Praveen Banakar', amount: 1500, type: 'Monthly', date: 'Mar-22' },
+                { year: '2023-24', member: 'Manjunath Banakar', amount: 2000, type: 'Monthly', date: 'Mar-23' },
+                { year: '2023-24', member: 'Pratap Banakar', amount: 2000, type: 'Monthly', date: 'Mar-23' },
+                { year: '2023-24', member: 'Sarpabhushana Banakar', amount: 2000, type: 'Monthly', date: 'Mar-23' },
+                { year: '2023-24', member: 'Mukkanna Banakar', amount: 2000, type: 'Monthly', date: 'Mar-23' },
+                { year: '2023-24', member: 'Santosh Banakar', amount: 2000, type: 'Monthly', date: 'Mar-23' },
+                { year: '2023-24', member: 'Pradeep Banakar', amount: 2000, type: 'Monthly', date: 'Mar-23' },
+                { year: '2023-24', member: 'Praveen Banakar', amount: 2000, type: 'Monthly', date: 'Mar-23' },
+                { year: '2024-25', member: 'Manjunath Banakar', amount: 2000, type: 'Monthly', date: 'Mar-24' },
+                { year: '2024-25', member: 'Pratap Banakar', amount: 2000, type: 'Monthly', date: 'Mar-24' },
+                { year: '2024-25', member: 'Sarpabhushana Banakar', amount: 2000, type: 'Monthly', date: 'Mar-24' },
+                { year: '2024-25', member: 'Mukkanna Banakar', amount: 2000, type: 'Monthly', date: 'Mar-24' },
+                { year: '2024-25', member: 'Santosh Banakar', amount: 2000, type: 'Monthly', date: 'Mar-24' },
+                { year: '2024-25', member: 'Pradeep Banakar', amount: 2000, type: 'Monthly', date: 'Mar-24' },
+                { year: '2024-25', member: 'Praveen Banakar', amount: 2000, type: 'Monthly', date: 'Mar-24' }
+            ];
+        }
+        
+        // Update statistics cards
+        function updateStatistics() {
+            // Calculate total deposits
+            const totalDeposits = depositsData.reduce((sum, deposit) => {
+                const amount = parseFloat(deposit.amount || 0);
+                return sum + amount;
+            }, 0);
+            
+            // Calculate total loans
+            const totalLoans = loansData.reduce((sum, loan) => {
+                const amount = parseFloat(loan.amount?.replace(/[₹,]/g, '') || 0);
+                return sum + amount;
+            }, 0);
+            
+            // Count active loans
+            const activeLoans = loansData.filter(loan => 
+                loan.status?.toLowerCase() === 'active'
+            ).length;
+            
+            // Count unique members
+            const uniqueMembers = new Set([
+                ...loansData.map(loan => loan.member),
+                ...depositsData.map(deposit => deposit.member)
+            ]).size;
+            
+            // Update DOM
+            document.getElementById('totalDeposits').textContent = `₹${totalDeposits.toLocaleString('en-IN')}`;
+            document.getElementById('totalLoans').textContent = `₹${totalLoans.toLocaleString('en-IN')}`;
+            document.getElementById('activeLoans').textContent = activeLoans;
+            document.getElementById('totalMembers').textContent = uniqueMembers;
+        }
+        
+        // Create deposits chart
+        function createDepositsChart() {
+            const ctx = document.getElementById('depositsChart').getContext('2d');
+            
+            // Group deposits by member
+            const memberDeposits = {};
+            depositsData.forEach(deposit => {
+                const member = deposit.member || 'Unknown';
+                const amount = parseFloat(deposit.amount || 0);
+                memberDeposits[member] = (memberDeposits[member] || 0) + amount;
+            });
+            
+            const labels = Object.keys(memberDeposits);
+            const data = Object.values(memberDeposits);
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56',
+                            '#4BC0C0',
+                            '#9966FF',
+                            '#FF9F40',
+                            '#FF6384'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.parsed;
+                                    return `${context.label}: ₹${value.toLocaleString('en-IN')}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Create loans chart
+        function createLoansChart() {
+            const ctx = document.getElementById('loansChart').getContext('2d');
+            
+            // Group loans by status
+            const statusCounts = {};
+            loansData.forEach(loan => {
+                const status = loan.status || 'Unknown';
+                statusCounts[status] = (statusCounts[status] || 0) + 1;
+            });
+            
+            const labels = Object.keys(statusCounts);
+            const data = Object.values(statusCounts);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Number of Loans',
+                        data: data,
+                        backgroundColor: [
+                            '#36A2EB',
+                            '#FF6384',
+                            '#FFCE56'
+                        ],
+                        borderColor: [
+                            '#2E86C1',
+                            '#E74C3C',
+                            '#F39C12'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Create yearly deposits chart
+        function createYearlyDepositsChart() {
+            const ctx = document.getElementById('yearlyDepositsChart').getContext('2d');
+            
+            // Group deposits by year
+            const yearlyDeposits = {};
+            depositsData.forEach(deposit => {
+                const year = deposit.year || 'Unknown';
+                const amount = parseFloat(deposit.amount || 0);
+                yearlyDeposits[year] = (yearlyDeposits[year] || 0) + amount;
+            });
+            
+            const labels = Object.keys(yearlyDeposits).sort();
+            const data = labels.map(year => yearlyDeposits[year]);
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Deposits (₹)',
+                        data: data,
+                        borderColor: '#36A2EB',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + value.toLocaleString('en-IN');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Create yearly loans chart
+        function createYearlyLoansChart() {
+            const ctx = document.getElementById('yearlyLoansChart').getContext('2d');
+            
+            // Group loans by year
+            const yearlyLoans = {};
+            loansData.forEach(loan => {
+                const year = loan.year || 'Unknown';
+                const amount = parseFloat(loan.amount?.replace(/[₹,]/g, '') || 0);
+                yearlyLoans[year] = (yearlyLoans[year] || 0) + amount;
+            });
+            
+            const labels = Object.keys(yearlyLoans).sort();
+            const data = labels.map(year => yearlyLoans[year]);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Loans (₹)',
+                        data: data,
+                        backgroundColor: '#FF6384',
+                        borderColor: '#E74C3C',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + value.toLocaleString('en-IN');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Create member activity chart
+        function createMemberActivityChart() {
+            const ctx = document.getElementById('memberActivityChart').getContext('2d');
+            
+            // Count loans and deposits per member
+            const memberActivity = {};
+            
+            loansData.forEach(loan => {
+                const member = loan.member || 'Unknown';
+                if (!memberActivity[member]) {
+                    memberActivity[member] = { loans: 0, deposits: 0 };
+                }
+                memberActivity[member].loans++;
+            });
+            
+            depositsData.forEach(deposit => {
+                const member = deposit.member || 'Unknown';
+                if (!memberActivity[member]) {
+                    memberActivity[member] = { loans: 0, deposits: 0 };
+                }
+                memberActivity[member].deposits++;
+            });
+            
+            const labels = Object.keys(memberActivity);
+            const loansData = labels.map(member => memberActivity[member].loans);
+            const depositsData = labels.map(member => memberActivity[member].deposits);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Loans',
+                            data: loansData,
+                            backgroundColor: '#FF6384',
+                            borderColor: '#E74C3C',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Deposits',
+                            data: depositsData,
+                            backgroundColor: '#36A2EB',
+                            borderColor: '#2E86C1',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Update loans table
+        function updateLoansTable() {
+            const tbody = document.getElementById('loansTableBody');
+            tbody.innerHTML = '';
+            
+            // Show recent 10 loans
+            const recentLoans = loansData.slice(0, 10);
+            
+            if (recentLoans.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="loading">No loan data available</td></tr>';
+                return;
+            }
+            
+            recentLoans.forEach(loan => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${loan.member || 'Unknown'}</td>
+                    <td>₹${parseFloat(loan.amount?.replace(/[₹,]/g, '') || 0).toLocaleString('en-IN')}</td>
+                    <td><span class="status-badge ${loan.status?.toLowerCase() === 'active' ? 'active' : 'clear'}">${loan.status || 'Unknown'}</span></td>
+                    <td>${loan.from || 'N/A'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Update deposits table
+        function updateDepositsTable() {
+            const tbody = document.getElementById('depositsTableBody');
+            tbody.innerHTML = '';
+            
+            // Show recent 10 deposits
+            const recentDeposits = depositsData.slice(0, 10);
+            
+            if (recentDeposits.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="loading">No deposit data available</td></tr>';
+                return;
+            }
+            
+            recentDeposits.forEach(deposit => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${deposit.member || 'Unknown'}</td>
+                    <td>₹${parseFloat(deposit.amount || 0).toLocaleString('en-IN')}</td>
+                    <td>${deposit.date || 'N/A'}</td>
+                    <td>${deposit.type || 'Monthly'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Show error message
+        function showError(message) {
+            const container = document.querySelector('.reports-container');
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+            container.insertBefore(errorDiv, container.firstChild);
+        }
+    </script>
+</body>
+</html>

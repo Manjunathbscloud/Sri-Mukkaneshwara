@@ -235,9 +235,9 @@
                         <i class="fas fa-chart-bar"></i>
                     </div>
                     <h3>Reports & Analytics</h3>
-                    <p>Generate comprehensive reports on loans, deposits, financial status, and member activities.</p>
-                    <a href="loans.html" class="btn">
-                        <i class="fas fa-file-alt"></i> View Reports
+                    <p>Generate comprehensive reports on loans, deposits, financial status, and member activities with interactive charts and graphs.</p>
+                    <a href="admin-reports.html" class="btn">
+                        <i class="fas fa-chart-line"></i> View Analytics
                     </a>
                 </div>
                 
@@ -295,9 +295,11 @@
                 passwordSection.style.display = 'none';
                 adminContent.classList.add('show');
                 
-                // Store admin access in session
+                // Store admin access in both session and local storage
                 sessionStorage.setItem('adminAccess', 'true');
                 sessionStorage.setItem('adminAccessTime', Date.now().toString());
+                localStorage.setItem('adminAccess', 'true');
+                localStorage.setItem('adminAccessTime', Date.now().toString());
                 
                 console.log('Admin access granted');
             } else {
@@ -316,8 +318,8 @@
         
         // Check if admin access is still valid (30 minutes)
         function checkAdminAccess() {
-            const adminAccess = sessionStorage.getItem('adminAccess');
-            const adminAccessTime = sessionStorage.getItem('adminAccessTime');
+            const adminAccess = sessionStorage.getItem('adminAccess') || localStorage.getItem('adminAccess');
+            const adminAccessTime = sessionStorage.getItem('adminAccessTime') || localStorage.getItem('adminAccessTime');
             
             if (adminAccess === 'true' && adminAccessTime) {
                 const now = Date.now();
@@ -325,7 +327,12 @@
                 const thirtyMinutes = 30 * 60 * 1000; // 30 minutes
                 
                 if (now - accessTime < thirtyMinutes) {
-                    // Access still valid
+                    // Access still valid - sync both storages
+                    sessionStorage.setItem('adminAccess', 'true');
+                    sessionStorage.setItem('adminAccessTime', adminAccessTime);
+                    localStorage.setItem('adminAccess', 'true');
+                    localStorage.setItem('adminAccessTime', adminAccessTime);
+                    
                     document.getElementById('passwordSection').style.display = 'none';
                     document.getElementById('adminContent').classList.add('show');
                     return true;
@@ -333,6 +340,8 @@
                     // Access expired
                     sessionStorage.removeItem('adminAccess');
                     sessionStorage.removeItem('adminAccessTime');
+                    localStorage.removeItem('adminAccess');
+                    localStorage.removeItem('adminAccessTime');
                 }
             }
             
@@ -358,8 +367,66 @@
         
         // Update admin access time on any interaction
         document.addEventListener('click', function() {
-            if (sessionStorage.getItem('adminAccess') === 'true') {
-                sessionStorage.setItem('adminAccessTime', Date.now().toString());
+            if (sessionStorage.getItem('adminAccess') === 'true' || localStorage.getItem('adminAccess') === 'true') {
+                const now = Date.now().toString();
+                sessionStorage.setItem('adminAccessTime', now);
+                localStorage.setItem('adminAccessTime', now);
+            }
+        });
+        
+        // Auto-logout functionality
+        function initializeAdminAutoLogout() {
+            let inactivityTimer;
+            const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 minutes
+            
+            // Reset timer on user activity
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(() => {
+                    // Auto logout after 5 minutes of inactivity
+                    console.log('Admin session expired due to inactivity');
+                    sessionStorage.removeItem('adminAccess');
+                    sessionStorage.removeItem('adminAccessTime');
+                    localStorage.removeItem('adminAccess');
+                    localStorage.removeItem('adminAccessTime');
+                    alert('Admin session expired due to inactivity. Please login again.');
+                    window.location.reload();
+                }, INACTIVITY_TIMEOUT);
+            }
+            
+            // Track user activity
+            ['click', 'keypress', 'scroll', 'mousemove', 'touchstart'].forEach(function(event) {
+                document.addEventListener(event, resetInactivityTimer, true);
+            });
+            
+            // Handle tab close/refresh
+            window.addEventListener('beforeunload', function() {
+                // Clear admin access on tab close
+                sessionStorage.removeItem('adminAccess');
+                sessionStorage.removeItem('adminAccessTime');
+                localStorage.removeItem('adminAccess');
+                localStorage.removeItem('adminAccessTime');
+            });
+            
+            // Handle page visibility change (tab switching)
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    // Page is hidden, start inactivity timer
+                    resetInactivityTimer();
+                } else {
+                    // Page is visible, reset timer
+                    resetInactivityTimer();
+                }
+            });
+            
+            // Initialize timer
+            resetInactivityTimer();
+        }
+        
+        // Initialize auto-logout when admin access is granted
+        document.addEventListener('DOMContentLoaded', function() {
+            if (checkAdminAccess()) {
+                initializeAdminAutoLogout();
             }
         });
     </script>
