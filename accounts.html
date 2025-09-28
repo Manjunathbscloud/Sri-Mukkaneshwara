@@ -62,6 +62,7 @@
                 <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
                 <li><a href="rules.html">Rules</a></li>
+                <li><a href="admin-dashboard.html" style="color: #8e44ad; font-weight: 600;"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
                 <li><a href="#" id="logoutBtn" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
@@ -86,6 +87,7 @@
                 <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
                 <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
                 <li><a href="rules.html" onclick="toggleMobileNav()">Rules</a></li>
+                <li><a href="admin-dashboard.html" onclick="toggleMobileNav()" style="color: #8e44ad; font-weight: 600;"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
                 <li><a href="#" id="mobileLogoutBtn" onclick="toggleMobileNav()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
     </div>
@@ -191,26 +193,6 @@
                     </div>
                 </div>
 
-                <!-- Admin Tools - Only visible to President -->
-                <div class="service-card" id="adminToolsCard" style="display: none;">
-                    <h3><i class="fas fa-cog"></i> Admin Tools <span class="president-badge">President Only</span></h3>
-                    <p>Manage financial data and system settings</p>
-
-                    <div class="action-buttons">
-                        <button class="admin-financial-btn" onclick="window.location.href='admin-financial.html'">
-                            <i class="fas fa-calculator"></i>
-                            Update Financial Data
-                        </button>
-                        <button class="admin-loan-btn" onclick="window.location.href='president-view.html'">
-                            <i class="fas fa-tasks"></i>
-                            View Loan Applications
-                        </button>
-                        <button class="admin-settings-btn" onclick="alert('Settings page coming soon!')">
-                            <i class="fas fa-cogs"></i>
-                            System Settings
-                        </button>
-                    </div>
-                </div>
             </div>
         </section>
     </main>
@@ -262,33 +244,14 @@
             }
         });
 
-        // Role-based access control
+        // Role-based access control (simplified - no admin tools in accounts page)
         function checkUserRole() {
             try {
                 const userDetails = JSON.parse(localStorage.getItem('userDetails') || sessionStorage.getItem('userDetails') || '{}');
                 const userRole = userDetails.role || userDetails.position || '';
-                
-                // Show admin tools only for president
-                const adminToolsCard = document.getElementById('adminToolsCard');
-                
-                if (userRole.toLowerCase() === 'president') {
-                    if (adminToolsCard) {
-                        adminToolsCard.style.display = 'block';
-                        console.log('Admin tools visible for President');
-                    }
-                } else {
-                    if (adminToolsCard) {
-                        adminToolsCard.style.display = 'none';
-                        console.log('Admin tools hidden for non-President role:', userRole);
-                    }
-                }
+                console.log('User role detected:', userRole);
             } catch (error) {
                 console.error('Error checking user role:', error);
-                // Hide admin tools by default if there's an error
-                const adminToolsCard = document.getElementById('adminToolsCard');
-                if (adminToolsCard) {
-                    adminToolsCard.style.display = 'none';
-                }
             }
         }
 
