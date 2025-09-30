@@ -48,6 +48,14 @@
     /* Mobile-specific variables */
     --mobile-padding: 1rem;
     --mobile-margin: 0.5rem;
+    
+    /* Review Applications Page Variables */
+    --review-hero-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --review-card-bg: #ffffff;
+    --review-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --review-table-bg: #ffffff;
+    --review-table-border: #e9ecef;
+    --review-action-bg: #f8f9fa;
     --mobile-font-size: 16px;
     --mobile-button-height: 48px;
     --mobile-input-height: 48px;
@@ -5067,5 +5075,422 @@ button[onclick*="refresh"]:hover, button[onclick*="FinancialData"]:hover {
     .admin-loan-applications {
         max-width: 1600px;
         padding: 2rem 4rem;
+    }
+}
+
+/* ========================================
+   REVIEW APPLICATIONS PAGE STYLES
+   ======================================== */
+
+/* Hero Section for Review Applications */
+.page-hero {
+    background: var(--review-hero-bg);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.breadcrumb {
+    margin-bottom: 1rem;
+}
+
+.breadcrumb-link {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.breadcrumb-link:hover {
+    color: white;
+    transform: translateX(-2px);
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    margin: 0 0 2rem 0;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Statistics Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--review-card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--review-card-shadow);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.stat-card:nth-child(1) .stat-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.stat-card:nth-child(2) .stat-icon {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.stat-card:nth-child(3) .stat-icon {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.stat-card:nth-child(4) .stat-icon {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.stat-content h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    color: var(--text);
+}
+
+.stat-content p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Table Container */
+.table-container {
+    background: var(--review-table-bg);
+    border-radius: 12px;
+    box-shadow: var(--review-card-shadow);
+    overflow: hidden;
+    border: 1px solid var(--review-table-border);
+}
+
+.table-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--review-table-border);
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.table-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+}
+
+.table-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box i {
+    position: absolute;
+    left: 12px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.search-box input {
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    width: 250px;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--btn-primary);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.filter-dropdown select {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-dropdown select:focus {
+    outline: none;
+    border-color: var(--btn-primary);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+/* Modern Table Styles */
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.table-header-cell {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text);
+    background: #f8f9fa;
+    border-bottom: 2px solid var(--review-table-border);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table-row {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.table-row:hover {
+    background: #f8f9fa;
+}
+
+.table-cell {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f3f4;
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.action-cell {
+    text-align: center;
+    background: var(--review-action-bg);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Status Row Styles */
+.approved-row {
+    background: #d4edda !important;
+    border-left: 4px solid var(--btn-success);
+}
+
+.rejected-row {
+    background: #f8d7da !important;
+    border-left: 4px solid var(--btn-danger);
+}
+
+/* Loading and Error States */
+.loading-cell,
+.no-data-cell,
+.error-cell {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-light);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.loading-cell i {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    animation: spin 1s linear infinite;
+}
+
+.error-cell {
+    color: var(--btn-danger);
+    background: #f8d7da;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-hero {
+        padding: 2rem 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    .table-header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem;
+    }
+    
+    .table-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .search-box input {
+        width: 100%;
+    }
+    
+    .table-wrapper {
+        overflow-x: auto;
+    }
+    
+    .modern-table {
+        min-width: 600px;
+    }
+    
+    .table-header-cell,
+    .table-cell {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .action-btn {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content {
+        padding: 0 1rem;
+    }
+    
+    .hero-title {
+        font-size: 1.75rem;
+    }
+    
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+    
+    .modern-table {
+        min-width: 500px;
     }
 }
