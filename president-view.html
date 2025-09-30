@@ -107,7 +107,7 @@
              // Initialize timer
              resetInactivityTimer();
            }
-         </script>
+  </script>
 
   <div class="container">
     <!-- Page Header -->
@@ -126,15 +126,15 @@
     <!-- Applications Table -->
     <div style="background: white; border-radius: 5px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
       <table id="applicationsTable" style="width: 100%; border-collapse: collapse;">
-        <thead>
+    <thead>
           <tr id="tableHeader" style="background: #f8f9fa;">
             <!-- Headers will be populated by JavaScript -->
           </tr>
-        </thead>
+    </thead>
         <tbody id="tableBody">
           <!-- Data will be populated by JavaScript -->
         </tbody>
-      </table>
+  </table>
     </div>
   </div>
 
@@ -150,23 +150,26 @@
       tableBody.innerHTML = '';
       tableBody.appendChild(loadingRow);
 
-      fetch(CSV_URL)
+    fetch(CSV_URL)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           return response.text();
         })
-        .then(data => {
+      .then(data => {
           console.log('Raw CSV data:', data);
+          console.log('Data length:', data.length);
           
           // Clear loading indicator
           tableBody.innerHTML = '';
           
           const rows = data.split("\n").filter(row => row.trim() !== '');
-          console.log('Number of rows:', rows.length);
+          console.log('Number of rows after filtering:', rows.length);
+          console.log('Rows content:', rows);
           
           if (rows.length === 0) {
+            console.log('No rows found, showing no data message');
             const noDataRow = document.createElement("tr");
             noDataRow.innerHTML = '<td colspan="7" style="text-align: center; padding: 40px; color: #666;">No loan applications found</td>';
             tableBody.appendChild(noDataRow);
@@ -205,8 +208,19 @@
 
           const parsedRows = parseCSV(data);
           console.log('Parsed rows:', parsedRows);
+          console.log('Parsed rows length:', parsedRows.length);
 
           if (parsedRows.length === 0) {
+            console.log('No parsed rows found, showing no data message');
+            const noDataRow = document.createElement("tr");
+            noDataRow.innerHTML = '<td colspan="7" style="text-align: center; padding: 40px; color: #666;">No loan applications found</td>';
+            tableBody.appendChild(noDataRow);
+            return;
+          }
+
+          // Check if we only have headers (1 row) and no actual data
+          if (parsedRows.length === 1) {
+            console.log('Only header row found, no actual data');
             const noDataRow = document.createElement("tr");
             noDataRow.innerHTML = '<td colspan="7" style="text-align: center; padding: 40px; color: #666;">No loan applications found</td>';
             tableBody.appendChild(noDataRow);
@@ -230,120 +244,135 @@
           const displayHeaders = headerRow.map(h => headerMap[h.toLowerCase()] || h);
           displayHeaders.push('Actions');
 
-          const tableHeader = document.getElementById("tableHeader");
+        const tableHeader = document.getElementById("tableHeader");
           
           // Clear existing header
           tableHeader.innerHTML = '';
 
-          // Create table header
+        // Create table header
           displayHeaders.forEach(header => {
-            const th = document.createElement("th");
-            th.textContent = header;
+          const th = document.createElement("th");
+          th.textContent = header;
             th.style.padding = '12px';
             th.style.textAlign = 'left';
             th.style.fontWeight = '600';
             th.style.color = '#333';
             th.style.borderBottom = '1px solid #ddd';
-            tableHeader.appendChild(th);
+          tableHeader.appendChild(th);
+        });
+
+        // Create table body
+          const dataRows = parsedRows.slice(1).filter(row => {
+            // Filter out empty rows and rows with only empty cells
+            return row.length > 1 && row.some(cell => cell.trim() !== '') && 
+                   row.some(cell => cell.trim() !== '' && cell.trim() !== 'undefined' && cell.trim() !== 'null');
           });
+          
+          console.log('Data rows after filtering:', dataRows);
+          console.log('Number of valid data rows:', dataRows.length);
+          
+          if (dataRows.length === 0) {
+            console.log('No valid data rows found after filtering');
+            const noDataRow = document.createElement("tr");
+            noDataRow.innerHTML = '<td colspan="7" style="text-align: center; padding: 40px; color: #666;">No loan applications found</td>';
+            tableBody.appendChild(noDataRow);
+            return;
+          }
+          
+          dataRows.forEach((row, rowIndex) => {
+            const tr = document.createElement("tr");
+            tr.setAttribute('data-row-index', rowIndex);
+            tr.style.borderBottom = '1px solid #eee';
 
-          // Create table body
-          parsedRows.slice(1).forEach((row, rowIndex) => {
-            if (row.length > 1 && row.some(cell => cell.trim() !== '')) { // avoid empty rows
-              const tr = document.createElement("tr");
-              tr.setAttribute('data-row-index', rowIndex);
-              tr.style.borderBottom = '1px solid #eee';
+            row.forEach((cell, cellIndex) => {
+              const td = document.createElement("td");
+              const headerName = headerRow[cellIndex] ? headerRow[cellIndex].toLowerCase() : '';
 
-              row.forEach((cell, cellIndex) => {
-                const td = document.createElement("td");
-                const headerName = headerRow[cellIndex] ? headerRow[cellIndex].toLowerCase() : '';
-
-                // Format timestamp
-                if (headerName === 'timestamp') {
-                  const date = new Date(cell);
-                  if (!isNaN(date.getTime())) {
-                    td.textContent = date.toLocaleString('en-IN', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      second: '2-digit',
-                      hour12: true
-                    });
-                  } else {
-                    td.textContent = cell;
-                  }
-                } else if (headerName === 'loan amount') {
-                  // Format loan amount
-                  const amount = parseFloat(cell.replace(/[₹,]/g, ''));
-                  if (!isNaN(amount)) {
-                    td.textContent = `₹${amount.toLocaleString('en-IN')}`;
-                  } else {
-                    td.textContent = cell;
-                  }
+              // Format timestamp
+              if (headerName === 'timestamp') {
+                const date = new Date(cell);
+                if (!isNaN(date.getTime())) {
+                  td.textContent = date.toLocaleString('en-IN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                  });
                 } else {
-                  td.textContent = cell || '-';
+                  td.textContent = cell;
                 }
-
-                td.style.padding = '12px';
-                td.style.borderBottom = '1px solid #eee';
-                tr.appendChild(td);
-              });
-
-              // Add Accept & Reject buttons
-              const actionTd = document.createElement("td");
-              actionTd.style.padding = '12px';
-              actionTd.style.borderBottom = '1px solid #eee';
-
-              // Find applicant name (Name column)
-              const nameIndex = headerRow.findIndex(h => h.toLowerCase() === 'name');
-              const applicantName = nameIndex >= 0 ? row[nameIndex] : 'Unknown';
-              
-              const acceptBtn = document.createElement("button");
-              acceptBtn.textContent = "Accept";
-              acceptBtn.classList.add('btn', 'btn-success', 'btn-sm');
-              acceptBtn.style.marginRight = '5px';
-              
-              acceptBtn.onclick = () => {
-                if (confirm(`Accept loan application for ${applicantName}?`)) {
-                  alert(`Loan Accepted for ${applicantName}`);
-                  tr.style.backgroundColor = "#d4edda";
-                  acceptBtn.disabled = true;
-                  rejectBtn.disabled = true;
-                  acceptBtn.textContent = "Accepted";
-                  rejectBtn.textContent = "Rejected";
+              } else if (headerName === 'loan amount') {
+                // Format loan amount
+                const amount = parseFloat(cell.replace(/[₹,]/g, ''));
+                if (!isNaN(amount)) {
+                  td.textContent = `₹${amount.toLocaleString('en-IN')}`;
+                } else {
+                  td.textContent = cell;
                 }
-              };
+              } else {
+                td.textContent = cell || '-';
+              }
 
-              const rejectBtn = document.createElement("button");
-              rejectBtn.textContent = "Reject";
-              rejectBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+              td.style.padding = '12px';
+              td.style.borderBottom = '1px solid #eee';
+              tr.appendChild(td);
+            });
+
+            // Add Accept & Reject buttons
+            const actionTd = document.createElement("td");
+            actionTd.style.padding = '12px';
+            actionTd.style.borderBottom = '1px solid #eee';
+
+            // Find applicant name (Name column)
+            const nameIndex = headerRow.findIndex(h => h.toLowerCase() === 'name');
+            const applicantName = nameIndex >= 0 ? row[nameIndex] : 'Unknown';
+
+            const acceptBtn = document.createElement("button");
+            acceptBtn.textContent = "Accept";
+            acceptBtn.classList.add('btn', 'btn-success', 'btn-sm');
+            acceptBtn.style.marginRight = '5px';
               
-              rejectBtn.onclick = () => {
-                if (confirm(`Reject loan application for ${applicantName}?`)) {
-                  alert(`Loan Rejected for ${applicantName}`);
-                  tr.style.backgroundColor = "#f8d7da";
-                  acceptBtn.disabled = true;
-                  rejectBtn.disabled = true;
-                  acceptBtn.textContent = "Accepted";
-                  rejectBtn.textContent = "Rejected";
-                }
-              };
+            acceptBtn.onclick = () => {
+              if (confirm(`Accept loan application for ${applicantName}?`)) {
+                alert(`Loan Accepted for ${applicantName}`);
+                tr.style.backgroundColor = "#d4edda";
+                acceptBtn.disabled = true;
+                rejectBtn.disabled = true;
+                acceptBtn.textContent = "Accepted";
+                rejectBtn.textContent = "Rejected";
+              }
+            };
 
-              actionTd.appendChild(acceptBtn);
-              actionTd.appendChild(rejectBtn);
-              tr.appendChild(actionTd);
+            const rejectBtn = document.createElement("button");
+            rejectBtn.textContent = "Reject";
+            rejectBtn.classList.add('btn', 'btn-danger', 'btn-sm');
+              
+            rejectBtn.onclick = () => {
+              if (confirm(`Reject loan application for ${applicantName}?`)) {
+                alert(`Loan Rejected for ${applicantName}`);
+                tr.style.backgroundColor = "#f8d7da";
+                acceptBtn.disabled = true;
+                rejectBtn.disabled = true;
+                acceptBtn.textContent = "Accepted";
+                rejectBtn.textContent = "Rejected";
+              }
+            };
 
-              tableBody.appendChild(tr);
-            }
+            actionTd.appendChild(acceptBtn);
+            actionTd.appendChild(rejectBtn);
+            tr.appendChild(actionTd);
+
+            tableBody.appendChild(tr);
           });
 
           // Add summary
           const summaryRow = document.createElement("tr");
           summaryRow.style.backgroundColor = "#e9ecef";
           summaryRow.style.fontWeight = "600";
-          summaryRow.innerHTML = `<td colspan="${displayHeaders.length}" style="text-align: center; padding: 10px; border-top: 2px solid #007bff;">Total Applications: ${parsedRows.length - 1}</td>`;
+          summaryRow.innerHTML = `<td colspan="${displayHeaders.length}" style="text-align: center; padding: 10px; border-top: 2px solid #007bff;">Total Applications: ${dataRows.length}</td>`;
           tableBody.appendChild(summaryRow);
 
         })
