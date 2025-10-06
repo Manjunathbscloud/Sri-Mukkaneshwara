@@ -1,183 +1,123 @@
-// Financial Data Management
-// This file handles automatic updates of bank balance and loan amounts
+// Financial Data Management System
+// This file handles loading and refreshing financial data from Google Sheets
 
-(function() {
-    // Configuration for financial data
-    const FINANCIAL_DATA_CONFIG = {
-        // JSON file path (simplest option)
-        jsonDataUrl: 'financial-data.json',
-        
-        // Google Sheets CSV URL (your actual sheet)
-        financialDataUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT0BPMTkSH8oDU7AYQLEcTxN-LHh86WLBMyfZH1eT4ABRCB8vwF2z7BBnzN0-SvaZZ0Apcwkkn08jyw/pub?output=csv',
-        
-        // Update frequency (in milliseconds)
-        updateInterval: 5 * 60 * 1000, // 5 minutes
-        
-        // Default values (fallback if data is not available)
-        defaultValues: {
-            bankBalance: 183790,
-            availableLoanAmount: 175000,
-            lastUpdated: new Date().toISOString()
-        }
-    };
-
-    // Cache for financial data
-    let financialData = null;
-    let lastUpdateTime = null;
-
-    // Fetch financial data from Google Sheets (preferred method)
-    async function fetchFinancialData() {
-        try {
-            // Try Google Sheets first (preferred)
-            const response = await fetch(FINANCIAL_DATA_CONFIG.financialDataUrl);
-            const csv = await response.text();
-            console.log('CSV Data:', csv);
-            
-            const rows = csv.split('\n');
-            console.log('Rows:', rows);
-            
-            if (rows.length >= 2) {
-                const headers = rows[0].split(',');
-                const data = rows[1].split(',');
-                
-                console.log('Headers:', headers);
-                console.log('Data:', data);
-                
-                // Clean the data (remove quotes and extra spaces)
-                const bankBalance = parseFloat(data[0].replace(/"/g, '').trim()) || FINANCIAL_DATA_CONFIG.defaultValues.bankBalance;
-                const availableLoanAmount = parseFloat(data[1].replace(/"/g, '').trim()) || FINANCIAL_DATA_CONFIG.defaultValues.availableLoanAmount;
-                const lastUpdated = data[2].replace(/"/g, '').trim() || new Date().toISOString();
-                
-                console.log('Parsed data:', { bankBalance, availableLoanAmount, lastUpdated });
-                
-                return {
-                    bankBalance: bankBalance,
-                    availableLoanAmount: availableLoanAmount,
-                    lastUpdated: lastUpdated
-                };
-            }
-        } catch (error) {
-            console.warn('Could not fetch financial data from Google Sheets, trying JSON file...', error);
-        }
-
-        try {
-            // Fallback to JSON file
-            const response = await fetch(FINANCIAL_DATA_CONFIG.jsonDataUrl);
-            if (response.ok) {
-                const data = await response.json();
-                return {
-                    bankBalance: data.bankBalance || FINANCIAL_DATA_CONFIG.defaultValues.bankBalance,
-                    availableLoanAmount: data.availableLoanAmount || FINANCIAL_DATA_CONFIG.defaultValues.availableLoanAmount,
-                    lastUpdated: data.lastUpdated || new Date().toISOString()
-                };
-            }
-        } catch (error) {
-            console.warn('Could not fetch financial data from JSON file, using defaults...', error);
-        }
-        
-        return FINANCIAL_DATA_CONFIG.defaultValues;
+class FinancialData {
+    constructor() {
+        this.googleSheetsUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT0BPMTkSH8oDU7AYQLEcTxN-LHh86WLBMyfZH1eT4ABRCB8vwF2z7BBnzN0-SvaZZ0Apcwkkn08jyw/pub?output=csv';
+        this.currentData = null;
+        this.init();
     }
 
-    // Update the financial data on the page
-    function updateFinancialDisplay(data) {
+    async init() {
+        try {
+            await this.loadFinancialData();
+        } catch (error) {
+            console.error('Error initializing financial data:', error);
+            this.setDefaultData();
+        }
+    }
+
+    async loadFinancialData() {
+        try {
+            console.log('Loading financial data from Google Sheets...');
+            const response = await fetch(this.googleSheetsUrl);
+            const csv = await response.text();
+            
+            if (csv && csv.trim()) {
+                const rows = csv.split('\n');
+                if (rows.length >= 2) {
+                    const headers = rows[0].split(',');
+                    const data = rows[1].split(',');
+                    
+                    // Clean the data (remove quotes and extra spaces)
+                    const bankBalance = parseFloat(data[0].replace(/"/g, '').trim()) || 183790;
+                    const availableLoanAmount = parseFloat(data[1].replace(/"/g, '').trim()) || 175000;
+                    const lastUpdated = data[2].replace(/"/g, '').trim() || new Date().toISOString().split('T')[0];
+                    
+                    this.currentData = {
+                        bankBalance: bankBalance,
+                        availableLoanAmount: availableLoanAmount,
+                        lastUpdated: lastUpdated
+                    };
+                    
+                    this.updateDisplay();
+                    console.log('Financial data loaded successfully:', this.currentData);
+                    return this.currentData;
+                }
+            }
+            
+            // If no data available, use defaults
+            this.setDefaultData();
+            
+        } catch (error) {
+            console.error('Error loading financial data from Google Sheets:', error);
+            this.setDefaultData();
+        }
+    }
+
+    setDefaultData() {
+        this.currentData = {
+            bankBalance: 183790,
+            availableLoanAmount: 175000,
+            lastUpdated: new Date().toISOString().split('T')[0]
+        };
+        this.updateDisplay();
+    }
+
+    updateDisplay() {
+        if (!this.currentData) return;
+
         // Update bank balance
         const bankBalanceElement = document.getElementById('bankBalance');
         if (bankBalanceElement) {
-            bankBalanceElement.textContent = `₹${data.bankBalance.toLocaleString('en-IN')}`;
+            bankBalanceElement.textContent = `₹${this.currentData.bankBalance.toLocaleString('en-IN')}`;
         }
 
         // Update available loan amount
         const loanAmountElement = document.getElementById('availableLoanAmount');
         if (loanAmountElement) {
-            loanAmountElement.textContent = `₹${data.availableLoanAmount.toLocaleString('en-IN')}`;
+            loanAmountElement.textContent = `₹${this.currentData.availableLoanAmount.toLocaleString('en-IN')}`;
         }
 
         // Update last updated date
         const lastUpdatedElement = document.getElementById('lastUpdated');
         if (lastUpdatedElement) {
-            const date = new Date(data.lastUpdated);
-            const formattedDate = date.toLocaleDateString('en-IN', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+            const date = new Date(this.currentData.lastUpdated);
+            const formattedDate = date.toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
             });
             lastUpdatedElement.textContent = `As of ${formattedDate}`;
         }
     }
 
-    // Load and update financial data
-    async function loadFinancialData() {
+    async refresh() {
+        console.log('Refreshing financial data...');
         try {
-            // Clear cache by adding timestamp to URL
-            const timestamp = new Date().getTime();
-            const urlWithTimestamp = FINANCIAL_DATA_CONFIG.financialDataUrl + '&t=' + timestamp;
-            
-            const response = await fetch(urlWithTimestamp);
-            const csv = await response.text();
-            console.log('CSV Data:', csv);
-            
-            const rows = csv.split('\n');
-            console.log('Rows:', rows);
-            
-            if (rows.length >= 2) {
-                const headers = rows[0].split(',');
-                const data = rows[1].split(',');
-                
-                console.log('Headers:', headers);
-                console.log('Data:', data);
-                
-                // Clean the data (remove quotes and extra spaces)
-                const bankBalance = parseFloat(data[0].replace(/"/g, '').trim()) || FINANCIAL_DATA_CONFIG.defaultValues.bankBalance;
-                const availableLoanAmount = parseFloat(data[1].replace(/"/g, '').trim()) || FINANCIAL_DATA_CONFIG.defaultValues.availableLoanAmount;
-                const lastUpdated = data[2].replace(/"/g, '').trim() || new Date().toISOString();
-                
-                console.log('Parsed data:', { bankBalance, availableLoanAmount, lastUpdated });
-                
-                financialData = {
-                    bankBalance: bankBalance,
-                    availableLoanAmount: availableLoanAmount,
-                    lastUpdated: lastUpdated
-                };
-                
-                updateFinancialDisplay(financialData);
-                lastUpdateTime = Date.now();
-                console.log('Financial data updated successfully');
-            }
+            await this.loadFinancialData();
+            console.log('Financial data refreshed successfully');
         } catch (error) {
-            console.error('Error loading financial data:', error);
-            // Use default values if loading fails
-            updateFinancialDisplay(FINANCIAL_DATA_CONFIG.defaultValues);
+            console.error('Error refreshing financial data:', error);
         }
     }
 
-    // Auto-update financial data
-    function startAutoUpdate() {
-        setInterval(async () => {
-            const now = Date.now();
-            if (!lastUpdateTime || (now - lastUpdateTime) > FINANCIAL_DATA_CONFIG.updateInterval) {
-                await loadFinancialData();
-            }
-        }, 30 * 1000); // Check every 30 seconds
+    getCurrentData() {
+        return this.currentData;
     }
+}
 
-    // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        loadFinancialData();
-        startAutoUpdate();
-    });
-
-    // Manual refresh function
-    function forceRefresh() {
-        console.log('Force refreshing financial data...');
-        lastUpdateTime = 0; // Reset cache
-        loadFinancialData();
+// Initialize Financial Data when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Only initialize on accounts page
+    if (window.location.pathname.includes('accounts.html') || window.location.pathname.endsWith('/')) {
+        window.FinancialData = new FinancialData();
     }
+});
 
-    // Expose functions for manual updates
-    window.FinancialData = {
-        load: loadFinancialData,
-        refresh: forceRefresh,
-        update: updateFinancialDisplay,
-        getData: () => financialData
-    };
-})();
+// Global refresh function for backward compatibility
+function refreshFinancialData() {
+    if (window.FinancialData) {
+        window.FinancialData.refresh();
+    }
+}

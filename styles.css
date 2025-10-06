@@ -49,6 +49,13 @@
     --mobile-padding: 1rem;
     --mobile-margin: 0.5rem;
     
+    /* Admin Section Variables */
+    --admin-primary: #2c3e50;
+    --admin-accent: #e74c3c;
+    --admin-success: #27ae60;
+    --admin-warning: #f39c12;
+    --admin-info: #3498db;
+    
     /* Review Applications Page Variables */
     --review-hero-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --review-card-bg: #ffffff;
@@ -5492,5 +5499,326 @@ button[onclick*="refresh"]:hover, button[onclick*="FinancialData"]:hover {
     
     .modern-table {
         min-width: 500px;
+    }
+}
+
+/* User Header Display Styles */
+.user-header-info {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.user-header-info:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary);
+}
+
+.user-avatar-small {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.user-details-small {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.user-name {
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+.user-role {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    text-transform: capitalize;
+}
+
+.user-dropdown {
+    position: relative;
+}
+
+.user-menu-btn {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.user-menu-btn:hover {
+    background: #f8f9fa;
+    color: var(--primary);
+}
+
+.user-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e9ecef;
+    min-width: 150px;
+    z-index: 1001;
+}
+
+.user-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.user-menu a:last-child {
+    border-bottom: none;
+}
+
+.user-menu a:hover {
+    background: #f8f9fa;
+    color: var(--primary);
+}
+
+.user-menu a i {
+    width: 16px;
+    text-align: center;
+}
+
+/* Mobile Responsive for User Header */
+@media (max-width: 768px) {
+    .user-header-info {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin: 1rem;
+        justify-content: center;
+    }
+    
+    .user-details-small {
+        align-items: center;
+    }
+    
+    .user-name {
+        font-size: 0.85rem;
+    }
+    
+    .user-role {
+        font-size: 0.75rem;
+    }
+}
+
+/* User Details Section Styles */
+.user-details-section {
+    margin: 2rem 0;
+}
+
+.user-info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.user-info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary);
+}
+
+.user-avatar {
+    font-size: 4rem;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.user-info {
+    flex: 1;
+}
+
+.user-info h3 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.user-info p {
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+}
+
+.user-status {
+    flex-shrink: 0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.president {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+}
+
+.status-badge.vice-president {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: white;
+}
+
+.status-badge.member {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+}
+
+/* Mobile Responsive for User Details */
+@media (max-width: 768px) {
+    .user-info-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .user-avatar {
+        font-size: 3rem;
+    }
+    
+    .user-info h3 {
+        font-size: 1.3rem;
+    }
+}
+
+/* Admin Section Styles */
+.admin-section {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    border: 2px solid var(--admin-primary);
+}
+
+.admin-section .page-title {
+    color: var(--admin-primary);
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.admin-subtitle {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.admin-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: var(--admin-primary);
+}
+
+.admin-card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--admin-primary);
+}
+
+.admin-card h3 {
+    color: var(--admin-primary);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.admin-card p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.admin-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--admin-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.admin-btn:hover {
+    background: var(--admin-accent);
+    transform: translateY(-2px);
+    color: white;
+}
+
+.admin-btn i {
+    margin-right: 0.5rem;
+}
+
+/* Mobile Responsive for Admin Section */
+@media (max-width: 768px) {
+    .admin-section {
+        padding: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .admin-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .admin-card {
+        padding: 1.5rem;
+    }
+    
+    .admin-card-icon {
+        font-size: 2.5rem;
     }
 }

@@ -9,104 +9,37 @@
 </head>
 <body>
          <script>
-           // Independent admin access control
+           // Check admin access using accounts authentication
            (function() {
-             console.log('President View - Checking admin authentication...');
+             console.log('President View - Checking accounts authentication...');
              
-             // Check for admin access (independent of accounts login)
-             var adminAccess = sessionStorage.getItem('adminAccess') || localStorage.getItem('adminAccess');
-             var adminAccessTime = sessionStorage.getItem('adminAccessTime') || localStorage.getItem('adminAccessTime');
+             // Check if user is authenticated through accounts
+             var isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true' || localStorage.getItem('isAuthenticated') === 'true';
              
-             console.log('Admin access check:', { 
-               adminAccess,
-               adminAccessTime,
-               sessionAdmin: sessionStorage.getItem('adminAccess'),
-               localAdmin: localStorage.getItem('adminAccess')
-             });
-             
-             if (adminAccess !== 'true' || !adminAccessTime) {
-               console.log('No admin access, redirecting to admin dashboard');
-               alert('Please login to admin dashboard first.');
-               window.location.href = 'admin-dashboard.html';
+             if (!isAuthenticated) {
+               console.log('User not authenticated, redirecting to login');
+               alert('Please login to your account first.');
+               window.location.href = 'login.html';
                return;
              }
              
-             // Check if admin access is still valid (30 minutes)
-             var now = Date.now();
-             var accessTime = parseInt(adminAccessTime);
-             var thirtyMinutes = 30 * 60 * 1000; // 30 minutes
+             // Check if user is president (only president has admin access)
+             var userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
+             var userRole = userDetails.role || '';
+             var isAdmin = userRole === 'president';
              
-             if (now - accessTime > thirtyMinutes) {
-               console.log('Admin access expired, redirecting to admin dashboard');
-               sessionStorage.removeItem('adminAccess');
-               sessionStorage.removeItem('adminAccessTime');
-               localStorage.removeItem('adminAccess');
-               localStorage.removeItem('adminAccessTime');
-               alert('Admin session expired. Please login again.');
-               window.location.href = 'admin-dashboard.html';
+             console.log('User role:', userRole, 'Is admin:', isAdmin);
+             
+             if (!isAdmin) {
+               console.log('User is not admin, redirecting to accounts');
+               alert('Access denied. Admin privileges required.');
+               window.location.href = 'accounts.html';
                return;
              }
-             
-             // Sync both storages
-             sessionStorage.setItem('adminAccess', 'true');
-             sessionStorage.setItem('adminAccessTime', adminAccessTime);
-             localStorage.setItem('adminAccess', 'true');
-             localStorage.setItem('adminAccessTime', adminAccessTime);
              
              console.log('Admin authentication successful, allowing access');
-             
-             // Initialize admin auto-logout
-             initializeAdminAutoLogout();
            })();
            
-           // Auto-logout functionality for admin
-           function initializeAdminAutoLogout() {
-             let inactivityTimer;
-             const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 minutes
-             
-             // Reset timer on user activity
-             function resetInactivityTimer() {
-               clearTimeout(inactivityTimer);
-               inactivityTimer = setTimeout(() => {
-                 // Auto logout after 5 minutes of inactivity
-                 console.log('Admin session expired due to inactivity');
-                 sessionStorage.removeItem('adminAccess');
-                 sessionStorage.removeItem('adminAccessTime');
-                 localStorage.removeItem('adminAccess');
-                 localStorage.removeItem('adminAccessTime');
-                 alert('Admin session expired due to inactivity. Please login again.');
-                 window.location.href = 'admin-dashboard.html';
-               }, INACTIVITY_TIMEOUT);
-             }
-             
-             // Track user activity
-             ['click', 'keypress', 'scroll', 'mousemove', 'touchstart'].forEach(function(event) {
-               document.addEventListener(event, resetInactivityTimer, true);
-             });
-             
-             // Handle tab close/refresh
-             window.addEventListener('beforeunload', function() {
-               // Clear admin access on tab close
-               sessionStorage.removeItem('adminAccess');
-               sessionStorage.removeItem('adminAccessTime');
-               localStorage.removeItem('adminAccess');
-               localStorage.removeItem('adminAccessTime');
-             });
-             
-             // Handle page visibility change (tab switching)
-             document.addEventListener('visibilitychange', function() {
-               if (document.hidden) {
-                 // Page is hidden, start inactivity timer
-                 resetInactivityTimer();
-               } else {
-                 // Page is visible, reset timer
-                 resetInactivityTimer();
-               }
-             });
-             
-             // Initialize timer
-             resetInactivityTimer();
-           }
   </script>
 
   <div class="container">
@@ -338,7 +271,7 @@
             acceptBtn.onclick = () => {
               if (confirm(`Accept loan application for ${applicantName}?`)) {
                 alert(`Loan Accepted for ${applicantName}`);
-                tr.style.backgroundColor = "#d4edda";
+              tr.style.backgroundColor = "#d4edda";
                 acceptBtn.disabled = true;
                 rejectBtn.disabled = true;
                 acceptBtn.textContent = "Accepted";
@@ -353,7 +286,7 @@
             rejectBtn.onclick = () => {
               if (confirm(`Reject loan application for ${applicantName}?`)) {
                 alert(`Loan Rejected for ${applicantName}`);
-                tr.style.backgroundColor = "#f8d7da";
+              tr.style.backgroundColor = "#f8d7da";
                 acceptBtn.disabled = true;
                 rejectBtn.disabled = true;
                 acceptBtn.textContent = "Accepted";

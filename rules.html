@@ -17,9 +17,28 @@
                 <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
                 <li><a href="rules.html">Rules</a></li>
-                <li><a href="admin-dashboard.html" style="color: #e74c3c; font-weight: 600;"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
             </ul>
         </nav>
+        
+        <!-- User Details in Top Right -->
+        <div class="user-header-info" id="userHeaderInfo" style="display: none;">
+            <div class="user-avatar-small">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-details-small">
+                <span class="user-name" id="headerUserName">Loading...</span>
+                <span class="user-role" id="headerUserRole">Loading...</span>
+            </div>
+            <div class="user-dropdown">
+                <button class="user-menu-btn" onclick="toggleUserMenu()">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <a href="accounts.html"><i class="fas fa-user"></i> My Account</a>
+                    <a href="#" id="logoutBtn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- Mobile Header -->
@@ -41,7 +60,6 @@
             <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
             <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
             <li><a href="rules.html" onclick="toggleMobileNav()">Rules</a></li>
-            <li><a href="admin-dashboard.html" onclick="toggleMobileNav()" style="color: #8e44ad; font-weight: 600;"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
         </ul>
     </div>
 
@@ -131,5 +149,8 @@
             }
         });
     </script>
+    
+    <!-- User Header Script -->
+    <script src="js/user-header.js"></script>
 </body>
 </html>
