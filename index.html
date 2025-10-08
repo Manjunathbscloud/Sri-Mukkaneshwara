@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sri Mukkanneshwara Associate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -17,9 +20,28 @@
                 <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
                 <li><a href="rules.html">Rules</a></li>
-                <li><a href="admin-dashboard.html" style="color: #e74c3c; font-weight: 600;"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
             </ul>
         </nav>
+        
+        <!-- User Details in Top Right -->
+        <div class="user-header-info" id="userHeaderInfo" style="display: none;">
+            <div class="user-avatar-small">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-details-small">
+                <span class="user-name" id="headerUserName">Loading...</span>
+                <span class="user-role" id="headerUserRole">Loading...</span>
+            </div>
+            <div class="user-dropdown">
+                <button class="user-menu-btn" onclick="toggleUserMenu()">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <a href="accounts.html"><i class="fas fa-user"></i> My Account</a>
+                    <a href="#" id="logoutBtn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- Mobile Header -->
@@ -41,7 +63,6 @@
             <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
             <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
             <li><a href="rules.html" onclick="toggleMobileNav()">Rules</a></li>
-            <li><a href="admin-dashboard.html" onclick="toggleMobileNav()" style="color: #e74c3c; font-weight: 600;"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
         </ul>
     </div>
 
@@ -126,10 +147,10 @@
                         
                         <!-- Add Quick Actions -->
                         <div class="banking-actions">
-                            <button class="action-btn" onclick="copyBankDetails()">
+                            <button class="modern-btn action-btn" onclick="copyBankDetails()">
                                 <i class="fas fa-copy"></i> Copy Account Details
                             </button>
-                            <button class="action-btn" onclick="showQRCode()">
+                            <button class="modern-btn action-btn" onclick="showQRCode()">
                                 <i class="fas fa-qrcode"></i> Show QR Code
                             </button>
                         </div>
@@ -217,6 +238,87 @@ IFSC Code: ICIC0004376</textarea>
                 mobileNav.classList.remove('active');
             }
         });
+
+        // Mobile-specific enhancements
+        if (window.innerWidth <= 768) {
+            // Add pull-to-refresh effect
+            let startY = 0;
+            let currentY = 0;
+            let isPulling = false;
+            
+            document.addEventListener('touchstart', function(e) {
+                startY = e.touches[0].clientY;
+            });
+            
+            document.addEventListener('touchmove', function(e) {
+                currentY = e.touches[0].clientY;
+                const pullDistance = currentY - startY;
+                
+                if (pullDistance > 50 && window.scrollY === 0) {
+                    isPulling = true;
+                    document.body.style.transform = `translateY(${Math.min(pullDistance * 0.3, 50)}px)`;
+                }
+            });
+            
+            document.addEventListener('touchend', function(e) {
+                if (isPulling) {
+                    document.body.style.transform = 'translateY(0)';
+                    document.body.style.transition = 'transform 0.3s ease';
+                    setTimeout(() => {
+                        document.body.style.transition = '';
+                    }, 300);
+                    isPulling = false;
+                }
+            });
+            
+            // Add swipe feedback for stat cards
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                
+                card.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+            
+            // Add gesture feedback
+            function showGestureFeedback(message) {
+                const feedback = document.createElement('div');
+                feedback.className = 'gesture-feedback';
+                feedback.textContent = message;
+                document.body.appendChild(feedback);
+                
+                setTimeout(() => {
+                    feedback.remove();
+                }, 1000);
+            }
+            
+            // Add haptic feedback simulation
+            function addHapticFeedback() {
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(50);
+                }
+            }
+            
+            // Enhanced button interactions
+            const actionButtons = document.querySelectorAll('.action-btn');
+            actionButtons.forEach(button => {
+                button.addEventListener('touchstart', function() {
+                    addHapticFeedback();
+                    this.style.transform = 'scale(0.95)';
+                });
+                
+                button.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        }
+
     </script>
+    
+    <!-- User Header Script -->
+    <script src="js/user-header.js"></script>
 </body>
 </html>

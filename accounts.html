@@ -62,10 +62,28 @@
                 <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
                 <li><a href="rules.html">Rules</a></li>
-                <li><a href="admin-dashboard.html" style="color: #e74c3c; font-weight: 600;"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
-                <li><a href="#" id="logoutBtn" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
+        
+        <!-- User Details in Top Right -->
+        <div class="user-header-info" id="userHeaderInfo" style="display: none;">
+            <div class="user-avatar-small">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-details-small">
+                <span class="user-name" id="headerUserName">Loading...</span>
+                <span class="user-role" id="headerUserRole">Loading...</span>
+            </div>
+            <div class="user-dropdown">
+                <button class="user-menu-btn" onclick="toggleUserMenu()">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <a href="accounts.html"><i class="fas fa-user"></i> My Account</a>
+                    <a href="#" id="logoutBtn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- Mobile Header -->
@@ -87,7 +105,6 @@
                 <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
                 <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
                 <li><a href="rules.html" onclick="toggleMobileNav()">Rules</a></li>
-                <li><a href="admin-dashboard.html" onclick="toggleMobileNav()" style="color: #e74c3c; font-weight: 600;"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
                 <li><a href="#" id="mobileLogoutBtn" onclick="toggleMobileNav()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
     </div>
@@ -134,27 +151,7 @@
             </div>
         </section>
 
-        <section class="deposit-history">
-            <div class="info-card history-summary">
-                <h3><i class="fas fa-history"></i> Deposit Structure History</h3>
-                <div class="history-timeline">
-                    <div class="timeline-item">
-                        <span class="year">2021-22</span>
-                        <p>Initial deposit structure: <strong>₹1,000</strong> per month</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="year">2022-24</span>
-                        <p>After 1st annual meeting: <strong>₹1,500</strong> per month</p>
-                        <p class="note">(Maintained for 3 years)</p>
-                    </div>
-                    <div class="timeline-item current">
-                        <span class="year">2025 onwards</span>
-                        <p>Current deposit structure: <strong>₹2,000</strong> per month</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        <!-- Account Services Section - Moved to top -->
         <section class="accounts-section">
             <h2 class="page-title">
                 <i class="fas fa-university"></i> 
@@ -186,13 +183,94 @@
                             <i class="fas fa-hand-holding-usd"></i>
                             Apply for Loan
                         </button>
-                        <button class="view-loans-btn" onclick="window.location.href='loan-status.html'">
+                        <button class="view-loans-btn" onclick="window.location.href='president-view.html'">
                             <i class="fas fa-list-ul"></i>
-                            View Loan Status
+                            View Loan Applications
                         </button>
                     </div>
                 </div>
 
+            </div>
+        </section>
+
+        <!-- Deposit History Section -->
+        <section class="deposit-history">
+            <div class="info-card history-summary">
+                <h3><i class="fas fa-history"></i> Deposit Structure History</h3>
+                <div class="history-timeline">
+                    <div class="timeline-item">
+                        <span class="year">2021-22</span>
+                        <p>Initial deposit structure: <strong>₹1,000</strong> per month</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="year">2022-24</span>
+                        <p>After 1st annual meeting: <strong>₹1,500</strong> per month</p>
+                        <p class="note">(Maintained for 3 years)</p>
+                    </div>
+                    <div class="timeline-item current">
+                        <span class="year">2025 onwards</span>
+                        <p>Current deposit structure: <strong>₹2,000</strong> per month</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Section - Only visible to admin users -->
+        <section id="adminSection" class="admin-section" style="display: none;">
+            <h2 class="page-title">
+                <i class="fas fa-tachometer-alt"></i> 
+                Admin Dashboard
+            </h2>
+            <p class="admin-subtitle">Manage all aspects of the Sri Mukkanneshwara Associate</p>
+
+            <div class="admin-grid">
+                <!-- Financial Management -->
+                <div class="admin-card">
+                    <div class="admin-card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Financial Management</h3>
+                    <p>Update bank balance, available loan amounts, and send notifications to all members about financial changes.</p>
+                    <a href="admin-financial.html" class="admin-btn">
+                        <i class="fas fa-edit"></i> Update Financial Data
+                    </a>
+                </div>
+                
+                <!-- Loan Applications -->
+                <div class="admin-card">
+                    <div class="admin-card-icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <h3>Loan Applications</h3>
+                    <p>Review and manage loan applications submitted by members. Accept or reject applications as needed.</p>
+                    <a href="president-view.html" class="admin-btn">
+                        <i class="fas fa-eye"></i> Review Applications
+                    </a>
+                </div>
+                
+                <!-- Reports & Analytics -->
+                <div class="admin-card">
+                    <div class="admin-card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Reports & Analytics</h3>
+                    <p>Generate comprehensive reports on loans, deposits, financial status, and member activities with interactive charts and graphs.</p>
+                    <a href="admin-reports.html" class="admin-btn">
+                        <i class="fas fa-chart-line"></i> View Analytics
+                    </a>
+                </div>
+                
+                <!-- Member Management -->
+                <div class="admin-card">
+                    <div class="admin-card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Member Management</h3>
+                    <p>View member information, manage member roles, and access member-related data and reports.</p>
+                    <a href="members.html" class="admin-btn">
+                        <i class="fas fa-user-cog"></i> Manage Members
+                    </a>
+                </div>
             </div>
         </section>
     </main>
@@ -203,29 +281,22 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const isPresident = (localStorage.getItem('isPresident') === 'true') || (sessionStorage.getItem('isPresident') === 'true');
-            const reviewBtn = document.querySelector('.admin-loan-btn');
-
-            if (isPresident && reviewBtn) {
-                reviewBtn.style.display = 'inline-block';
-                reviewBtn.onclick = function () {
-                    window.location.href = 'president-view.html';
-                };
+            // Check if user is president (only president has admin access)
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
+            const userRole = userDetails.role || '';
+            const isAdmin = userRole === 'president';
+            
+            console.log('User role:', userRole, 'Is admin:', isAdmin);
+            
+            // User details are now displayed in the header with member images
+            
+            // Show admin section if user is president
+            const adminSection = document.getElementById('adminSection');
+            if (isAdmin && adminSection) {
+                adminSection.style.display = 'block';
+                console.log('Admin section displayed for user:', userDetails.name);
             }
 
-            // Logout functionality
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Clear all session data
-                    sessionStorage.clear();
-                    
-                    // Redirect to login page
-                    window.location.href = 'login.html';
-                });
-            }
         });
 
         // Mobile Navigation Functions
@@ -254,6 +325,8 @@
                 console.error('Error checking user role:', error);
             }
         }
+
+        // User details are now displayed in the header with member images
 
         // Check role when page loads
         document.addEventListener('DOMContentLoaded', function() {
@@ -363,6 +436,9 @@
 
     <!-- Financial Data Management -->
     <script src="financial-data.js"></script>
+    
+    <!-- User Header Script -->
+    <script src="js/user-header.js"></script>
 
 </body>
 </html>
