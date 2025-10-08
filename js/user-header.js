@@ -12,6 +12,22 @@ function displayUserHeader() {
                 const userRole = document.getElementById('headerUserRole');
                 if (userName) userName.textContent = userDetails.name;
                 if (userRole) userRole.textContent = userDetails.role || 'Member';
+                
+                // Update user avatar with member image
+                const userAvatar = userHeaderInfo.querySelector('.user-avatar-small');
+                if (userAvatar && userDetails.id) {
+                    // Create member image path based on member ID
+                    const memberId = userDetails.id.toString().padStart(3, '0');
+                    const imagePath = `images/members/member-${memberId}.jpeg`;
+                    
+                    // Replace the icon with an image
+                    userAvatar.innerHTML = `
+                        <img src="${imagePath}" alt="${userDetails.name}" 
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
+                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.3);">
+                        <i class="fas fa-user-circle" style="display: none; font-size: 2rem;"></i>
+                    `;
+                }
             }
         } else {
             const userHeaderInfo = document.getElementById('userHeaderInfo');

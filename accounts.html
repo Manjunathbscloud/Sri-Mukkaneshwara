@@ -151,45 +151,7 @@
             </div>
         </section>
 
-        <!-- User Details Section -->
-        <section class="user-details-section">
-            <div class="user-info-card">
-                <div class="user-avatar">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                <div class="user-info">
-                    <h3 id="userName">Loading...</h3>
-                    <p id="userRole">Loading...</p>
-                    <p id="userEmail">Loading...</p>
-                    <p id="userPhone">Loading...</p>
-                </div>
-                <div class="user-status">
-                    <span class="status-badge" id="userStatus">Active</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="deposit-history">
-            <div class="info-card history-summary">
-                <h3><i class="fas fa-history"></i> Deposit Structure History</h3>
-                <div class="history-timeline">
-                    <div class="timeline-item">
-                        <span class="year">2021-22</span>
-                        <p>Initial deposit structure: <strong>₹1,000</strong> per month</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="year">2022-24</span>
-                        <p>After 1st annual meeting: <strong>₹1,500</strong> per month</p>
-                        <p class="note">(Maintained for 3 years)</p>
-                    </div>
-                    <div class="timeline-item current">
-                        <span class="year">2025 onwards</span>
-                        <p>Current deposit structure: <strong>₹2,000</strong> per month</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        <!-- Account Services Section - Moved to top -->
         <section class="accounts-section">
             <h2 class="page-title">
                 <i class="fas fa-university"></i> 
@@ -228,6 +190,28 @@
                     </div>
                 </div>
 
+            </div>
+        </section>
+
+        <!-- Deposit History Section -->
+        <section class="deposit-history">
+            <div class="info-card history-summary">
+                <h3><i class="fas fa-history"></i> Deposit Structure History</h3>
+                <div class="history-timeline">
+                    <div class="timeline-item">
+                        <span class="year">2021-22</span>
+                        <p>Initial deposit structure: <strong>₹1,000</strong> per month</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="year">2022-24</span>
+                        <p>After 1st annual meeting: <strong>₹1,500</strong> per month</p>
+                        <p class="note">(Maintained for 3 years)</p>
+                    </div>
+                    <div class="timeline-item current">
+                        <span class="year">2025 onwards</span>
+                        <p>Current deposit structure: <strong>₹2,000</strong> per month</p>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -304,8 +288,7 @@
             
             console.log('User role:', userRole, 'Is admin:', isAdmin);
             
-            // Display user details
-            displayUserDetails(userDetails);
+            // User details are now displayed in the header with member images
             
             // Show admin section if user is president
             const adminSection = document.getElementById('adminSection');
@@ -343,30 +326,7 @@
             }
         }
 
-        // Display user details function
-        function displayUserDetails(userDetails) {
-            try {
-                document.getElementById('userName').textContent = userDetails.name || 'Unknown User';
-                document.getElementById('userRole').textContent = `Role: ${userDetails.role || 'Member'}`;
-                document.getElementById('userEmail').textContent = `Email: ${userDetails.email || 'Not provided'}`;
-                document.getElementById('userPhone').textContent = `Phone: ${userDetails.phone || 'Not provided'}`;
-                
-                // Set status badge color based on role
-                const statusBadge = document.getElementById('userStatus');
-                if (userDetails.role === 'president') {
-                    statusBadge.textContent = 'President';
-                    statusBadge.className = 'status-badge president';
-                } else if (userDetails.role === 'vice-president') {
-                    statusBadge.textContent = 'Vice President';
-                    statusBadge.className = 'status-badge vice-president';
-                } else {
-                    statusBadge.textContent = 'Member';
-                    statusBadge.className = 'status-badge member';
-                }
-            } catch (error) {
-                console.error('Error displaying user details:', error);
-            }
-        }
+        // User details are now displayed in the header with member images
 
         // Check role when page loads
         document.addEventListener('DOMContentLoaded', function() {
