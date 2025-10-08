@@ -7,6 +7,10 @@ const SHEETS_CONFIG = {
     // year, loan_id, member, from, amount, interest, renewal_or_return_month, status, total_paid
     loansCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQoBzlw6fdOJJYrh4uw4ej8r6Vwx0J_GiC0Ucd19ENrPYw20cDhDtpZe-oE-7-eRkEsSkp5mc1ziDIx/pub?output=csv',
 
+    // Deposits CSV should contain a header row with columns:
+    // year, member_name, deposit_date, amount, deposit_type, interest_earned, total_balance, notes
+    depositsCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTg-CXFLP8qNoZplwSYGCtjEJSqfzbt9HjZ51tTzVd76Dtm_kCsBR5PTsbXim7FcM4OV4HKPmHrgzK8/pub?output=csv',
+
     // Rules CSV should contain a header row with columns:
     // section, item
     rulesCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRfIK3sa1N4kZgTWvYct5zWIGiURl8SZF4Xgf4d76FqPZS3cyMNNnURqm8UutszummyJ05V-_KUzhgQ/pub?output=csv',
@@ -15,7 +19,7 @@ const SHEETS_CONFIG = {
 
 // Optional: basic validation helper
 function assertSheetsConfig() {
-    if (!SHEETS_CONFIG || !SHEETS_CONFIG.loansCsvUrl || !SHEETS_CONFIG.rulesCsvUrl) {
+    if (!SHEETS_CONFIG || !SHEETS_CONFIG.loansCsvUrl || !SHEETS_CONFIG.rulesCsvUrl || !SHEETS_CONFIG.depositsCsvUrl) {
         console.warn('SHEETS_CONFIG is missing CSV URLs. Please set them in sheets-config.js');
     }
 }
