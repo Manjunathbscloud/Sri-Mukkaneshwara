@@ -6,18 +6,10 @@
     <title>Fourth Year Deposits (2024-2025) - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
     <script>
-        (function() {
-            function hasValidUser() {
-                var raw = localStorage.getItem('userDetails') || sessionStorage.getItem('userDetails');
-                if (!raw) return false;
-                try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
-            }
-            var isAuth = (localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true') && hasValidUser();
-            if (!isAuth) {
-                sessionStorage.setItem('returnUrl', window.location.href);
-                window.location.href = 'login.html';
-            }
-        })();
+        if (!sessionStorage.getItem('isAuthenticated')) {
+            sessionStorage.setItem('returnUrl', window.location.href);
+            window.location.href = 'login.html';
+        }
     </script>
 </head>
 <body>
@@ -27,7 +19,7 @@
             <ul>
                 <li><a href="index.html">Overview</a></li>
                 <li><a href="members.html">Members</a></li>
-                <li><a href="login.html">Accounts</a></li>
+                <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
                 <li><a href="rules.html">Rules</a></li>
             </ul>
@@ -38,54 +30,66 @@
         <section class="deposits-section">
             <h2 class="page-title"><i class="fas fa-piggy-bank"></i> Deposits 2024-25</h2>
 
+            <div class="table-actions" style="margin-bottom: 1rem; text-align: right;">
+                <button id="downloadPdfBtn" class="download-btn" onclick="downloadDepositPDF()" title="Download as PDF">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+            </div>
+
             <div class="info-card">
-                <div class="table-header">
-                    <h3><i class="fas fa-list-alt"></i> Deposits 2024-25</h3>
-                    <div class="table-actions">
-                        <button id="downloadPdfBtn" class="download-btn" onclick="downloadDepositsPDF()" title="Download as PDF">
-                            <i class="fas fa-download"></i> Download PDF
-                        </button>
-                        <span class="record-count" id="recordCount">Loading...</span>
-                    </div>
+                <h3 class="mt-4">Fourth Year History (2024-2025)</h3>
+                <div class="history-summary">
+                    <p>In the fourth year, the association further enhanced its financial structure:</p>
+                    <ul class="feature-list">
+                        <li>Yearly renewal fee increased to: ₹6,000 per member</li>
+                        <li>Monthly deposit continued at: ₹1,500 per member</li>
+                        <li>Additional income: Earned ₹57,300 through interest (until November 2024)</li>
+                        <li>Annual expenses: ₹33,385 spent on year-end meeting</li>
+                    </ul>
                 </div>
 
-                <div class="table-container">
-                    <table class="member-table deposits-table">
-                        <thead>
-                            <tr>
-                                <th><i class="fas fa-user"></i> Member</th>
-                                <th><i class="fas fa-calendar"></i> Date</th>
-                                <th><i class="fas fa-rupee-sign"></i> Amount</th>
-                                <th><i class="fas fa-tag"></i> Type</th>
-                                <th><i class="fas fa-percentage"></i> Interest</th>
-                                <th><i class="fas fa-wallet"></i> Balance</th>
-                                <th><i class="fas fa-sticky-note"></i> Notes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr id="tableLoader" style="display: none;">
-                                <td colspan="7" class="table-loader">
-                                    <div class="spinner"></div>
-                                    <p>Loading deposit data...</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="info-card no-records" style="display:none;">
-                <div class="no-data-content">
-                    <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" alt="No Records" class="no-data-image">
-                    <h3>No Records Found</h3>
-                    <p class="no-data-emoji">¯\_(ツ)_/¯</p>
-                </div>
+                <h3 class="mt-4">Detailed Fourth Year Summary</h3>
+                <table class="member-table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Details</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Renewal Fee</td>
+                            <td>April 2024 (₹6,000 × 7 members)</td>
+                            <td>₹42,000</td>
+                        </tr>
+                        <tr>
+                            <td>Monthly Deposits</td>
+                            <td>April 2024 - November 2024 (₹1,500 × 7 members × 8 months)</td>
+                            <td>₹84,000</td>
+                        </tr>
+                        <tr>
+                            <td>Interest Earned</td>
+                            <td>Total interest until November 2024</td>
+                            <td>₹57,300</td>
+                        </tr>
+                        <tr>
+                            <td>Annual Meeting Expense</td>
+                            <td>Year-end meeting cost</td>
+                            <td>-₹33,385</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Total Balance</td>
+                            <td>As of November 2024</td>
+                            <td>₹149,915</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="bottom-nav">
-                <a href="deposits.html" class="back-button">
-                    <i class="fas fa-arrow-left"></i>
-                    Back to Deposits Overview
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="deposits.html" style="color: #007bff; text-decoration: none; font-size: 0.9rem;">
+                    ← Back to Deposits Overview
                 </a>
             </div>
         </section>
@@ -95,15 +99,10 @@
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
     
-    <script src="sheets-config.js"></script>
-    <script src="sheets-utils.js"></script>
-    <script src="deposits-render.js"></script>
+    <script src="js/pdf-generator.js"></script>
     <script>
-        // Global variable to store deposit data
-        let currentDepositData = [];
-        
-        // Download PDF function
-        async function downloadDepositsPDF() {
+        // PDF Download functionality for deposits
+        async function downloadDepositPDF() {
             const downloadBtn = document.getElementById('downloadPdfBtn');
             const originalText = downloadBtn.innerHTML;
             
@@ -112,17 +111,20 @@
                 downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
                 downloadBtn.disabled = true;
                 
-                // Get current deposit data
-                const depositData = getCurrentDepositData();
+                // Get deposit data from the page
+                const depositData = getDepositData();
                 
-                if (!depositData || depositData.length === 0) {
-                    alert('No deposit data available to download.');
+                if (depositData.length === 0) {
+                    alert('No data available to generate PDF');
                     return;
                 }
                 
-                // Generate PDF (you can implement this later)
-                console.log('PDF generation for deposits - to be implemented');
-                alert('PDF generation feature will be implemented soon!');
+                // Generate PDF
+                const success = await PDFGenerator.generateDepositPDF('2024-25', depositData, 'Deposit Records 2024-25');
+                
+                if (success) {
+                    console.log('PDF generated successfully');
+                }
                 
             } catch (error) {
                 console.error('Error generating PDF:', error);
@@ -134,65 +136,38 @@
             }
         }
         
-        // Function to get current deposit data
-        function getCurrentDepositData() {
-            // Try to get data from the table
-            const table = document.querySelector('.deposits-table tbody');
-            if (!table) return [];
-            
-            const rows = table.querySelectorAll('tr:not([id="tableLoader"])');
-            const depositData = [];
-            
-            rows.forEach(row => {
-                if (row.style.display !== 'none') { // Only include visible rows
-                    const cells = row.querySelectorAll('td');
-                    if (cells.length >= 7) {
-                        depositData.push({
-                            member_name: cells[0].textContent.trim(),
-                            deposit_date: cells[1].textContent.trim(),
-                            amount: cells[2].textContent.trim(),
-                            deposit_type: cells[3].textContent.trim(),
-                            interest_earned: cells[4].textContent.trim(),
-                            total_balance: cells[5].textContent.trim(),
-                            notes: cells[6].textContent.trim(),
-                            year: '2024-25'
-                        });
-                    }
+        // Function to get deposit data from the page
+        function getDepositData() {
+            const depositData = [
+                {
+                    description: 'Renewal Fee',
+                    details: 'April 2024 (₹6,000 × 7 members)',
+                    amount: '₹42,000'
+                },
+                {
+                    description: 'Monthly Deposits',
+                    details: 'April 2024 - November 2024 (₹1,500 × 7 members × 8 months)',
+                    amount: '₹84,000'
+                },
+                {
+                    description: 'Interest Earned',
+                    details: 'Total interest until November 2024',
+                    amount: '₹57,300'
+                },
+                {
+                    description: 'Annual Meeting Expenses',
+                    details: 'Year-end meeting cost',
+                    amount: '₹33,385'
+                },
+                {
+                    description: 'Total Balance',
+                    details: 'As of November 2024',
+                    amount: '₹149,915'
                 }
-            });
+            ];
             
             return depositData;
         }
-        
-        // Store deposit data when it's loaded
-        function onDataLoaded(items) {
-            currentDepositData = items;
-            
-            // Hide loader
-            const tableLoader = document.getElementById('tableLoader');
-            if (tableLoader) {
-                tableLoader.style.display = 'none';
-            }
-            
-            // Update record count
-            const recordCount = document.getElementById('recordCount');
-            if (recordCount) {
-                recordCount.textContent = `${items.length} record${items.length !== 1 ? 's' : ''} found`;
-            }
-        }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Show loader
-            const tableLoader = document.getElementById('tableLoader');
-            if (tableLoader) {
-                tableLoader.style.display = 'table-row';
-            }
-            
-            DepositsRender.loadDeposits('2024-25', { 
-                tbodySelector: '.deposits-table tbody',
-                onDataLoaded: onDataLoaded
-            });
-        });
     </script>
 </body>
 </html>
