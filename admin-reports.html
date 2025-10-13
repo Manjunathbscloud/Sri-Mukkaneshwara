@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <style>
         .reports-container {
             max-width: 1400px;
@@ -324,31 +325,36 @@
                     year: 'First Year (2021-2022)',
                     principalAmount: 111000,
                     interestEarned: 8700,
-                    totalBalance: 114100
+                    totalBalance: 114100,
+                    months: '12 months'
                 },
                 {
                     year: 'Second Year (2022-2023)',
                     principalAmount: 149000,
                     interestEarned: 33600,
-                    totalBalance: 169600
+                    totalBalance: 169600,
+                    months: '14 months'
                 },
                 {
                     year: 'Third Year (2023-2024)',
                     principalAmount: 170000,
                     interestEarned: 45700,
-                    totalBalance: 197950
+                    totalBalance: 197950,
+                    months: '13 months'
                 },
                 {
                     year: 'Fourth Year (2024-2025)',
                     principalAmount: 126000,
                     interestEarned: 57300,
-                    totalBalance: 149915
+                    totalBalance: 149915,
+                    months: '8 months'
                 },
                 {
                     year: 'Fifth Year (2025)',
                     principalAmount: 149000,
                     interestEarned: 0,
-                    totalBalance: 149000
+                    totalBalance: 149000,
+                    months: '11 months'
                 }
             ];
         }
@@ -358,6 +364,9 @@
         function createSimpleDepositsChart() {
             const ctx = document.getElementById('simpleDepositsChart').getContext('2d');
             const analysisData = getDepositAnalysisData();
+            
+            // Register the datalabels plugin
+            Chart.register(ChartDataLabels);
             
             const labels = analysisData.map(data => data.year);
             const principalData = analysisData.map(data => data.principalAmount);
@@ -463,6 +472,26 @@
                             bottom: 20,
                             left: 20,
                             right: 20
+                        }
+                    },
+                    plugins: {
+                        datalabels: {
+                            display: true,
+                            color: '#2c3e50',
+                            font: {
+                                size: 10,
+                                weight: 'bold'
+                            },
+                            formatter: function(value, context) {
+                                if (context.datasetIndex === 0) { // Only show on principal amount bars (blue bars)
+                                    const dataIndex = context.dataIndex;
+                                    return analysisData[dataIndex].months;
+                                }
+                                return '';
+                            },
+                            anchor: 'end',
+                            align: 'top',
+                            offset: 5
                         }
                     }
                 }
