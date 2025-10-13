@@ -171,124 +171,23 @@
             <p>Comprehensive financial analysis and member activity insights</p>
         </div>
         
-        <!-- Statistics Cards -->
-        <div class="stats-grid" id="statsGrid">
-            <div class="stat-card">
-                <h3 id="totalDeposits">₹0</h3>
-                <p>Total Deposits</p>
-            </div>
-            <div class="stat-card">
-                <h3 id="totalLoans">₹0</h3>
-                <p>Total Loans</p>
-            </div>
-            <div class="stat-card">
-                <h3 id="activeLoans">0</h3>
-                <p>Active Loans</p>
-            </div>
-            <div class="stat-card">
-                <h3 id="totalMembers">0</h3>
-                <p>Total Members</p>
-            </div>
-        </div>
         
-        <!-- Charts Section -->
-        <div class="charts-grid">
-            <!-- Deposits Chart -->
-            <div class="chart-container">
-                <div class="chart-title">
-                    <i class="fas fa-piggy-bank"></i> Deposits Overview
-                </div>
-                <div class="chart-wrapper">
-                    <canvas id="depositsChart"></canvas>
-                </div>
-            </div>
-            
-            <!-- Loans Chart -->
-            <div class="chart-container">
-                <div class="chart-title">
-                    <i class="fas fa-hand-holding-usd"></i> Loans Overview
-                </div>
-                <div class="chart-wrapper">
-                    <canvas id="loansChart"></canvas>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Year-wise Analysis -->
-        <div class="charts-grid">
-            <!-- Year-wise Deposits -->
-            <div class="chart-container">
-                <div class="chart-title">
-                    <i class="fas fa-calendar-alt"></i> Year-wise Deposits
-                </div>
-                <div class="chart-wrapper">
-                    <canvas id="yearlyDepositsChart"></canvas>
-                </div>
-            </div>
-            
-            <!-- Year-wise Loans -->
-            <div class="chart-container">
-                <div class="chart-title">
-                    <i class="fas fa-calendar-alt"></i> Year-wise Loans
-                </div>
-                <div class="chart-wrapper">
-                    <canvas id="yearlyLoansChart"></canvas>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Member Activity Chart -->
+        <!-- Simple Deposits and Interest Chart -->
         <div class="chart-container">
             <div class="chart-title">
-                <i class="fas fa-users"></i> Member Activity Analysis
+                <i class="fas fa-chart-bar"></i> Deposits and Interest Analysis
             </div>
             <div class="chart-wrapper">
-                <canvas id="memberActivityChart"></canvas>
+                <canvas id="simpleDepositsChart"></canvas>
+            </div>
+            
+            <!-- Meeting Calculation Info -->
+            <div style="background: #f8f9fa; border-left: 4px solid #007bff; padding: 15px; margin-top: 20px; border-radius: 0 8px 8px 0; font-style: italic; color: #6c757d;">
+                <i class="fas fa-info-circle" style="color: #007bff; margin-right: 8px;"></i>
+                <strong>Note:</strong> Deposit and interest calculations are finalized during association meetings, which may occur earlier or later than scheduled dates, affecting the timing of financial updates.
             </div>
         </div>
-        
-        <!-- Data Tables -->
-        <div class="data-table">
-            <h3><i class="fas fa-table"></i> Recent Loan Activity</h3>
-            <div class="table-container">
-                <table id="loansTable">
-                    <thead>
-                        <tr>
-                            <th>Member</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="loansTableBody">
-                        <tr>
-                            <td colspan="4" class="loading">Loading data...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <div class="data-table">
-            <h3><i class="fas fa-table"></i> Recent Deposit Activity</h3>
-            <div class="table-container">
-                <table id="depositsTable">
-                    <thead>
-                        <tr>
-                            <th>Member</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Type</th>
-                        </tr>
-                    </thead>
-                    <tbody id="depositsTableBody">
-                        <tr>
-                            <td colspan="4" class="loading">Loading data...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+
         
         <!-- Back to Admin -->
         <div class="back-to-admin">
@@ -363,19 +262,9 @@
                 depositsData = getDepositsDataFromPages();
                 console.log('Deposits data loaded:', depositsData.length, 'records');
                 
-                // Update statistics
-                updateStatistics();
                 
-                // Create charts
-                createDepositsChart();
-                createLoansChart();
-                createYearlyDepositsChart();
-                createYearlyLoansChart();
-                createMemberActivityChart();
-                
-                // Update tables
-                updateLoansTable();
-                updateDepositsTable();
+                // Create simple deposits and interest chart
+                createSimpleDepositsChart();
                 
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -426,273 +315,53 @@
                 { year: '2024-25', member: 'Praveen Banakar', amount: 2000, type: 'Monthly', date: 'Mar-24' }
             ];
         }
-        
-        // Update statistics cards
-        function updateStatistics() {
-            // Calculate total deposits
-            const totalDeposits = depositsData.reduce((sum, deposit) => {
-                const amount = parseFloat(deposit.amount || 0);
-                return sum + amount;
-            }, 0);
-            
-            // Calculate total loans
-            const totalLoans = loansData.reduce((sum, loan) => {
-                const amount = parseFloat(loan.amount?.replace(/[₹,]/g, '') || 0);
-                return sum + amount;
-            }, 0);
-            
-            // Count active loans
-            const activeLoans = loansData.filter(loan => 
-                loan.status?.toLowerCase() === 'active'
-            ).length;
-            
-            // Count unique members
-            const uniqueMembers = new Set([
-                ...loansData.map(loan => loan.member),
-                ...depositsData.map(deposit => deposit.member)
-            ]).size;
-            
-            // Update DOM
-            document.getElementById('totalDeposits').textContent = `₹${totalDeposits.toLocaleString('en-IN')}`;
-            document.getElementById('totalLoans').textContent = `₹${totalLoans.toLocaleString('en-IN')}`;
-            document.getElementById('activeLoans').textContent = activeLoans;
-            document.getElementById('totalMembers').textContent = uniqueMembers;
-        }
-        
-        // Create deposits chart
-        function createDepositsChart() {
-            const ctx = document.getElementById('depositsChart').getContext('2d');
-            
-            // Group deposits by member
-            const memberDeposits = {};
-            depositsData.forEach(deposit => {
-                const member = deposit.member || 'Unknown';
-                const amount = parseFloat(deposit.amount || 0);
-                memberDeposits[member] = (memberDeposits[member] || 0) + amount;
-            });
-            
-            const labels = Object.keys(memberDeposits);
-            const data = Object.values(memberDeposits);
-            
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: data,
-                        backgroundColor: [
-                            '#FF6384',
-                            '#36A2EB',
-                            '#FFCE56',
-                            '#4BC0C0',
-                            '#9966FF',
-                            '#FF9F40',
-                            '#FF6384'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#fff'
-                    }]
+
+        // Extract deposit analysis data from deposits.html account balance summary
+        function getDepositAnalysisData() {
+            // Data extracted from deposits.html account balance summary table
+            return [
+                {
+                    year: 'First Year (2021-2022)',
+                    principalAmount: 111000,
+                    interestEarned: 8700,
+                    totalBalance: 114100
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const value = context.parsed;
-                                    return `${context.label}: ₹${value.toLocaleString('en-IN')}`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // Create loans chart
-        function createLoansChart() {
-            const ctx = document.getElementById('loansChart').getContext('2d');
-            
-            // Group loans by status
-            const statusCounts = {};
-            loansData.forEach(loan => {
-                const status = loan.status || 'Unknown';
-                statusCounts[status] = (statusCounts[status] || 0) + 1;
-            });
-            
-            const labels = Object.keys(statusCounts);
-            const data = Object.values(statusCounts);
-            
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Number of Loans',
-                        data: data,
-                        backgroundColor: [
-                            '#36A2EB',
-                            '#FF6384',
-                            '#FFCE56'
-                        ],
-                        borderColor: [
-                            '#2E86C1',
-                            '#E74C3C',
-                            '#F39C12'
-                        ],
-                        borderWidth: 2
-                    }]
+                {
+                    year: 'Second Year (2022-2023)',
+                    principalAmount: 149000,
+                    interestEarned: 33600,
+                    totalBalance: 169600
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // Create yearly deposits chart
-        function createYearlyDepositsChart() {
-            const ctx = document.getElementById('yearlyDepositsChart').getContext('2d');
-            
-            // Group deposits by year
-            const yearlyDeposits = {};
-            depositsData.forEach(deposit => {
-                const year = deposit.year || 'Unknown';
-                const amount = parseFloat(deposit.amount || 0);
-                yearlyDeposits[year] = (yearlyDeposits[year] || 0) + amount;
-            });
-            
-            const labels = Object.keys(yearlyDeposits).sort();
-            const data = labels.map(year => yearlyDeposits[year]);
-            
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total Deposits (₹)',
-                        data: data,
-                        borderColor: '#36A2EB',
-                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
-                    }]
+                {
+                    year: 'Third Year (2023-2024)',
+                    principalAmount: 170000,
+                    interestEarned: 45700,
+                    totalBalance: 197950
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return '₹' + value.toLocaleString('en-IN');
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        
-        // Create yearly loans chart
-        function createYearlyLoansChart() {
-            const ctx = document.getElementById('yearlyLoansChart').getContext('2d');
-            
-            // Group loans by year
-            const yearlyLoans = {};
-            loansData.forEach(loan => {
-                const year = loan.year || 'Unknown';
-                const amount = parseFloat(loan.amount?.replace(/[₹,]/g, '') || 0);
-                yearlyLoans[year] = (yearlyLoans[year] || 0) + amount;
-            });
-            
-            const labels = Object.keys(yearlyLoans).sort();
-            const data = labels.map(year => yearlyLoans[year]);
-            
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total Loans (₹)',
-                        data: data,
-                        backgroundColor: '#FF6384',
-                        borderColor: '#E74C3C',
-                        borderWidth: 2
-                    }]
+                {
+                    year: 'Fourth Year (2024-2025)',
+                    principalAmount: 126000,
+                    interestEarned: 57300,
+                    totalBalance: 149915
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return '₹' + value.toLocaleString('en-IN');
-                                }
-                            }
-                        }
-                    }
+                {
+                    year: 'Fifth Year (2025)',
+                    principalAmount: 149000,
+                    interestEarned: 0,
+                    totalBalance: 149000
                 }
-            });
+            ];
         }
         
-        // Create member activity chart
-        function createMemberActivityChart() {
-            const ctx = document.getElementById('memberActivityChart').getContext('2d');
+        
+        // Create simple deposits and interest chart
+        function createSimpleDepositsChart() {
+            const ctx = document.getElementById('simpleDepositsChart').getContext('2d');
+            const analysisData = getDepositAnalysisData();
             
-            // Count loans and deposits per member
-            const memberActivity = {};
-            
-            loansData.forEach(loan => {
-                const member = loan.member || 'Unknown';
-                if (!memberActivity[member]) {
-                    memberActivity[member] = { loans: 0, deposits: 0 };
-                }
-                memberActivity[member].loans++;
-            });
-            
-            depositsData.forEach(deposit => {
-                const member = deposit.member || 'Unknown';
-                if (!memberActivity[member]) {
-                    memberActivity[member] = { loans: 0, deposits: 0 };
-                }
-                memberActivity[member].deposits++;
-            });
-            
-            const labels = Object.keys(memberActivity);
-            const loansData = labels.map(member => memberActivity[member].loans);
-            const depositsData = labels.map(member => memberActivity[member].deposits);
+            const labels = analysisData.map(data => data.year);
+            const principalData = analysisData.map(data => data.principalAmount);
+            const interestData = analysisData.map(data => data.interestEarned);
             
             new Chart(ctx, {
                 type: 'bar',
@@ -700,18 +369,22 @@
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Loans',
-                            data: loansData,
-                            backgroundColor: '#FF6384',
-                            borderColor: '#E74C3C',
-                            borderWidth: 2
+                            label: 'Principal Amount',
+                            data: principalData,
+                            backgroundColor: 'rgba(54, 162, 235, 0.8)',
+                            borderColor: '#2E86C1',
+                            borderWidth: 3,
+                            borderRadius: 8,
+                            borderSkipped: false,
                         },
                         {
-                            label: 'Deposits',
-                            data: depositsData,
-                            backgroundColor: '#36A2EB',
-                            borderColor: '#2E86C1',
-                            borderWidth: 2
+                            label: 'Interest Earned',
+                            data: interestData,
+                            backgroundColor: 'rgba(255, 99, 132, 0.8)',
+                            borderColor: '#E74C3C',
+                            borderWidth: 3,
+                            borderRadius: 8,
+                            borderSkipped: false,
                         }
                     ]
                 },
@@ -720,70 +393,82 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'top'
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#007bff',
+                            borderWidth: 2,
+                            cornerRadius: 8,
+                            displayColors: true,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return `${context.dataset.label}: ₹${context.parsed.y.toLocaleString('en-IN')}`;
+                                }
+                            }
                         }
                     },
                     scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                color: '#2c3e50'
+                            }
+                        },
                         y: {
                             beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)',
+                                drawBorder: false
+                            },
                             ticks: {
-                                stepSize: 1
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                color: '#2c3e50',
+                                callback: function(value) {
+                                    if (value >= 100000) {
+                                        return '₹' + (value / 100000).toFixed(1) + 'L';
+                                    } else if (value >= 1000) {
+                                        return '₹' + (value / 1000).toFixed(0) + 'K';
+                                    }
+                                    return '₹' + value.toLocaleString('en-IN');
+                                }
                             }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            top: 20,
+                            bottom: 20,
+                            left: 20,
+                            right: 20
                         }
                     }
                 }
             });
         }
         
-        // Update loans table
-        function updateLoansTable() {
-            const tbody = document.getElementById('loansTableBody');
-            tbody.innerHTML = '';
-            
-            // Show recent 10 loans
-            const recentLoans = loansData.slice(0, 10);
-            
-            if (recentLoans.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="loading">No loan data available</td></tr>';
-                return;
-            }
-            
-            recentLoans.forEach(loan => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${loan.member || 'Unknown'}</td>
-                    <td>₹${parseFloat(loan.amount?.replace(/[₹,]/g, '') || 0).toLocaleString('en-IN')}</td>
-                    <td><span class="status-badge ${loan.status?.toLowerCase() === 'active' ? 'active' : 'clear'}">${loan.status || 'Unknown'}</span></td>
-                    <td>${loan.from || 'N/A'}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-        
-        // Update deposits table
-        function updateDepositsTable() {
-            const tbody = document.getElementById('depositsTableBody');
-            tbody.innerHTML = '';
-            
-            // Show recent 10 deposits
-            const recentDeposits = depositsData.slice(0, 10);
-            
-            if (recentDeposits.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="loading">No deposit data available</td></tr>';
-                return;
-            }
-            
-            recentDeposits.forEach(deposit => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${deposit.member || 'Unknown'}</td>
-                    <td>₹${parseFloat(deposit.amount || 0).toLocaleString('en-IN')}</td>
-                    <td>${deposit.date || 'N/A'}</td>
-                    <td>${deposit.type || 'Monthly'}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
         
         // Show error message
         function showError(message) {
@@ -793,6 +478,7 @@
             errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
             container.insertBefore(errorDiv, container.firstChild);
         }
+
     </script>
 </body>
 </html>

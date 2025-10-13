@@ -1,13 +1,31 @@
 // User Header Display Functions
 function displayUserHeader() {
     try {
-        const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
+        const userHeaderInfo = document.getElementById('userHeaderInfo');
+        if (!userHeaderInfo) return;
+        
+        // Hide user header by default
+        userHeaderInfo.style.display = 'none';
+        
+        // Check if current page is the overview page (index.html)
+        const currentPage = window.location.pathname.split('/').pop();
+        if (currentPage === 'index.html' || currentPage === '' || currentPage === 'Sri-Mukkaneshwara/') {
+            // On overview page, never show user header
+            return;
+        }
+        
+        // Check if user is authenticated
         const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true' || localStorage.getItem('isAuthenticated') === 'true';
         
-        if (isAuthenticated && userDetails.name) {
-            const userHeaderInfo = document.getElementById('userHeaderInfo');
-            if (userHeaderInfo) {
+        // Only show user header if user is actually logged in AND not on overview page
+        if (isAuthenticated) {
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
+            
+            // Only show if we have valid user details
+            if (userDetails && userDetails.name && userDetails.name !== 'Loading...') {
                 userHeaderInfo.style.display = 'flex';
+                
+                // Update user name and role
                 const userName = document.getElementById('headerUserName');
                 const userRole = document.getElementById('headerUserRole');
                 if (userName) userName.textContent = userDetails.name;
@@ -16,11 +34,9 @@ function displayUserHeader() {
                 // Update user avatar with member image
                 const userAvatar = userHeaderInfo.querySelector('.user-avatar-small');
                 if (userAvatar && userDetails.id) {
-                    // Create member image path based on member ID
                     const memberId = userDetails.id.toString().padStart(3, '0');
                     const imagePath = `images/members/member-${memberId}.jpeg`;
                     
-                    // Replace the icon with an image
                     userAvatar.innerHTML = `
                         <img src="${imagePath}" alt="${userDetails.name}" 
                              onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
@@ -29,12 +45,8 @@ function displayUserHeader() {
                     `;
                 }
             }
-        } else {
-            const userHeaderInfo = document.getElementById('userHeaderInfo');
-            if (userHeaderInfo) {
-                userHeaderInfo.style.display = 'none';
-            }
         }
+        
     } catch (error) {
         console.error('Error displaying user header:', error);
         const userHeaderInfo = document.getElementById('userHeaderInfo');

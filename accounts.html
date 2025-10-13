@@ -20,20 +20,30 @@
                 var lastActivity = sessionStorage.getItem('lastActivity');
                 var sessionStartTime = sessionStorage.getItem('sessionStartTime');
                 
-                if (!lastActivity || !sessionStartTime) return false;
+                // If no session data, allow login (don't force logout)
+                if (!lastActivity || !sessionStartTime) {
+                    // Set current time as session start and last activity
+                    var now = Date.now();
+                    sessionStorage.setItem('lastActivity', now.toString());
+                    sessionStorage.setItem('sessionStartTime', now.toString());
+                    return true;
+                }
                 
                 var now = Date.now();
                 var lastActivityTime = parseInt(lastActivity);
                 var sessionStart = parseInt(sessionStartTime);
                 
-                // Check for 30 minutes of inactivity (increased from 15)
-                var inactivityTimeout = 30 * 60 * 1000; // 30 minutes in milliseconds
+                // Update last activity on every check
+                sessionStorage.setItem('lastActivity', now.toString());
+                
+                // Check for 60 minutes of inactivity (more lenient)
+                var inactivityTimeout = 60 * 60 * 1000; // 60 minutes in milliseconds
                 if (now - lastActivityTime > inactivityTimeout) {
                     return false;
                 }
                 
-                // Check for total session time (8 hours max - increased from 4)
-                var totalSessionTimeout = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+                // Check for total session time (24 hours max - very lenient)
+                var totalSessionTimeout = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
                 if (now - sessionStart > totalSessionTimeout) {
                     return false;
                 }
