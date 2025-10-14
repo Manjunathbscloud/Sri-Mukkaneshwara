@@ -193,6 +193,10 @@
                             <i class="fas fa-hand-holding-usd"></i>
                             Apply for Loan
                         </button>
+                        <button class="loan-status-btn" onclick="showLoanStatusMessage()">
+                            <i class="fas fa-tools"></i>
+                            Loan Status
+                        </button>
                         <button class="view-loans-btn" onclick="window.location.href='president-view.html'">
                             <i class="fas fa-list-ul"></i>
                             View Loan Applications
@@ -205,21 +209,20 @@
 
         <!-- Deposit History Section -->
         <section class="deposit-history">
-            <div class="info-card history-summary">
-                <h3><i class="fas fa-history"></i> Deposit Structure History</h3>
-                <div class="history-timeline">
-                    <div class="timeline-item">
-                        <span class="year">2021-22</span>
-                        <p>Initial deposit structure: <strong>₹1,000</strong> per month</p>
+            <div class="info-card history-summary compact">
+                <h3><i class="fas fa-history"></i> Deposit Structure</h3>
+                <div class="deposit-structure-grid">
+                    <div class="structure-item">
+                        <span class="period">2021-22</span>
+                        <span class="amount">₹1,000/month</span>
                     </div>
-                    <div class="timeline-item">
-                        <span class="year">2022-24</span>
-                        <p>After 1st annual meeting: <strong>₹1,500</strong> per month</p>
-                        <p class="note">(Maintained for 3 years)</p>
+                    <div class="structure-item">
+                        <span class="period">2022-24</span>
+                        <span class="amount">₹1,500/month</span>
                     </div>
-                    <div class="timeline-item current">
-                        <span class="year">2025 onwards</span>
-                        <p>Current deposit structure: <strong>₹2,000</strong> per month</p>
+                    <div class="structure-item current">
+                        <span class="period">2025+</span>
+                        <span class="amount">₹2,000/month</span>
                     </div>
                 </div>
             </div>
@@ -441,6 +444,11 @@
                 refreshIcon.style.display = 'inline';
                 refreshLoader.style.display = 'none';
             }, 2000);
+        }
+
+        // Loan Status Button Function
+        function showLoanStatusMessage() {
+            alert('Loan Status feature is under development. Coming soon!');
         }
     </script>
 

@@ -1828,6 +1828,60 @@ footer {
     color: #666;
 }
 
+/* Compact Deposit Structure */
+.deposit-structure-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.structure-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.structure-item.current {
+    background: #e3f2fd;
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.1);
+}
+
+.structure-item .period {
+    font-weight: bold;
+    color: var(--primary);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.structure-item .amount {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.structure-item.current .amount {
+    color: var(--primary);
+}
+
+/* Mobile responsive for deposit structure */
+@media (max-width: 768px) {
+    .deposit-structure-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .structure-item {
+        padding: 0.75rem;
+    }
+}
+
 .timeline-item .note {
     font-size: 0.9rem;
     color: #888;
@@ -4132,7 +4186,7 @@ th i.fa-chevron-down.active-filter {
     font-weight: normal;
     letter-spacing: normal;
     height: 60px;
-    padding: 0 1rem;
+    padding: 0 1.2rem;
     width: 100%;
     box-sizing: border-box;
     border: 2px solid #e0e0e0;
@@ -5440,6 +5494,26 @@ button[onclick*="refresh"]:hover, button[onclick*="FinancialData"]:hover {
 .view-loans-btn:hover {
     background: #8e44ad !important;
     box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3) !important;
+}
+
+.loan-status-btn {
+    background: #f39c12 !important; /* Orange for loan status */
+    color: white !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+.loan-status-btn:hover {
+    background: #e67e22 !important;
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3) !important;
+    transform: translateY(-2px) !important;
 }
 
 .account-btn {
