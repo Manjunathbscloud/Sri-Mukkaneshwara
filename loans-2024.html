@@ -372,6 +372,9 @@
             Array.from(memberNames).sort().forEach(member => {
                 const option = document.createElement('div');
                 option.className = 'filter-option';
+                if (member === selectedMemberFilter) {
+                    option.classList.add('selected');
+                }
                 option.textContent = member;
                 option.onclick = () => selectMemberFilter(member);
                 filterOptions.appendChild(option);
@@ -381,8 +384,9 @@
         // Select member filter
         function selectMemberFilter(member) {
             selectedMemberFilter = member;
-            document.getElementById('memberFilterDropdown').style.display = 'none';
             applyFilters();
+            populateMemberFilter(); // Refresh dropdown to show selection
+            document.getElementById('memberFilterDropdown').style.display = 'none';
         }
 
         // Select status filter
