@@ -3,8 +3,8 @@ class SessionManager {
     constructor() {
         this.inactivityTimer = null;
         this.sessionTimer = null;
-        this.INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
-        this.SESSION_TIMEOUT = 60 * 60 * 1000; // 60 minutes
+        this.INACTIVITY_TIMEOUT = 60 * 60 * 1000; // 60 minutes (more lenient)
+        this.SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 hours (very lenient)
         this.init();
     }
 
@@ -91,9 +91,15 @@ class SessionManager {
             const currentTime = Date.now();
             const sessionDuration = currentTime - parseInt(sessionStartTime);
             
+            // Only logout if session is really expired (24 hours)
             if (sessionDuration > this.SESSION_TIMEOUT) {
                 this.logout('session_timeout');
             }
+        } else {
+            // If no session start time, set it to current time
+            const currentTime = Date.now();
+            localStorage.setItem('sessionStartTime', currentTime.toString());
+            sessionStorage.setItem('sessionStartTime', currentTime.toString());
         }
     }
 
@@ -144,9 +150,9 @@ class SessionManager {
         let message = 'You have been logged out. Please login again.';
         
         if (reason === 'inactivity') {
-            message = 'You have been logged out due to inactivity (5 minutes). Please login again.';
+            message = 'You have been logged out due to inactivity (60 minutes). Please login again.';
         } else if (reason === 'session_timeout') {
-            message = 'Your session has expired (30 minutes). Please login again.';
+            message = 'Your session has expired (24 hours). Please login again.';
         }
         
         // Show logout message
