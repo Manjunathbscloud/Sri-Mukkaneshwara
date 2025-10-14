@@ -3225,6 +3225,18 @@ th i.fa-chevron-down.active-filter {
     background-color: #f8f9fa;
 }
 
+.filter-option.selected {
+    background-color: #e3f2fd;
+    color: var(--primary);
+    font-weight: 600;
+    border: 2px solid var(--primary);
+}
+
+.filter-option.selected:hover {
+    background-color: #bbdefb;
+    color: var(--primary);
+}
+
 /* Mobile responsive for floating dropdowns */
 @media (max-width: 768px) {
     .member-filter-dropdown {
