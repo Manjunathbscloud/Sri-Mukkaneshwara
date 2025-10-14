@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025-26 Loans - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Enhanced table styling for loans-2025 */
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.25rem;
+        }
+        
+        .table-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .record-count {
+            background: #f8f9fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.875rem;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .loans-table {
+            margin: 0;
+            min-width: 800px;
+        }
+        
+        .loans-table th {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            padding: 1rem 0.75rem;
+            white-space: nowrap;
+        }
+        
+        .loans-table th i {
+            margin-right: 0.5rem;
+            opacity: 0.8;
+        }
+        
+        .loans-table td {
+            padding: 1rem 0.75rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .loans-table tr:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .loans-table tr.completed {
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+        
+        .loans-table tr.completed:hover {
+            background-color: #e9ecef;
+        }
+        
+        .loan-id {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #2c3e50;
+            background: #f8f9fa;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        
+        .status-clear, .status-active {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-clear {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-active {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .amount-cell {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .total-row {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .total-row td {
+            border-top: 2px solid #dee2e6;
+            border-bottom: none;
+            padding: 1rem 0.75rem;
+        }
+        
+        .total-amount-row {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        }
+        
+        .no-records {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .no-records i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #dee2e6;
+        }
+        
+        /* Filter controls */
+        .filter-arrow {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .filter-arrow:hover {
+            color: #007bff;
+        }
+        
+        .floating-filters {
+            position: relative;
+        }
+        
+        .member-filter-dropdown,
+        .status-filter-dropdown {
+            position: absolute;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            min-width: 150px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .filter-options {
+            padding: 0.5rem 0;
+        }
+        
+        .filter-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f8f9fa;
+        }
+        
+        .filter-option:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .filter-option.clear-filter {
+            background-color: #e9ecef;
+            font-weight: 600;
+        }
+        
+        .filter-option.clear-filter:hover {
+            background-color: #dee2e6;
+        }
+        
+        .table-loader {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+        
+        .table-loader td {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .table-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .loans-table {
+                min-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sri Mukkanneshwara Associate</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="accounts.html">Accounts</a></li>
+                <li><a href="meetings.html">Meetings</a></li>
+                <li><a href="rules.html">Rules</a></li>
+            </ul>
+        </nav>
+        
+        <!-- User Details in Top Right -->
+        <div class="user-header-info" id="userHeaderInfo" style="display: none;">
+            <div class="user-avatar-small">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-details-small">
+                <span class="user-name" id="headerUserName">Loading...</span>
+                <span class="user-role" id="headerUserRole">Loading...</span>
+            </div>
+            <div class="user-dropdown">
+                <button class="user-menu-btn" onclick="toggleUserMenu()">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <a href="accounts.html"><i class="fas fa-user"></i> My Account</a>
+                    <a href="#" id="logoutBtn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="loans-section">
+            <h2 class="page-title"><i class="fas fa-hand-holding-usd"></i> Loans 2025-26</h2>
+
+            <div class="info-card">
+                <div class="table-header">
+                    <h3><i class="fas fa-list-alt"></i> Loan List 2025-26</h3>
+                    <div class="table-actions">
+                        <button id="downloadPdfBtn" class="download-btn" onclick="downloadLoanPDF()" title="Download as PDF">
+                            <i class="fas fa-download"></i> Download PDF
+                        </button>
+                        <span class="record-count" id="recordCount">Loading...</span>
+                    </div>
+                </div>
+                
+                <!-- Active Filter Badges -->
+                <div class="filter-badges" id="filterBadges" style="display: none;">
+                    <!-- Filter badges will be dynamically added here -->
+                </div>
+                </div>
+                <!-- Floating Filter Dropdowns -->
+                <div class="floating-filters">
+                    <div class="member-filter-dropdown" id="memberFilterDropdown" style="display: none;">
+                        <div class="filter-options">
+                        </div>
+                    </div>
+                    <div class="status-filter-dropdown" id="statusFilterDropdown" style="display: none;">
+                        <div class="filter-options">
+                            <div class="filter-option clear-filter" onclick="selectStatusFilter('')">Clear Filter</div>
+                            <div class="filter-option" onclick="selectStatusFilter('active')">Active</div>
+                            <div class="filter-option" onclick="selectStatusFilter('clear')">Clear</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="member-table loans-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-hashtag"></i> Loan ID</th>
+                                <th>
+                                    <i class="fas fa-user"></i> Member <i class="fas fa-chevron-down filter-arrow" id="memberArrow" onclick="toggleMemberFilter()"></i>
+                                </th>
+                                <th><i class="fas fa-calendar"></i> From</th>
+                                <th><i class="fas fa-rupee-sign"></i> Amount</th>
+                                <th><i class="fas fa-percentage"></i> Interest</th>
+                                <th><i class="fas fa-calendar-check"></i> Renewal/Return</th>
+                                <th>
+                                    <i class="fas fa-info-circle"></i> Status <i class="fas fa-chevron-down filter-arrow" id="statusArrow" onclick="toggleStatusFilter()"></i>
+                                </th>
+                                <th><i class="fas fa-money-bill-wave"></i> Total Paid</th>
+                            </tr>
+                        </thead>
+                        <tbody id="loansTableBody">
+                            <tr id="tableLoader" style="display: none;">
+                                <td colspan="8" class="table-loader">
+                                    <div class="spinner"></div>
+                                    <p>Loading loan data...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="info-card no-records" style="display:none;">
+                <div class="no-data-content">
+                    <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" alt="No Records" class="no-data-image">
+                    <h3>No Records Found</h3>
+                    <p class="no-data-emoji">¯\_(ツ)_/¯</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="loans.html" style="color: #007bff; text-decoration: none; font-size: 0.9rem;">
+                    ← Back to Loans Overview
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="sheets-config.js"></script>
+    <script src="sheets-utils.js"></script>
+    <script src="loans-render.js"></script>
+    <script src="js/pdf-generator.js"></script>
+    <script src="js/user-header.js"></script>
+    <script>
+        // Table filtering functionality
+        let allTableData = [];
+        let selectedMemberFilter = '';
+        let selectedStatusFilter = '';
+
+        // Load loans for 2025-26 using the same approach as 2024-25
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Loading 2025-26 loans from Google Sheets...');
+            
+            // Show loading state
+            const tableLoader = document.getElementById('tableLoader');
+            if (tableLoader) {
+                tableLoader.style.display = 'table-row';
+            }
+            
+            // Use the correct function name from loans-render.js
+            LoansRender.loadLoans('2025-26', {
+                tbodySelector: '#loansTableBody',
+                onDataLoaded: function(items) {
+                    console.log('2025-26 loans loaded:', items.length, 'records');
+                    allTableData = items;
+                    updateRecordCount(items.length);
+                    updateNoRecordsDisplay(items.length === 0);
+                }
+            });
+        });
+
+        function updateRecordCount(count) {
+            const recordCount = document.getElementById('recordCount');
+            if (recordCount) {
+                recordCount.textContent = `${count} record${count !== 1 ? 's' : ''}`;
+            }
+        }
+
+        function updateNoRecordsDisplay(show) {
+            const noRecords = document.querySelector('.no-records');
+            if (noRecords) {
+                noRecords.style.display = show ? 'block' : 'none';
+            }
+        }
+
+        // Update filter badges display
+        function updateFilterBadges() {
+            const filterBadges = document.getElementById('filterBadges');
+            if (!filterBadges) return;
+
+            // Clear existing badges
+            filterBadges.innerHTML = '';
+
+            // Check if any filters are active
+            const hasFilters = selectedMemberFilter || selectedStatusFilter;
+
+            if (hasFilters) {
+                filterBadges.style.display = 'block';
+
+                // Add member filter badge
+                if (selectedMemberFilter) {
+                    const memberBadge = document.createElement('div');
+                    memberBadge.className = 'filter-badge';
+                    memberBadge.innerHTML = `
+                        <span><i class="fas fa-user"></i> Member: ${selectedMemberFilter}</span>
+                        <button onclick="clearMemberFilter()" class="filter-remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    filterBadges.appendChild(memberBadge);
+                }
+
+                // Add status filter badge
+                if (selectedStatusFilter) {
+                    const statusBadge = document.createElement('div');
+                    statusBadge.className = 'filter-badge';
+                    statusBadge.innerHTML = `
+                        <span><i class="fas fa-info-circle"></i> Status: ${selectedStatusFilter}</span>
+                        <button onclick="clearStatusFilter()" class="filter-remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    filterBadges.appendChild(statusBadge);
+                }
+
+                // Add clear all button
+                const clearAllBadge = document.createElement('div');
+                clearAllBadge.className = 'filter-badge clear-all';
+                clearAllBadge.innerHTML = `
+                    <button onclick="clearAllFilters()" class="clear-all-btn">
+                        <i class="fas fa-times-circle"></i> Clear All Filters
+                    </button>
+                `;
+                filterBadges.appendChild(clearAllBadge);
+            } else {
+                filterBadges.style.display = 'none';
+            }
+        }
+
+        // Clear member filter
+        function clearMemberFilter() {
+            selectedMemberFilter = '';
+            applyFilters();
+            updateFilterBadges();
+        }
+
+        // Clear status filter
+        function clearStatusFilter() {
+            selectedStatusFilter = '';
+            applyFilters();
+            updateFilterBadges();
+        }
+
+        // Clear all filters
+        function clearAllFilters() {
+            selectedMemberFilter = '';
+            selectedStatusFilter = '';
+            applyFilters();
+            updateFilterBadges();
+        }
+
+        // Global variable to store loan data
+        let currentLoanData = [];
+        
+        // Download PDF function
+        async function downloadLoanPDF() {
+            const downloadBtn = document.getElementById('downloadPdfBtn');
+            const originalText = downloadBtn.innerHTML;
+            
+            try {
+                // Show loading state
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+                downloadBtn.disabled = true;
+                
+                // Get current loan data
+                const loanData = getCurrentLoanData();
+                
+                if (!loanData || loanData.length === 0) {
+                    alert('No loan data available to download.');
+                    return;
+                }
+                
+                // Generate PDF
+                const success = await PDFGenerator.generateLoanPDF('2025-26', loanData, 'Loan Records 2025-26');
+                
+                if (success) {
+                    console.log('PDF generated successfully');
+                }
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF. Please try again.');
+            } finally {
+                // Reset button state
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+            }
+        }
+        
+        // Function to get current loan data
+        function getCurrentLoanData() {
+            // Try to get data from the table
+            const table = document.querySelector('.loans-table tbody');
+            if (!table) return [];
+            
+            const rows = table.querySelectorAll('tr:not([id="tableLoader"])');
+            const loanData = [];
+            
+            rows.forEach(row => {
+                if (row.style.display !== 'none') { // Only include visible rows
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 8) {
+                        loanData.push({
+                            loan_id: cells[0].textContent.trim(),
+                            member: cells[1].textContent.trim(),
+                            from: cells[2].textContent.trim(),
+                            amount: cells[3].textContent.trim(),
+                            interest: cells[4].textContent.trim(),
+                            renewal_or_return_month: cells[5].textContent.trim(),
+                            status: cells[6].textContent.trim(),
+                            total_paid: cells[7].textContent.trim(),
+                            year: '2025-26'
+                        });
+                    }
+                }
+            });
+            
+            return loanData;
+        }
+
+        // Toggle member filter dropdown
+        function toggleMemberFilter() {
+            const memberDropdown = document.getElementById('memberFilterDropdown');
+            const statusDropdown = document.getElementById('statusFilterDropdown');
+            const memberArrow = document.getElementById('memberArrow');
+            
+            // Close status dropdown if open
+            statusDropdown.style.display = 'none';
+            
+            // Toggle member dropdown
+            if (memberDropdown.style.display === 'none') {
+                // Position dropdown relative to the member column
+                const memberHeader = memberArrow.closest('th');
+                const rect = memberHeader.getBoundingClientRect();
+                const tableContainer = document.querySelector('.table-container');
+                const containerRect = tableContainer.getBoundingClientRect();
+                
+                // Calculate position relative to table container
+                const left = rect.left - containerRect.left;
+                const top = rect.bottom - containerRect.top;
+                
+                memberDropdown.style.left = left + 'px';
+                memberDropdown.style.top = top + 'px';
+                memberDropdown.style.display = 'block';
+                
+                // Populate member options
+                populateMemberFilter();
+            } else {
+                memberDropdown.style.display = 'none';
+            }
+        }
+
+        // Toggle status filter dropdown
+        function toggleStatusFilter() {
+            const statusDropdown = document.getElementById('statusFilterDropdown');
+            const memberDropdown = document.getElementById('memberFilterDropdown');
+            const statusArrow = document.getElementById('statusArrow');
+            
+            // Close member dropdown if open
+            memberDropdown.style.display = 'none';
+            
+            // Toggle status dropdown
+            if (statusDropdown.style.display === 'none') {
+                // Position dropdown relative to the status column
+                const statusHeader = statusArrow.closest('th');
+                const rect = statusHeader.getBoundingClientRect();
+                const tableContainer = document.querySelector('.table-container');
+                const containerRect = tableContainer.getBoundingClientRect();
+                
+                // Calculate position relative to table container
+                const left = rect.left - containerRect.left;
+                const top = rect.bottom - containerRect.top;
+                
+                statusDropdown.style.left = left + 'px';
+                statusDropdown.style.top = top + 'px';
+                statusDropdown.style.display = 'block';
+            } else {
+                statusDropdown.style.display = 'none';
+            }
+        }
+
+        // Populate member filter options
+        function populateMemberFilter() {
+            const memberDropdown = document.getElementById('memberFilterDropdown');
+            const filterOptions = memberDropdown.querySelector('.filter-options');
+            
+            // Clear existing options
+            filterOptions.innerHTML = '<div class="filter-option clear-filter" onclick="selectMemberFilter(\'\')">Clear Filter</div>';
+            
+            // Get unique members from data
+            const uniqueMembers = [...new Set(allTableData.map(item => item.member))].filter(member => member && member.trim());
+            
+            uniqueMembers.forEach(member => {
+                const option = document.createElement('div');
+                option.className = 'filter-option';
+                if (member === selectedMemberFilter) {
+                    option.classList.add('selected');
+                }
+                option.textContent = member;
+                option.onclick = () => selectMemberFilter(member);
+                filterOptions.appendChild(option);
+            });
+        }
+
+        // Select member filter
+        function selectMemberFilter(member) {
+            selectedMemberFilter = member;
+            applyFilters();
+            updateFilterBadges();
+            populateMemberFilter(); // Refresh dropdown to show selection
+            document.getElementById('memberFilterDropdown').style.display = 'none';
+        }
+
+        // Select status filter
+        function selectStatusFilter(status) {
+            selectedStatusFilter = status;
+            applyFilters();
+            updateFilterBadges();
+            document.getElementById('statusFilterDropdown').style.display = 'none';
+        }
+
+        // Apply filters to table
+        function applyFilters() {
+            const rows = document.querySelectorAll('#loansTableBody tr');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                if (row.cells.length < 8) return; // Skip if not a data row
+
+                const member = row.cells[1].textContent.trim();
+                const status = row.cells[6].textContent.trim().toLowerCase();
+
+                let showRow = true;
+
+                // Apply member filter
+                if (selectedMemberFilter && member !== selectedMemberFilter) {
+                    showRow = false;
+                }
+
+                // Apply status filter
+                if (selectedStatusFilter && status !== selectedStatusFilter) {
+                    showRow = false;
+                }
+
+                row.style.display = showRow ? '' : 'none';
+                if (showRow) visibleCount++;
+            });
+
+            updateRecordCount(visibleCount);
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const memberDropdown = document.getElementById('memberFilterDropdown');
+            const statusDropdown = document.getElementById('statusFilterDropdown');
+            
+            if (!memberDropdown.contains(event.target) && !document.getElementById('memberArrow').contains(event.target)) {
+                memberDropdown.style.display = 'none';
+            }
+            
+            if (!statusDropdown.contains(event.target) && !document.getElementById('statusArrow').contains(event.target)) {
+                statusDropdown.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
