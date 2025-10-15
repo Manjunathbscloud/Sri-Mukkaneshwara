@@ -3,322 +3,370 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sri Mukkanneshwara Associate</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <title>Sri Mukkanneshwara Associate - Welcome</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .splash-container {
+            text-align: center;
+            color: white;
+            max-width: 800px;
+            padding: 2rem;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .logo-section {
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        .logo i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .organization-name {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .organization-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-message {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ffd700;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .enter-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .enter-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+        }
+
+        .loading-dots {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes dots {
+            0%, 20% {
+                content: '';
+            }
+            40% {
+                content: '.';
+            }
+            60% {
+                content: '..';
+            }
+            80%, 100% {
+                content: '...';
+            }
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .splash-container {
+                padding: 1rem;
+            }
+
+            .organization-name {
+                font-size: 2rem;
+            }
+
+            .organization-subtitle {
+                font-size: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .feature-card {
+                padding: 1rem;
+            }
+
+            .enter-button {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Sri Mukkanneshwara Associate</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Overview</a></li>
-                <li><a href="members.html">Members</a></li>
-                <li><a href="accounts.html">Accounts</a></li>
-                <li><a href="meetings.html">Meetings</a></li>
-                <li><a href="rules.html">Rules</a></li>
-            </ul>
-        </nav>
-        
-        <!-- User Details in Top Right - Hidden by default, shown only when logged in -->
-        <div class="user-header-info" id="userHeaderInfo" style="display: none;">
-            <div class="user-avatar-small">
-                <i class="fas fa-user-circle"></i>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <div class="splash-container">
+        <div class="logo-section">
+            <div class="logo">
+                <i class="fas fa-university"></i>
             </div>
-            <div class="user-details-small">
-                <span class="user-name" id="headerUserName">Loading...</span>
-                <span class="user-role" id="headerUserRole">Loading...</span>
-            </div>
-            <div class="user-dropdown">
-                <button class="user-menu-btn" onclick="toggleUserMenu()">
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="user-menu" id="userMenu" style="display: none;">
-                    <a href="accounts.html"><i class="fas fa-user"></i> My Account</a>
-                    <a href="#" id="logoutBtn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <h1 class="organization-name">Sri Mukkanneshwara Associate</h1>
+            <p class="organization-subtitle">Established 2021</p>
+        </div>
+
+        <div class="welcome-message">
+            <p>Welcome to our digital platform where tradition meets technology. 
+            Experience seamless financial management with our comprehensive banking solutions.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-piggy-bank"></i>
                 </div>
+                <div class="feature-title">Smart Deposits</div>
+                <div class="feature-desc">Secure and flexible deposit management with competitive interest rates</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-hand-holding-usd"></i>
+                </div>
+                <div class="feature-title">Easy Loans</div>
+                <div class="feature-desc">Quick and transparent loan processing with member-friendly terms</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="feature-title">Analytics</div>
+                <div class="feature-desc">Comprehensive financial reports and growth tracking</div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="feature-title">Community</div>
+                <div class="feature-desc">Strong member community with regular meetings and updates</div>
             </div>
         </div>
-    </header>
 
-    <!-- Mobile Header -->
-    <div class="mobile-header">
-        <h1>Sri Mukkanneshwara Associate</h1>
-        <button class="mobile-nav-toggle" onclick="toggleMobileNav()">
-            <i class="fas fa-bars"></i>
-        </button>
+        <div class="enter-button" id="enterButton">
+            <i class="fas fa-spinner fa-spin"></i>
+            Loading Website...
+            <span class="loading-dots"></span>
+        </div>
     </div>
 
-    <!-- Mobile Navigation -->
-    <div class="mobile-nav" id="mobileNav">
-        <button class="mobile-nav-close" onclick="toggleMobileNav()">
-            <i class="fas fa-times"></i>
-        </button>
-        <ul>
-            <li><a href="index.html" onclick="toggleMobileNav()">Overview</a></li>
-            <li><a href="members.html" onclick="toggleMobileNav()">Members</a></li>
-            <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
-            <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
-            <li><a href="rules.html" onclick="toggleMobileNav()">Rules</a></li>
-        </ul>
-    </div>
-
-    <main>
-        <section class="overview-section">
-            <h2 class="page-title">
-                <i class="fas fa-home"></i> 
-                Overview
-            </h2>
-            
-            <!-- Add Banking Quick Stats -->
-            <div class="banking-stats">
-                <div class="stat-card">
-                    <i class="fas fa-users"></i>
-                    <div class="stat-info">
-                        <h3>Active Members</h3>
-                        <p>7 Members</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <div class="stat-info">
-                        <h3>Monthly Collection</h3>
-                        <p>₹14,000</p>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <i class="fas fa-piggy-bank"></i>
-                    <div class="stat-info">
-                        <h3>Monthly Deposit</h3>
-                        <p>₹2,000</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-card slide-up">
-                <div class="overview-content">
-                    <h3><i class="fas fa-info-circle"></i> About Our Association</h3>
-                    <p>
-                        Sri Mukkanneshwara Associate was established in February 2021 with the vision of fostering financial cooperation and mutual growth among its members. Starting with 8 initial members, the association has evolved into a well-structured organization with 7 active members. The association maintains a systematic approach to financial management, with each member contributing ₹2,000 monthly, resulting in a total monthly collection of ₹14,000.
-                    </p>
-
-                    <h3><i class="fas fa-history"></i> Our Journey</h3>
-                    <p>
-                        The association's journey began in 2021 with an initial monthly deposit of ₹1,000 per member. Our first annual meeting was conducted at M Thumbaraguddi (Native Place), where we established our core rules and loan procedures. In 2022, we strengthened our foundation by increasing the monthly deposit to ₹1,500 and held our second annual meeting at Sampige Heritage Resort, Koppal. During this phase, we implemented a streamlined loan distribution process and established systematic record-keeping practices.
-                    </p>
-                    <p>
-                        The year 2023 marked a period of growth and stability. We successfully managed multiple active loans and strengthened member relationships through regular meetings. Our third annual meeting was held at Cotton County Club, Hubballi, where we reviewed and enhanced our financial management systems.
-                    </p>
-
-                    <h3><i class="fas fa-chart-line"></i> Current Status</h3>
-                    <p>
-                        Currently, in 2024-25, the association has further enhanced its financial structure. The monthly deposit has been increased to ₹2,000 per member, reflecting our growing strength and stability. We maintain transparent financial management with detailed record-keeping, and our loan management system continues to benefit all members effectively. The fourth annual meeting was held at Jungle Vibes Resort, Dandeli, where we have reviewed our progress and plan future initiatives.
-                    </p>
-
-                    <h3><i class="fas fa-bullseye"></i> Key Achievements</h3>
-                    <p>
-                        Throughout our journey, we have achieved several significant milestones. We have established a robust financial framework, implemented transparent loan procedures, and maintained strong member relationships. Our systematic approach to record-keeping and financial management has ensured smooth operations and member satisfaction. The gradual increase in monthly deposits from ₹1,000 to ₹2,000 reflects our growing financial capacity and members' commitment to the association's growth.
-                    </p>
-
-                    <!-- Modified Banking Details Section -->
-                    <h3><i class="fas fa-university"></i> Banking Details</h3>
-                    <div class="banking-details">
-                        <table>
-                            <tr>
-                                <td><i class="fas fa-user"></i> <strong>Account Name</strong></td>
-                                <td>: Sri Mukkaneshwara Associates</td>
-                            </tr>
-                            <tr>
-                                <td><i class="fas fa-landmark"></i> <strong>Bank Name</strong></td>
-                                <td>: ICICI Bank Ltd</td>
-                            </tr>
-                            <tr>
-                                <td><i class="fas fa-hashtag"></i> <strong>Account No.</strong></td>
-                                <td>: 437601000088</td>
-                            </tr>
-                            <tr>
-                                <td><i class="fas fa-qrcode"></i> <strong>IFSC Code</strong></td>
-                                <td>: ICIC0004376</td>
-                            </tr>
-                        </table>
-                        
-                        <!-- Add Quick Actions -->
-                        <div class="banking-actions">
-                            <button class="modern-btn action-btn" onclick="copyBankDetails()">
-                                <i class="fas fa-copy"></i> Copy Account Details
-                            </button>
-                            <button class="modern-btn action-btn" onclick="showQRCode()">
-                                <i class="fas fa-qrcode"></i> Show QR Code
-                            </button>
-                        </div>
-
-                        <!-- Add hidden elements for copy and QR functionality -->
-                        <textarea id="bankDetails" style="position: absolute; left: -9999px;">
-Account Name: Sri Mukkaneshwara Associates
-Bank Name: ICICI Bank Ltd
-Account No.: 437601000088
-IFSC Code: ICIC0004376</textarea>
-                        
-                        <!-- Add container for QR Code -->
-                        <div id="qrcode" style="display: none; margin-top: 20px; text-align: center;">
-                            <div class="qr-wrapper"></div>
-                            <p class="qr-hint">Scan with any UPI app to pay</p>
-                            <button class="close-btn" onclick="hideQRCode()">
-                                <i class="fas fa-times"></i> Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
-        function copyBankDetails() {
-            const bankDetails = document.getElementById('bankDetails');
-            bankDetails.select();
-            document.execCommand('copy');
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const enterButton = document.getElementById('enterButton');
             
-            // Show feedback to user
-            const button = event.currentTarget;
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
-            
+            // Auto redirect after 5 seconds
             setTimeout(() => {
-                button.innerHTML = originalText;
-            }, 2000);
-        }
-
-        function showQRCode() {
-            const qrcodeContainer = document.getElementById('qrcode');
-            const qrWrapper = qrcodeContainer.querySelector('.qr-wrapper');
-            qrWrapper.innerHTML = ''; // Clear previous QR code
-            qrcodeContainer.style.display = 'block';
-
-            // Updated with actual UPI ID
-            const upiLink = "upi://pay?pa=mukkaneshwara@ybl&pn=Sri%20Mukkanneshwara%20Associates&cu=INR";
-            
-            // Create QR Code with UPI link
-            new QRCode(qrWrapper, {
-                text: upiLink,
-                width: 200,
-                height: 200,
-                colorDark: '#000000',
-                colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.H
-            });
-        }
-
-        function hideQRCode() {
-            const qrcodeContainer = document.getElementById('qrcode');
-            qrcodeContainer.style.display = 'none';
-        }
-
-        // Mobile Navigation Functions
-        function toggleMobileNav() {
-            const mobileNav = document.getElementById('mobileNav');
-            mobileNav.classList.toggle('active');
-        }
-
-        // Close mobile nav when clicking outside
-        document.addEventListener('click', function(event) {
-            const mobileNav = document.getElementById('mobileNav');
-            const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-            
-            if (!mobileNav.contains(event.target) && !mobileNavToggle.contains(event.target)) {
-                mobileNav.classList.remove('active');
-            }
-        });
-
-        // Mobile-specific enhancements
-        if (window.innerWidth <= 768) {
-            // Add pull-to-refresh effect
-            let startY = 0;
-            let currentY = 0;
-            let isPulling = false;
-            
-            document.addEventListener('touchstart', function(e) {
-                startY = e.touches[0].clientY;
-            });
-            
-            document.addEventListener('touchmove', function(e) {
-                currentY = e.touches[0].clientY;
-                const pullDistance = currentY - startY;
+                enterButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting...';
+                enterButton.style.opacity = '0.8';
                 
-                if (pullDistance > 50 && window.scrollY === 0) {
-                    isPulling = true;
-                    document.body.style.transform = `translateY(${Math.min(pullDistance * 0.3, 50)}px)`;
-                }
-            });
-            
-            document.addEventListener('touchend', function(e) {
-                if (isPulling) {
-                    document.body.style.transform = 'translateY(0)';
-                    document.body.style.transition = 'transform 0.3s ease';
-                    setTimeout(() => {
-                        document.body.style.transition = '';
-                    }, 300);
-                    isPulling = false;
-                }
-            });
-            
-            // Add swipe feedback for stat cards
-            const statCards = document.querySelectorAll('.stat-card');
-            statCards.forEach(card => {
-                card.addEventListener('touchstart', function() {
-                    this.style.transform = 'scale(0.98)';
-                });
-                
-                card.addEventListener('touchend', function() {
-                    this.style.transform = 'scale(1)';
-                });
-            });
-            
-            // Add gesture feedback
-            function showGestureFeedback(message) {
-                const feedback = document.createElement('div');
-                feedback.className = 'gesture-feedback';
-                feedback.textContent = message;
-                document.body.appendChild(feedback);
+                // Redirect to main page
+                setTimeout(() => {
+                    window.location.href = 'main.html';
+                }, 500);
+            }, 5000);
+
+            // Add click effect for immediate redirect (optional)
+            enterButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting...';
+                this.style.opacity = '0.8';
                 
                 setTimeout(() => {
-                    feedback.remove();
-                }, 1000);
-            }
-            
-            // Add haptic feedback simulation
-            function addHapticFeedback() {
-                if ('vibrate' in navigator) {
-                    navigator.vibrate(50);
+                    window.location.href = 'main.html';
+                }, 500);
+            });
+
+            // Add keyboard support for immediate redirect
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    enterButton.click();
                 }
-            }
-            
-            // Enhanced button interactions
-            const actionButtons = document.querySelectorAll('.action-btn');
-            actionButtons.forEach(button => {
-                button.addEventListener('touchstart', function() {
-                    addHapticFeedback();
-                    this.style.transform = 'scale(0.95)';
-                });
+            });
+
+            // Add mouse movement parallax effect
+            document.addEventListener('mousemove', function(e) {
+                const floatingElements = document.querySelectorAll('.floating-circle');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
                 
-                button.addEventListener('touchend', function() {
-                    this.style.transform = 'scale(1)';
+                floatingElements.forEach((element, index) => {
+                    const speed = (index + 1) * 0.5;
+                    const xPos = (x - 0.5) * speed * 20;
+                    const yPos = (y - 0.5) * speed * 20;
+                    
+                    element.style.transform = `translate(${xPos}px, ${yPos}px)`;
                 });
             });
-        }
-
+        });
     </script>
-    
-    <!-- User Header Script -->
-    <script src="js/user-header.js"></script>
 </body>
 </html>
