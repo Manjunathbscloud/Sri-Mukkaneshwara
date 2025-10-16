@@ -6613,3 +6613,49 @@ button[onclick*="refresh"]:hover, button[onclick*="FinancialData"]:hover {
         font-size: 2.5rem;
     }
 }
+
+/* Language Toggle Button Styles */
+.language-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+}
+
+.lang-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lang-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.lang-btn i {
+    font-size: 1rem;
+}
+
+/* Mobile responsive for language toggle */
+@media (max-width: 768px) {
+    .language-toggle {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+    
+    .lang-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}

@@ -12,16 +12,24 @@
 </head>
 <body>
     <header>
-        <h1>Sri Mukkanneshwara Associate</h1>
+        <h1><span data-en="Sri Mukkanneshwara Associate" data-kn="ಶ್ರೀ ಮುಕ್ಕಣ್ಣೇಶ್ವರ ಅಸೋಸಿಯೇಟ್ಸ್">Sri Mukkanneshwara Associate</span></h1>
         <nav>
             <ul>
-                <li><a href="index.html">Overview</a></li>
-                <li><a href="members.html">Members</a></li>
-                <li><a href="accounts.html">Accounts</a></li>
-                <li><a href="meetings.html">Meetings</a></li>
-                <li><a href="rules.html">Rules</a></li>
+                <li><a href="index.html"><span data-en="Overview" data-kn="ಅವಲೋಕನ">Overview</span></a></li>
+                <li><a href="members.html"><span data-en="Members" data-kn="ಸದಸ್ಯರು">Members</span></a></li>
+                <li><a href="accounts.html"><span data-en="Accounts" data-kn="ಖಾತೆಗಳು">Accounts</span></a></li>
+                <li><a href="meetings.html"><span data-en="Meetings" data-kn="ಸಭೆಗಳು">Meetings</span></a></li>
+                <li><a href="rules.html"><span data-en="Rules" data-kn="ನಿಯಮಗಳು">Rules</span></a></li>
             </ul>
         </nav>
+        
+        <!-- Language Toggle Button -->
+        <div class="language-toggle">
+            <button class="lang-btn" id="languageToggle" onclick="toggleLanguage()">
+                <i class="fas fa-language"></i>
+                <span id="currentLang">English</span>
+            </button>
+        </div>
         
         <!-- User Details in Top Right - Hidden by default, shown only when logged in -->
         <div class="user-header-info" id="userHeaderInfo" style="display: none;">
@@ -46,7 +54,7 @@
 
     <!-- Mobile Header -->
     <div class="mobile-header">
-        <h1>Sri Mukkanneshwara Associate</h1>
+        <h1><span data-en="Sri Mukkanneshwara Associate" data-kn="ಶ್ರೀ ಮುಕ್ಕಣ್ಣೇಶ್ವರ ಅಸೋಸಿಯೇಟ್ಸ್">Sri Mukkanneshwara Associate</span></h1>
         <button class="mobile-nav-toggle" onclick="toggleMobileNav()">
             <i class="fas fa-bars"></i>
         </button>
@@ -58,11 +66,11 @@
             <i class="fas fa-times"></i>
         </button>
         <ul>
-            <li><a href="index.html" onclick="toggleMobileNav()">Overview</a></li>
-            <li><a href="members.html" onclick="toggleMobileNav()">Members</a></li>
-            <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
-            <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
-            <li><a href="rules.html" onclick="toggleMobileNav()">Rules</a></li>
+            <li><a href="index.html" onclick="toggleMobileNav()"><span data-en="Overview" data-kn="ಅವಲೋಕನ">Overview</span></a></li>
+            <li><a href="members.html" onclick="toggleMobileNav()"><span data-en="Members" data-kn="ಸದಸ್ಯರು">Members</span></a></li>
+            <li><a href="accounts.html" onclick="toggleMobileNav()"><span data-en="Accounts" data-kn="ಖಾತೆಗಳು">Accounts</span></a></li>
+            <li><a href="meetings.html" onclick="toggleMobileNav()"><span data-en="Meetings" data-kn="ಸಭೆಗಳು">Meetings</span></a></li>
+            <li><a href="rules.html" onclick="toggleMobileNav()"><span data-en="Rules" data-kn="ನಿಯಮಗಳು">Rules</span></a></li>
         </ul>
     </div>
 
@@ -70,7 +78,7 @@
         <section class="overview-section">
             <h2 class="page-title">
                 <i class="fas fa-home"></i> 
-                Overview
+                <span data-en="Overview" data-kn="ಅವಲೋಕನ">Overview</span>
             </h2>
             
             <!-- Add Banking Quick Stats -->
@@ -78,21 +86,21 @@
                 <div class="stat-card">
                     <i class="fas fa-users"></i>
                     <div class="stat-info">
-                        <h3>Active Members</h3>
-                        <p>7 Members</p>
+                        <h3 data-en="Active Members" data-kn="ಸಕ್ರಿಯ ಸದಸ್ಯರು">Active Members</h3>
+                        <p data-en="7 Members" data-kn="7 ಸದಸ್ಯರು">7 Members</p>
                     </div>
                 </div>
                 <div class="stat-card">
                     <i class="fas fa-money-bill-wave"></i>
                     <div class="stat-info">
-                        <h3>Monthly Collection</h3>
+                        <h3 data-en="Monthly Collection" data-kn="ಮಾಸಿಕ ಸಂಗ್ರಹ">Monthly Collection</h3>
                         <p>₹14,000</p>
                     </div>
                 </div>
                 <div class="stat-card">
                     <i class="fas fa-piggy-bank"></i>
                     <div class="stat-info">
-                        <h3>Monthly Deposit</h3>
+                        <h3 data-en="Monthly Deposit" data-kn="ಮಾಸಿಕ ಠೇವಣಿ">Monthly Deposit</h3>
                         <p>₹2,000</p>
                     </div>
                 </div>
@@ -100,47 +108,37 @@
 
             <div class="info-card slide-up">
                 <div class="overview-content">
-                    <h3><i class="fas fa-info-circle"></i> About Our Association</h3>
-                    <p>
-                        Sri Mukkanneshwara Associate was established in February 2021 with the vision of fostering financial cooperation and mutual growth among its members. Starting with 8 initial members, the association has evolved into a well-structured organization with 7 active members. The association maintains a systematic approach to financial management, with each member contributing ₹2,000 monthly, resulting in a total monthly collection of ₹14,000.
-                    </p>
+                    <h3><i class="fas fa-info-circle"></i> <span data-en="About Our Association" data-kn="ನಮ್ಮ ಸಂಘದ ಬಗ್ಗೆ">About Our Association</span></h3>
+                    <p data-en="Sri Mukkanneshwara Associate was established in February 2021 with the vision of fostering financial cooperation and mutual growth among its members. Starting with 8 initial members, the association has evolved into a well-structured organization with 7 active members. The association maintains a systematic approach to financial management, with each member contributing ₹2,000 monthly, resulting in a total monthly collection of ₹14,000." data-kn="ಶ್ರೀ ಮುಕ್ಕಣ್ಣೇಶ್ವರ ಅಸೋಸಿಯೇಟ್ಸ್ ಅನ್ನು ಫೆಬ್ರವರಿ 2021 ರಲ್ಲಿ ಸದಸ್ಯರ ನಡುವೆ ಹಣಕಾಸಿನ ಸಹಕಾರ ಮತ್ತು ಪರಸ್ಪರ ಬೆಳವಣಿಗೆಯನ್ನು ಉತ್ತೇಜಿಸುವ ದೃಷ್ಟಿಯೊಂದಿಗೆ ಸ್ಥಾಪಿಸಲಾಯಿತು. 8 ಆರಂಭಿಕ ಸದಸ್ಯರೊಂದಿಗೆ ಪ್ರಾರಂಭಿಸಿ, ಸಂಘವು 7 ಸಕ್ರಿಯ ಸದಸ್ಯರೊಂದಿಗೆ ಉತ್ತಮ ರೀತಿಯಲ್ಲಿ ರಚಿತ ಸಂಸ್ಥೆಯಾಗಿ ವಿಕಸನಗೊಂಡಿದೆ. ಸಂಘವು ಹಣಕಾಸು ನಿರ್ವಹಣೆಯಲ್ಲಿ ವ್ಯವಸ್ಥಿತ ವಿಧಾನವನ್ನು ನಿರ್ವಹಿಸುತ್ತದೆ, ಪ್ರತಿ ಸದಸ್ಯರು ಮಾಸಿಕ ₹2,000 ಕೊಡುಗೆ ನೀಡುತ್ತಾರೆ, ಇದು ಒಟ್ಟು ಮಾಸಿಕ ಸಂಗ್ರಹ ₹14,000 ಗೆ ಕಾರಣವಾಗುತ್ತದೆ.">Sri Mukkanneshwara Associate was established in February 2021 with the vision of fostering financial cooperation and mutual growth among its members. Starting with 8 initial members, the association has evolved into a well-structured organization with 7 active members. The association maintains a systematic approach to financial management, with each member contributing ₹2,000 monthly, resulting in a total monthly collection of ₹14,000.</p>
 
-                    <h3><i class="fas fa-history"></i> Our Journey</h3>
-                    <p>
-                        The association's journey began in 2021 with an initial monthly deposit of ₹1,000 per member. Our first annual meeting was conducted at M Thumbaraguddi (Native Place), where we established our core rules and loan procedures. In 2022, we strengthened our foundation by increasing the monthly deposit to ₹1,500 and held our second annual meeting at Sampige Heritage Resort, Koppal. During this phase, we implemented a streamlined loan distribution process and established systematic record-keeping practices.
-                    </p>
-                    <p>
-                        The year 2023 marked a period of growth and stability. We successfully managed multiple active loans and strengthened member relationships through regular meetings. Our third annual meeting was held at Cotton County Club, Hubballi, where we reviewed and enhanced our financial management systems.
-                    </p>
+                    <h3><i class="fas fa-history"></i> <span data-en="Our Journey" data-kn="ನಮ್ಮ ಪ್ರಯಾಣ">Our Journey</span></h3>
+                    <p data-en="The association's journey began in 2021 with an initial monthly deposit of ₹1,000 per member. Our first annual meeting was conducted at M Thumbaraguddi (Native Place), where we established our core rules and loan procedures. In 2022, we strengthened our foundation by increasing the monthly deposit to ₹1,500 and held our second annual meeting at Sampige Heritage Resort, Koppal. During this phase, we implemented a streamlined loan distribution process and established systematic record-keeping practices." data-kn="ಸಂಘದ ಪ್ರಯಾಣವು 2021 ರಲ್ಲಿ ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ₹1,000 ಆರಂಭಿಕ ಮಾಸಿಕ ಠೇವಣಿಯೊಂದಿಗೆ ಪ್ರಾರಂಭವಾಯಿತು. ನಮ್ಮ ಮೊದಲ ವಾರ್ಷಿಕ ಸಭೆಯನ್ನು ಎಂ ತುಂಬರಗುಡ್ಡಿ (ಸ್ಥಳೀಯ ಸ್ಥಳ) ನಲ್ಲಿ ನಡೆಸಲಾಯಿತು, ಅಲ್ಲಿ ನಾವು ನಮ್ಮ ಮೂಲ ನಿಯಮಗಳು ಮತ್ತು ಸಾಲ ವಿಧಾನಗಳನ್ನು ಸ್ಥಾಪಿಸಿದ್ದೇವೆ. 2022 ರಲ್ಲಿ, ನಾವು ಮಾಸಿಕ ಠೇವಣಿಯನ್ನು ₹1,500 ಗೆ ಹೆಚ್ಚಿಸುವ ಮೂಲಕ ನಮ್ಮ ಅಡಿಪಾಯವನ್ನು ಬಲಪಡಿಸಿದ್ದೇವೆ ಮತ್ತು ಸಂಪಿಗೆ ಹೆರಿಟೇಜ್ ರಿಸಾರ್ಟ್, ಕೊಪ್ಪಳದಲ್ಲಿ ನಮ್ಮ ಎರಡನೇ ವಾರ್ಷಿಕ ಸಭೆಯನ್ನು ನಡೆಸಿದ್ದೇವೆ. ಈ ಹಂತದಲ್ಲಿ, ನಾವು ಸುಗಮವಾದ ಸಾಲ ವಿತರಣಾ ಪ್ರಕ್ರಿಯೆಯನ್ನು ಜಾರಿಗೆ ತಂದಿದ್ದೇವೆ ಮತ್ತು ವ್ಯವಸ್ಥಿತ ದಾಖಲೆ ನಿರ್ವಹಣಾ ಅಭ್ಯಾಸಗಳನ್ನು ಸ್ಥಾಪಿಸಿದ್ದೇವೆ.">The association's journey began in 2021 with an initial monthly deposit of ₹1,000 per member. Our first annual meeting was conducted at M Thumbaraguddi (Native Place), where we established our core rules and loan procedures. In 2022, we strengthened our foundation by increasing the monthly deposit to ₹1,500 and held our second annual meeting at Sampige Heritage Resort, Koppal. During this phase, we implemented a streamlined loan distribution process and established systematic record-keeping practices.</p>
+                    <p data-en="The year 2023 marked a period of growth and stability. We successfully managed multiple active loans and strengthened member relationships through regular meetings. Our third annual meeting was held at Cotton County Club, Hubballi, where we reviewed and enhanced our financial management systems." data-kn="2023 ವರ್ಷವು ಬೆಳವಣಿಗೆ ಮತ್ತು ಸ್ಥಿರತೆಯ ಅವಧಿಯನ್ನು ಗುರುತಿಸಿತು. ನಾವು ಹಲವಾರು ಸಕ್ರಿಯ ಸಾಲಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನಿರ್ವಹಿಸಿದ್ದೇವೆ ಮತ್ತು ನಿಯಮಿತ ಸಭೆಗಳ ಮೂಲಕ ಸದಸ್ಯ ಸಂಬಂಧಗಳನ್ನು ಬಲಪಡಿಸಿದ್ದೇವೆ. ನಮ್ಮ ಮೂರನೇ ವಾರ್ಷಿಕ ಸಭೆಯನ್ನು ಕಾಟನ್ ಕೌಂಟಿ ಕ್ಲಬ್, ಹುಬ್ಬಳ್ಳಿಯಲ್ಲಿ ನಡೆಸಲಾಯಿತು, ಅಲ್ಲಿ ನಾವು ನಮ್ಮ ಹಣಕಾಸು ನಿರ್ವಹಣಾ ವ್ಯವಸ್ಥೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿದ್ದೇವೆ ಮತ್ತು ಸುಧಾರಿಸಿದ್ದೇವೆ.">The year 2023 marked a period of growth and stability. We successfully managed multiple active loans and strengthened member relationships through regular meetings. Our third annual meeting was held at Cotton County Club, Hubballi, where we reviewed and enhanced our financial management systems.</p>
 
-                    <h3><i class="fas fa-chart-line"></i> Current Status</h3>
-                    <p>
-                        Currently, in 2024-25, the association has further enhanced its financial structure. The monthly deposit has been increased to ₹2,000 per member, reflecting our growing strength and stability. We maintain transparent financial management with detailed record-keeping, and our loan management system continues to benefit all members effectively. The fourth annual meeting was held at Jungle Vibes Resort, Dandeli, where we have reviewed our progress and plan future initiatives.
-                    </p>
+                    <h3><i class="fas fa-chart-line"></i> <span data-en="Current Status" data-kn="ಪ್ರಸ್ತುತ ಸ್ಥಿತಿ">Current Status</span></h3>
+                    <p data-en="Currently, in 2024-25, the association has further enhanced its financial structure. The monthly deposit has been increased to ₹2,000 per member, reflecting our growing strength and stability. We maintain transparent financial management with detailed record-keeping, and our loan management system continues to benefit all members effectively. The fourth annual meeting was held at Jungle Vibes Resort, Dandeli, where we have reviewed our progress and plan future initiatives." data-kn="ಪ್ರಸ್ತುತ, 2024-25 ರಲ್ಲಿ, ಸಂಘವು ತನ್ನ ಹಣಕಾಸು ರಚನೆಯನ್ನು ಮತ್ತಷ್ಟು ಸುಧಾರಿಸಿದೆ. ಮಾಸಿಕ ಠೇವಣಿಯನ್ನು ಪ್ರತಿ ಸದಸ್ಯರಿಗೆ ₹2,000 ಗೆ ಹೆಚ್ಚಿಸಲಾಗಿದೆ, ಇದು ನಮ್ಮ ಬೆಳೆಯುತ್ತಿರುವ ಶಕ್ತಿ ಮತ್ತು ಸ್ಥಿರತೆಯನ್ನು ಪ್ರತಿಬಿಂಬಿಸುತ್ತದೆ. ನಾವು ವಿವರವಾದ ದಾಖಲೆ ನಿರ್ವಹಣೆಯೊಂದಿಗೆ ಪಾರದರ್ಶಕ ಹಣಕಾಸು ನಿರ್ವಹಣೆಯನ್ನು ನಿರ್ವಹಿಸುತ್ತೇವೆ, ಮತ್ತು ನಮ್ಮ ಸಾಲ ನಿರ್ವಹಣಾ ವ್ಯವಸ್ಥೆಯು ಎಲ್ಲಾ ಸದಸ್ಯರಿಗೆ ಪರಿಣಾಮಕಾರಿಯಾಗಿ ಪ್ರಯೋಜನವನ್ನು ನೀಡುತ್ತಲೇ ಇದೆ. ನಾಲ್ಕನೇ ವಾರ್ಷಿಕ ಸಭೆಯನ್ನು ಜಂಗಲ್ ವೈಬ್ಸ್ ರಿಸಾರ್ಟ್, ದಾಂಡೇಲಿಯಲ್ಲಿ ನಡೆಸಲಾಯಿತು, ಅಲ್ಲಿ ನಾವು ನಮ್ಮ ಪ್ರಗತಿಯನ್ನು ಪರಿಶೀಲಿಸಿದ್ದೇವೆ ಮತ್ತು ಭವಿಷ್ಯದ ಉಪಕ್ರಮಗಳನ್ನು ಯೋಜಿಸಿದ್ದೇವೆ.">Currently, in 2024-25, the association has further enhanced its financial structure. The monthly deposit has been increased to ₹2,000 per member, reflecting our growing strength and stability. We maintain transparent financial management with detailed record-keeping, and our loan management system continues to benefit all members effectively. The fourth annual meeting was held at Jungle Vibes Resort, Dandeli, where we have reviewed our progress and plan future initiatives.</p>
 
-                    <h3><i class="fas fa-bullseye"></i> Key Achievements</h3>
-                    <p>
-                        Throughout our journey, we have achieved several significant milestones. We have established a robust financial framework, implemented transparent loan procedures, and maintained strong member relationships. Our systematic approach to record-keeping and financial management has ensured smooth operations and member satisfaction. The gradual increase in monthly deposits from ₹1,000 to ₹2,000 reflects our growing financial capacity and members' commitment to the association's growth.
-                    </p>
+                    <h3><i class="fas fa-bullseye"></i> <span data-en="Key Achievements" data-kn="ಪ್ರಮುಖ ಸಾಧನೆಗಳು">Key Achievements</span></h3>
+                    <p data-en="Throughout our journey, we have achieved several significant milestones. We have established a robust financial framework, implemented transparent loan procedures, and maintained strong member relationships. Our systematic approach to record-keeping and financial management has ensured smooth operations and member satisfaction. The gradual increase in monthly deposits from ₹1,000 to ₹2,000 reflects our growing financial capacity and members' commitment to the association's growth." data-kn="ನಮ್ಮ ಪ್ರಯಾಣದುದ್ದಕ್ಕೂ, ನಾವು ಹಲವಾರು ಮಹತ್ವದ ಮೈಲಿಗಲ್ಲುಗಳನ್ನು ಸಾಧಿಸಿದ್ದೇವೆ. ನಾವು ದೃಢವಾದ ಹಣಕಾಸು ಚೌಕಟ್ಟನ್ನು ಸ್ಥಾಪಿಸಿದ್ದೇವೆ, ಪಾರದರ್ಶಕ ಸಾಲ ವಿಧಾನಗಳನ್ನು ಜಾರಿಗೆ ತಂದಿದ್ದೇವೆ, ಮತ್ತು ಬಲವಾದ ಸದಸ್ಯ ಸಂಬಂಧಗಳನ್ನು ನಿರ್ವಹಿಸಿದ್ದೇವೆ. ದಾಖಲೆ ನಿರ್ವಹಣೆ ಮತ್ತು ಹಣಕಾಸು ನಿರ್ವಹಣೆಯಲ್ಲಿ ನಮ್ಮ ವ್ಯವಸ್ಥಿತ ವಿಧಾನವು ಸುಗಮ ಕಾರ್ಯಾಚರಣೆ ಮತ್ತು ಸದಸ್ಯ ತೃಪ್ತಿಯನ್ನು ಖಚಿತಪಡಿಸಿದೆ. ಮಾಸಿಕ ಠೇವಣಿಗಳನ್ನು ₹1,000 ರಿಂದ ₹2,000 ಗೆ ಕ್ರಮೇಣ ಹೆಚ್ಚಿಸುವುದು ನಮ್ಮ ಬೆಳೆಯುತ್ತಿರುವ ಹಣಕಾಸು ಸಾಮರ್ಥ್ಯ ಮತ್ತು ಸಂಘದ ಬೆಳವಣಿಗೆಗೆ ಸದಸ್ಯರ ಬದ್ಧತೆಯನ್ನು ಪ್ರತಿಬಿಂಬಿಸುತ್ತದೆ.">Throughout our journey, we have achieved several significant milestones. We have established a robust financial framework, implemented transparent loan procedures, and maintained strong member relationships. Our systematic approach to record-keeping and financial management has ensured smooth operations and member satisfaction. The gradual increase in monthly deposits from ₹1,000 to ₹2,000 reflects our growing financial capacity and members' commitment to the association's growth.</p>
 
                     <!-- Modified Banking Details Section -->
-                    <h3><i class="fas fa-university"></i> Banking Details</h3>
+                    <h3><i class="fas fa-university"></i> <span data-en="Banking Details" data-kn="ಬ್ಯಾಂಕಿಂಗ್ ವಿವರಗಳು">Banking Details</span></h3>
                     <div class="banking-details">
                         <table>
                             <tr>
-                                <td><i class="fas fa-user"></i> <strong>Account Name</strong></td>
+                                <td><i class="fas fa-user"></i> <strong><span data-en="Account Name" data-kn="ಖಾತೆ ಹೆಸರು">Account Name</span></strong></td>
                                 <td>: Sri Mukkaneshwara Associates</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-landmark"></i> <strong>Bank Name</strong></td>
+                                <td><i class="fas fa-landmark"></i> <strong><span data-en="Bank Name" data-kn="ಬ್ಯಾಂಕ್ ಹೆಸರು">Bank Name</span></strong></td>
                                 <td>: ICICI Bank Ltd</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-hashtag"></i> <strong>Account No.</strong></td>
+                                <td><i class="fas fa-hashtag"></i> <strong><span data-en="Account No." data-kn="ಖಾತೆ ಸಂಖ್ಯೆ">Account No.</span></strong></td>
                                 <td>: 437601000088</td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-qrcode"></i> <strong>IFSC Code</strong></td>
+                                <td><i class="fas fa-qrcode"></i> <strong><span data-en="IFSC Code" data-kn="IFSC ಕೋಡ್">IFSC Code</span></strong></td>
                                 <td>: ICIC0004376</td>
                             </tr>
                         </table>
@@ -148,10 +146,10 @@
                         <!-- Add Quick Actions -->
                         <div class="banking-actions">
                             <button class="modern-btn action-btn" onclick="copyBankDetails()">
-                                <i class="fas fa-copy"></i> Copy Account Details
+                                <i class="fas fa-copy"></i> <span data-en="Copy Account Details" data-kn="ಖಾತೆ ವಿವರಗಳನ್ನು ನಕಲಿಸಿ">Copy Account Details</span>
                             </button>
                             <button class="modern-btn action-btn" onclick="showQRCode()">
-                                <i class="fas fa-qrcode"></i> Show QR Code
+                                <i class="fas fa-qrcode"></i> <span data-en="Show QR Code" data-kn="QR ಕೋಡ್ ತೋರಿಸಿ">Show QR Code</span>
                             </button>
                         </div>
 
@@ -315,6 +313,46 @@ IFSC Code: ICIC0004376</textarea>
                 });
             });
         }
+
+        // Language Toggle Functionality
+        let currentLanguage = 'en'; // Default to English
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'kn' : 'en';
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            const elements = document.querySelectorAll('[data-en][data-kn]');
+            const langButton = document.getElementById('currentLang');
+            
+            elements.forEach(element => {
+                if (currentLanguage === 'kn') {
+                    element.textContent = element.getAttribute('data-kn');
+                } else {
+                    element.textContent = element.getAttribute('data-en');
+                }
+            });
+            
+            // Update button text
+            if (currentLanguage === 'kn') {
+                langButton.textContent = 'ಕನ್ನಡ';
+            } else {
+                langButton.textContent = 'English';
+            }
+            
+            // Store language preference
+            localStorage.setItem('preferredLanguage', currentLanguage);
+        }
+
+        // Load saved language preference
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLanguage = localStorage.getItem('preferredLanguage');
+            if (savedLanguage) {
+                currentLanguage = savedLanguage;
+                updateLanguage();
+            }
+        });
 
     </script>
     
