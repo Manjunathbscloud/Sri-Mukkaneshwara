@@ -398,6 +398,7 @@
             
             // Calculate total interest from visible rows only
             let totalInterest = 0;
+            let totalAmount = 0;
             
             // Get all table rows (including hidden ones)
             const allTableRows = document.querySelectorAll('.loans-table tbody tr');
@@ -406,7 +407,7 @@
                 // Check if row is visible (not filtered out)
                 const isVisible = row.style.display !== 'none';
                 
-                if (isVisible) {
+                if (isVisible && row.cells.length >= 8) {
                     // Calculate total interest (Total Paid column - index 7)
                     const totalPaidCell = row.cells[7];
                     if (totalPaidCell) {
@@ -414,18 +415,29 @@
                         const totalPaidValue = parseFloat(totalPaidText.replace(/[₹,\s]/g, '')) || 0;
                         totalInterest += totalPaidValue;
                     }
+                    
+                    // Calculate total amount (Amount column - index 4)
+                    const amountCell = row.cells[4];
+                    if (amountCell) {
+                        const amountText = amountCell.textContent.trim();
+                        const amountValue = parseFloat(amountText.replace(/[₹,\s]/g, '')) || 0;
+                        totalAmount += amountValue;
+                    }
                 }
             });
             
             // Update the total interest in the footer
             const totalRows = tfoot.querySelectorAll('tr');
-            if (totalRows.length >= 1) {
-                // Update Total Interest (first row)
-                const interestTd = totalRows[0].cells[7]; // Total Paid column (index 7)
+            
+            // Update Total Interest (second row)
+            if (totalRows.length >= 2) {
+                const interestTd = totalRows[1].cells[1]; // Total Interest column
                 if (interestTd) {
                     interestTd.innerHTML = `<strong>₹${totalInterest.toLocaleString('en-IN')}</strong>`;
                 }
             }
+            
+            // Don't show Total Amount row - only show Total Interest
         }
 
         // Update filter indicators
@@ -434,45 +446,35 @@
             const memberArrow = document.getElementById('memberArrow');
             const statusArrow = document.getElementById('statusArrow');
             
-            // Clear existing badges
+            // Clear existing content
             filterBadges.innerHTML = '';
             
             // Check if any filters are active
             const hasActiveFilters = selectedMemberFilter || selectedStatusFilter;
             
             if (hasActiveFilters) {
-                filterBadges.style.display = 'flex';
+                filterBadges.style.display = 'block';
                 
-                // Add member filter badge
+                // Create styled text display for filters
+                let filterText = '<div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 16px; margin: 10px 0; font-size: 0.9rem; color: #495057;">';
+                filterText += '<strong style="color: #6c757d;">📋 Applied Filters:</strong> ';
+                
+                const filters = [];
+                
                 if (selectedMemberFilter) {
-                    const memberBadge = document.createElement('div');
-                    memberBadge.className = 'filter-badge member-filter';
-                    memberBadge.innerHTML = `
-                        <i class="fas fa-user"></i>
-                        <span>Member: ${selectedMemberFilter}</span>
-                        <i class="fas fa-times remove-filter" onclick="clearMemberFilter()"></i>
-                    `;
-                    filterBadges.appendChild(memberBadge);
+                    filters.push(`<span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-weight: 500;">👤 ${selectedMemberFilter}</span>`);
+                }
+                if (selectedStatusFilter) {
+                    filters.push(`<span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-weight: 500;">🔍 ${selectedStatusFilter}</span>`);
                 }
                 
-                // Add status filter badge
-                if (selectedStatusFilter) {
-                    const statusBadge = document.createElement('div');
-                    statusBadge.className = 'filter-badge status-filter';
-                    statusBadge.innerHTML = `
-                        <i class="fas fa-info-circle"></i>
-                        <span>Status: ${selectedStatusFilter}</span>
-                        <i class="fas fa-times remove-filter" onclick="clearStatusFilter()"></i>
-                    `;
-                    filterBadges.appendChild(statusBadge);
-                }
+                filterText += filters.join(' ');
                 
                 // Add clear all button
-                const clearAllBtn = document.createElement('div');
-                clearAllBtn.className = 'clear-all-filters';
-                clearAllBtn.innerHTML = '<i class="fas fa-times"></i> Clear All';
-                clearAllBtn.onclick = clearAllFilters;
-                filterBadges.appendChild(clearAllBtn);
+                filterText += ' <a href="#" onclick="clearAllFilters(); return false;" style="background: #dc3545; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-weight: 500; margin-left: 10px; display: inline-block;">🗑️ Clear All</a>';
+                filterText += '</div>';
+                
+                filterBadges.innerHTML = filterText;
             } else {
                 filterBadges.style.display = 'none';
             }
