@@ -149,12 +149,6 @@
                         </div>
                     </div>
                     <div class="financial-actions">
-                        <button onclick="refreshFinancialData()" id="refreshBtn" class="refresh-btn" title="Refresh Financial Data">
-                            <i class="fas fa-sync-alt" id="refreshIcon"></i>
-                            <div id="refreshLoader" style="display: none;">
-                                <div class="spinner"></div>
-                            </div>
-                        </button>
                         <span class="stat-date" id="lastUpdated">As of September 15th 2025</span>
                     </div>
                 </div>
@@ -422,29 +416,6 @@
             });
         }
 
-        // Refresh financial data with loader
-        function refreshFinancialData() {
-            const refreshBtn = document.getElementById('refreshBtn');
-            const refreshIcon = document.getElementById('refreshIcon');
-            const refreshLoader = document.getElementById('refreshLoader');
-            
-            // Show loader
-            refreshBtn.disabled = true;
-            refreshIcon.style.display = 'none';
-            refreshLoader.style.display = 'inline-block';
-            
-            // Call refresh function
-            if (window.FinancialData && window.FinancialData.refresh) {
-                window.FinancialData.refresh();
-            }
-            
-            // Hide loader after a delay
-            setTimeout(() => {
-                refreshBtn.disabled = false;
-                refreshIcon.style.display = 'inline';
-                refreshLoader.style.display = 'none';
-            }, 2000);
-        }
 
         // Loan Status Button Function
         function showLoanStatusMessage() {
