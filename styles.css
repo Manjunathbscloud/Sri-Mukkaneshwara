@@ -3118,12 +3118,12 @@ th i.fa-chevron-down.active-filter {
 .filter-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
-    padding: 0.3rem 0.6rem;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
     background: var(--gradient-primary);
     color: white;
-    border-radius: 15px;
-    font-size: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
     font-weight: 500;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     animation: slideInLeft 0.3s ease;
@@ -6657,5 +6657,26 @@ button[onclick*="refresh"]:hover, button[onclick*="FinancialData"]:hover {
     .lang-btn {
         padding: 0.4rem 0.8rem;
         font-size: 0.8rem;
+    }
+}
+
+/* Meeting Content Grid Layout */
+.meeting-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.meeting-content-grid .info-card {
+    margin: 0;
+}
+
+/* Mobile responsive for meeting grid */
+@media (max-width: 768px) {
+    .meeting-content-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 1rem 0;
     }
 }
