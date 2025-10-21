@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sixth Year Deposits (2026) - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="js/auth-utils.js"></script>
+    <script>
+        (function() {
+            // Use new AuthUtils for session validation
+            if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
+                // Session is valid, continue
+                return;
+            } else {
+                // Clear all session data
+                sessionStorage.clear();
+                sessionStorage.setItem('returnUrl', window.location.href);
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Sri Mukkanneshwara Associate</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Overview</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="login.html">Accounts</a></li>
+                <li><a href="meetings.html">Meetings</a></li>
+                <li><a href="rules.html">Rules</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="deposits-section">
+            <h2 class="page-title"><i class="fas fa-piggy-bank"></i> Deposits 2026</h2>
+
+            <div class="info-card">
+                <h3 class="mt-4">Sixth Year History (2026)</h3>
+                <div class="history-summary">
+                    <p>In the sixth year, the association continues its financial progress with updated membership and fee structure:</p>
+                    <ul class="feature-list">
+                        <li>Yearly renewal fee: ₹3,000 for 8 members (November 2025)</li>
+                        <li>Monthly deposits: ₹2,000 per member from November to November</li>
+                        <li>President exemption: No payment in December month</li>
+                        <li>Vice President concession: ₹1,250 in December month</li>
+                        <li>Regular members: ₹2,000 per month throughout the year</li>
+                    </ul>
+                </div>
+
+                <h3 class="mt-4">Detailed Sixth Year Summary</h3>
+                <table class="member-table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Details</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Yearly Renewal Fee</td>
+                            <td>November 2025 (₹3,000 × 8 members)</td>
+                            <td>₹24,000</td>
+                        </tr>
+                        <tr>
+                            <td>Monthly Deposits</td>
+                            <td>November 2025 (₹2,000 × 8 members)</td>
+                            <td>₹16,000</td>
+                        </tr>
+                        <tr>
+                            <td>Monthly Deposits</td>
+                            <td>December 2025 (₹2,000 × 7 members + ₹1,250 VP)</td>
+                            <td>₹15,250</td>
+                        </tr>
+                        <tr>
+                            <td>Monthly Deposits</td>
+                            <td>January - November 2026 (₹2,000 × 8 members × 11 months)</td>
+                            <td>₹1,76,000</td>
+                        </tr>
+                        <tr>
+                            <td>Interest Earned</td>
+                            <td>Total interest earned (to be calculated)</td>
+                            <td>₹TBD</td>
+                        </tr>
+                        <tr>
+                            <td>Annual Meeting Expense</td>
+                            <td>Year-end meeting cost</td>
+                            <td>-₹TBD</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Total Balance</td>
+                            <td>As of November 2026</td>
+                            <td>₹TBD</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info-card">
+                <h3>Special Payment Structure</h3>
+                <div class="payment-structure">
+                    <div class="structure-item">
+                        <h4><i class="fas fa-crown"></i> President (Manjunath Banakar)</h4>
+                        <p><strong>December Exemption:</strong> No payment required in December month</p>
+                        <p><strong>Other months:</strong> ₹2,000 per month</p>
+                    </div>
+                    <div class="structure-item">
+                        <h4><i class="fas fa-user-tie"></i> Vice President (Pratap Banakar)</h4>
+                        <p><strong>December Concession:</strong> ₹1,250 (37.5% discount)</p>
+                        <p><strong>Concession Amount:</strong> ₹750 (₹2,000 - ₹1,250)</p>
+                        <p><strong>Other months:</strong> ₹2,000 per month</p>
+                    </div>
+                    <div class="structure-item">
+                        <h4><i class="fas fa-users"></i> Regular Members (6 members)</h4>
+                        <p><strong>All months:</strong> ₹2,000 per month</p>
+                        <p><strong>Members:</strong> Sarpabhushana, Mukkanna, Santosh, Pradeep, Praveen, Appanna</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-nav">
+                <a href="deposits.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Deposits Overview
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Sri Mukkanneshwara Associate. All rights reserved.</p>
+    </footer>
+</body>
+</html>
