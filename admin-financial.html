@@ -164,6 +164,7 @@
         </div>
     </main>
 
+    <script src="sheets-config.js"></script>
     <script src="js/auth-utils.js"></script>
     <script>
         (function() {
@@ -449,22 +450,54 @@
                 });
                 
                 console.log('Updating Google Sheet via Apps Script:', params.toString());
+                console.log('Form data being sent:', formData);
                 
                 // Update Google Sheet via Google Apps Script
                 try {
-                    const response = await fetch(`https://script.google.com/macros/s/AKfycbz5BONYCYW4-nHkofb2IZUA8J0WsBdsK1bkTmPta-jf4olgIAx_KEjvSfl6NmRkpLeY/exec?${params.toString()}`);
+                    const updateUrl = window.SHEETS_CONFIG?.financialUpdateUrl || 'https://script.google.com/macros/s/AKfycbyMSWWzvoAdk4h0LEXuuB0GWiS_M-OjErpUMQqcDoyQlaEEgKQxWOu3tXHjcsNmzF7Y/exec';
+                    
+                    // Use POST method instead of GET for better data handling
+                    const response = await fetch(updateUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: params.toString()
+                    });
+                    
                     console.log('Google Apps Script response status:', response.status);
                     
-                    // Since Google Apps Script sometimes redirects, we'll assume success
-                    // The actual update happens on the server side
-                    console.log('Financial data update request sent to Google Apps Script');
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log('Google Apps Script response:', result);
+                        if (result.success) {
+                            console.log('Financial data updated successfully in Google Sheet');
+                        } else {
+                            console.error('Google Apps Script error:', result.message);
+                            alert('Error updating Google Sheet: ' + result.message);
+                        }
+                    } else {
+                        console.log('Response not ok, status:', response.status);
+                        const errorText = await response.text();
+                        console.log('Error response:', errorText);
+                        alert('Error connecting to Google Apps Script. Status: ' + response.status);
+                    }
                     
                 } catch (fetchError) {
-                    console.log('Fetch error, but continuing with update:', fetchError);
-                    // Continue with the update even if fetch fails
+                    console.error('Fetch error:', fetchError);
+                    alert('Error connecting to Google Apps Script: ' + fetchError.message);
                 }
                 
                 console.log('Financial data update completed successfully!');
+                
+                // Trigger refresh of accounts page data
+                window.dispatchEvent(new CustomEvent('financialDataUpdated', {
+                    detail: {
+                        bankBalance: formData.bankBalance,
+                        availableLoanAmount: formData.availableLoanAmount,
+                        lastUpdated: formData.lastUpdated
+                    }
+                }));
                 
                 // Get admin name from user details (already declared above)
                 const adminName = userDetails.name || 'Manjunath Banakar';
@@ -632,7 +665,8 @@
                     action: 'test'
                 });
                 
-                const response = await fetch(`https://script.google.com/macros/s/AKfycbz5BONYCYW4-nHkofb2IZUA8J0WsBdsK1bkTmPta-jf4olgIAx_KEjvSfl6NmRkpLeY/exec?${params.toString()}`);
+                const testUrl = window.SHEETS_CONFIG?.financialUpdateUrl || 'https://script.google.com/macros/s/AKfycbyMSWWzvoAdk4h0LEXuuB0GWiS_M-OjErpUMQqcDoyQlaEEgKQxWOu3tXHjcsNmzF7Y/exec';
+                const response = await fetch(`${testUrl}?${params.toString()}`);
                 
                 if (response.ok) {
                     const result = await response.text();

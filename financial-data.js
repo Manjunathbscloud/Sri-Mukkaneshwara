@@ -3,7 +3,8 @@
 
 class FinancialData {
     constructor() {
-        this.googleSheetsUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT0BPMTkSH8oDU7AYQLEcTxN-LHh86WLBMyfZH1eT4ABRCB8vwF2z7BBnzN0-SvaZZ0Apcwkkn08jyw/pub?output=csv';
+        // Use the same Google Sheets URL as configured in sheets-config.js
+        this.googleSheetsUrl = window.SHEETS_CONFIG?.financialCsvUrl || 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT0BPMTkSH8oDU7AYQLEcTxN-LHh86WLBMyfZH1eT4ABRCB8vwF2z7BBnzN0-SvaZZ0Apcwkkn08jyw/pub?output=csv';
         this.currentData = null;
         this.init();
     }
@@ -129,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Only initialize on accounts page
     if (window.location.pathname.includes('accounts.html') || window.location.pathname.endsWith('/')) {
         window.FinancialData = new FinancialData();
+        window.financialDataInstance = window.FinancialData; // Expose globally for event listener
     }
 });
 

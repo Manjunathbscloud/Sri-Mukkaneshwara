@@ -472,11 +472,42 @@
         }
     </script>
 
+    <!-- Sheets Configuration -->
+    <script src="sheets-config.js"></script>
+    
     <!-- Financial Data Management -->
     <script src="financial-data.js"></script>
     
     <!-- User Header Script -->
     <script src="js/user-header.js"></script>
+    
+    <!-- Financial Data Update Listener -->
+    <script>
+        // Listen for financial data updates from admin-financial page
+        window.addEventListener('financialDataUpdated', function(event) {
+            console.log('Financial data update received:', event.detail);
+            
+            // Refresh the financial data display
+            if (window.financialDataInstance) {
+                window.financialDataInstance.refresh();
+            } else {
+                // If no instance exists, reload the page to get fresh data
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            }
+        });
+        
+        // Store the financial data instance globally for access
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for financial data to be initialized
+            setTimeout(() => {
+                if (window.financialDataInstance) {
+                    window.financialDataInstance = window.financialDataInstance;
+                }
+            }, 1000);
+        });
+    </script>
 
 </body>
 </html>

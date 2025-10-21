@@ -158,3 +158,4 @@ class AuthUtils {
 // Make AuthUtils available globally
 window.AuthUtils = AuthUtils;
 
+

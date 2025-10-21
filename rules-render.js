@@ -26,6 +26,7 @@
     function renderSections(groups, selectors) {
         renderList(groups['membership'] || [], selectors.membershipListSelector);
         renderList(groups['loan'] || [], selectors.loanListSelector);
+        renderList(groups['newmember'] || [], selectors.newMemberListSelector);
         renderList(groups['administrative'] || groups['admin'] || [], selectors.adminListSelector);
     }
 
