@@ -108,6 +108,7 @@
             <div class="info-card">
                 <h3>Account Balance Summary</h3>
                 <div class="summary-card">
+                    <h4>First 5 Years (2021-2025)</h4>
                     <table class="member-table summary-table">
                         <thead>
                             <tr>
@@ -120,42 +121,42 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>First Year (2021-2022)</td>
+                                <td>2021</td>
                                 <td>₹1,11,000</td>
                                 <td>₹8,700</td>
                                 <td>₹5,600</td>
                                 <td>₹1,14,100</td>
                             </tr>
                             <tr>
-                                <td>Second Year (2022-2023)</td>
+                                <td>2022</td>
                                 <td>₹1,49,000</td>
                                 <td>₹33,600</td>
                                 <td>₹13,000</td>
                                 <td>₹1,69,600</td>
                             </tr>
                             <tr>
-                                <td>Third Year (2023-2024)</td>
+                                <td>2023</td>
                                 <td>₹1,59,500</td>
                                 <td>₹45,700</td>
                                 <td>₹17,750</td>
                                 <td>₹1,87,450</td>
                             </tr>
                             <tr>
-                                <td>Fourth Year (2024-2025)</td>
+                                <td>2024</td>
                                 <td>₹1,26,000</td>
                                 <td>₹57,300</td>
                                 <td>₹33,385</td>
                                 <td>₹1,49,915</td>
                             </tr>
                             <tr>
-                                <td>Fifth Year (2025)</td>
+                                <td>2025</td>
                                 <td>₹1,49,000</td>
                                 <td>₹1,03,350</td>
                                 <td>₹20,580</td>
                                 <td>₹2,31,770</td>
                             </tr>
                             <tr class="total-row">
-                                <td>Total</td>
+                                <td>Total (2021-2025)</td>
                                 <td>₹6,94,500</td>
                                 <td>₹2,48,650</td>
                                 <td>₹90,315</td>
@@ -164,6 +165,86 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Next Years Dropdown -->
+                <div class="next-years-section">
+                    <button class="dropdown-toggle" onclick="toggleNextYears()">
+                        <i class="fas fa-chevron-down"></i>
+                        Next Years (2026-2030) - Extended Association
+                    </button>
+                    <div class="dropdown-content" id="nextYearsContent" style="display: none;">
+                        <div class="next-years-info">
+                            <h5>2026 Projected Summary:</h5>
+                            <table class="member-table summary-table">
+                                <thead>
+                                    <tr>
+                                        <th>Year</th>
+                                        <th>Principal Amount</th>
+                                        <th>Interest Earned</th>
+                                        <th>Expenditure</th>
+                                        <th>Total Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2026</td>
+                                        <td>₹2,31,250</td>
+                                        <td>₹TBD</td>
+                                        <td>₹TBD</td>
+                                        <td>₹TBD</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="payment-structure-2026">
+                                <h5>2026 Payment Structure:</h5>
+                                <ul>
+                                    <li><strong>Yearly Renewal Fee:</strong> ₹3,000 × 8 members = ₹24,000</li>
+                                    <li><strong>Monthly Deposits:</strong> ₹2,000 per member (with special rules)</li>
+                                    <li><strong>President:</strong> Exempt in December</li>
+                                    <li><strong>Vice President:</strong> ₹1,250 in December (37.5% concession)</li>
+                                    <li><strong>Regular Members:</strong> ₹2,000 per month</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Member Deposit Details -->
+            <div class="info-card">
+                <h3><i class="fas fa-user-plus"></i> New Member: Appanna Banakar</h3>
+                <div class="new-member-deposit">
+                    <div class="deposit-calculation">
+                        <div class="calculation-item">
+                            <span class="label">Share Value:</span>
+                            <span class="value">₹1,21,833.57</span>
+                        </div>
+                        <div class="calculation-item">
+                            <span class="label">Additional 10%:</span>
+                            <span class="value">₹12,183.36</span>
+                        </div>
+                        <div class="calculation-item total">
+                            <span class="label">Total Amount:</span>
+                            <span class="value">₹1,34,016.93</span>
+                        </div>
+                    </div>
+                    <div class="payment-options">
+                        <h4>Payment Options:</h4>
+                        <div class="options-grid">
+                            <div class="option-card">
+                                <h5>Full Payment</h5>
+                                <p class="amount">₹1,34,016.93</p>
+                                <p class="description">One-time payment</p>
+                            </div>
+                            <div class="option-card">
+                                <h5>EMI Payment</h5>
+                                <p class="amount">₹7,445.38/month</p>
+                                <p class="description">18 months installment</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Year Links Section -->
@@ -171,24 +252,29 @@
                 <h3>Yearly Records</h3>
                 <div class="year-links">
                     <a href="deposits-2021.html" class="year-link">
-                        <span class="year">2021-2022</span>
+                        <span class="year">2021</span>
                         <span class="details">First Year Records</span>
                     </a>
                     <a href="deposits-2022.html" class="year-link">
-                        <span class="year">2022-2023</span>
+                        <span class="year">2022</span>
                         <span class="details">Second Year Records</span>
                     </a>
                     <a href="deposits-2023.html" class="year-link">
-                        <span class="year">2023-2024</span>
+                        <span class="year">2023</span>
                         <span class="details">Third Year Records</span>
                     </a>
                     <a href="deposits-2024.html" class="year-link">
-                        <span class="year">2024-2025</span>
+                        <span class="year">2024</span>
                         <span class="details">Fourth Year Records</span>
                     </a>
                     <a href="deposits-2025.html" class="year-link">
-                        <span class="year">2025-2026</span>
+                        <span class="year">2025</span>
                         <span class="details">Fifth Year Records</span>
+                    </a>
+                    <a href="deposits-2026.html" class="year-link current-year">
+                        <span class="year">2026</span>
+                        <span class="details">Sixth Year Records</span>
+                        <span class="active-badge">Active</span>
                     </a>
                 </div>
             </div>
@@ -219,6 +305,23 @@
                 
                 // Redirect to login page
                 window.location.href = 'login.html';
+            }
+        }
+
+        // Toggle next years dropdown
+        function toggleNextYears() {
+            const content = document.getElementById('nextYearsContent');
+            const button = document.querySelector('.dropdown-toggle');
+            const icon = button.querySelector('i');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                content.style.display = 'none';
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
             }
         }
 
