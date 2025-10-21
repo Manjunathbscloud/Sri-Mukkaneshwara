@@ -7,10 +7,20 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <script src="js/auth-utils.js"></script>
     <script>
-        if (!sessionStorage.getItem('isAuthenticated')) {
-            window.location.href = 'login.html';
-        }
+        (function() {
+            // Use new AuthUtils for session validation
+            if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
+                // Session is valid, continue
+                return;
+            } else {
+                // Clear all session data
+                sessionStorage.clear();
+                sessionStorage.setItem('returnUrl', window.location.href);
+                window.location.href = 'login.html';
+            }
+        })();
     </script>
 
     <header>
@@ -22,6 +32,7 @@
                 <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
                 <li><a href="rules.html">Rules</a></li>
+                <li><a href="#" onclick="logout()" style="color: #e74c3c; font-weight: bold;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -178,6 +189,18 @@
             ];
             
             return depositData;
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear all session data
+                sessionStorage.clear();
+                localStorage.clear();
+                
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
         }
     </script>
 </body>

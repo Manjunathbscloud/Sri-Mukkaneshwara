@@ -1,29 +1,9 @@
-// Configuration for Google Sheets CSV endpoints
-// Replace the placeholder URLs with your Published CSV links from Google Sheets
-// File -> Share -> Publish to the web -> Select sheet/tab -> CSV -> Copy URL
-
-const SHEETS_CONFIG = {
-    // Loans CSV should contain a header row with columns like:
-    // year, loan_id, member, from, amount, interest, renewal_or_return_month, status, total_paid
+// Google Sheets Configuration
+window.SHEETS_CONFIG = {
     loansCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQoBzlw6fdOJJYrh4uw4ej8r6Vwx0J_GiC0Ucd19ENrPYw20cDhDtpZe-oE-7-eRkEsSkp5mc1ziDIx/pub?output=csv',
-
-    // Deposits CSV should contain a header row with columns:
-    // year, member_name, deposit_date, amount, deposit_type, interest_earned, total_balance, notes
-    depositsCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTg-CXFLP8qNoZplwSYGCtjEJSqfzbt9HjZ51tTzVd76Dtm_kCsBR5PTsbXim7FcM4OV4HKPmHrgzK8/pub?output=csv',
-
-    // Rules CSV should contain a header row with columns:
-    // section, item
-    rulesCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRfIK3sa1N4kZgTWvYct5zWIGiURl8SZF4Xgf4d76FqPZS3cyMNNnURqm8UutszummyJ05V-_KUzhgQ/pub?output=csv',
-
+    rulesCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSJmRVixaV5nZiERZy6eC2xVXSfVez2a-Ju040TqqlvM2IU03E5bsW5UlN6ZvL2cS65pdIhMtiQTn6v/pub?output=csv',
+    financialCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT0BPMTkSH8oDU7AYQLEcTxN-LHh86WLBMyfZH1eT4ABRCB8vwF2z7BBnzN0-SvaZZ0Apcwkkn08jyw/pub?output=csv',
+    financialUpdateUrl: 'https://script.google.com/macros/s/AKfycbyMSWWzvoAdk4h0LEXuuB0GWiS_M-OjErpUMQqcDoyQlaEEgKQxWOu3tXHjcsNmzF7Y/exec'
 };
-
-// Optional: basic validation helper
-function assertSheetsConfig() {
-    if (!SHEETS_CONFIG || !SHEETS_CONFIG.loansCsvUrl || !SHEETS_CONFIG.rulesCsvUrl || !SHEETS_CONFIG.depositsCsvUrl) {
-        console.warn('SHEETS_CONFIG is missing CSV URLs. Please set them in sheets-config.js');
-    }
-}
-
-assertSheetsConfig();
 
 

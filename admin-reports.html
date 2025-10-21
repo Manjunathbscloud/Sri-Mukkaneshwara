@@ -165,6 +165,15 @@
     </style>
 </head>
 <body>
+    <!-- Simple Header with Logout -->
+    <div style="background: #2c3e50; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="margin: 0; color: white;">Sri Mukkanneshwara Associate - Reports</h2>
+        <div>
+            <a href="accounts.html" style="color: white; text-decoration: none; margin-right: 1rem;">← Back to Accounts</a>
+            <a href="#" onclick="logout()" style="color: #e74c3c; text-decoration: none;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+    
     <div class="reports-container">
         <!-- Reports Header -->
         <div class="reports-header">
@@ -199,6 +208,7 @@
     </div>
 
     <!-- Include the same scripts as your existing pages -->
+    <script src="js/auth-utils.js"></script>
     <script src="sheets-config.js"></script>
     <script src="sheets-utils.js"></script>
     
@@ -207,22 +217,21 @@
         (function() {
             console.log('Admin Reports - Checking accounts authentication...');
             
-            // Check if user is authenticated through accounts
-            var isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true' || localStorage.getItem('isAuthenticated') === 'true';
-            
-            if (!isAuthenticated) {
+            // Use new AuthUtils for session validation
+            if (!window.AuthUtils || !window.AuthUtils.isSessionValid()) {
                 console.log('User not authenticated, redirecting to login');
-                alert('Please login to your account first.');
+                sessionStorage.clear();
+                sessionStorage.setItem('returnUrl', window.location.href);
                 window.location.href = 'login.html';
                 return;
             }
             
             // Check if user is president (only president has admin access)
             var userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
-            var userRole = userDetails.role || '';
-            var isAdmin = userRole === 'president';
+            var userName = userDetails.name || '';
+            var isAdmin = userName === 'President';
             
-            console.log('User role:', userRole, 'Is admin:', isAdmin);
+            console.log('User name:', userName, 'Is admin:', isAdmin);
             
             if (!isAdmin) {
                 console.log('User is not admin, redirecting to accounts');
@@ -499,6 +508,18 @@
         }
         
         
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear all session data
+                sessionStorage.clear();
+                localStorage.clear();
+                
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        }
+
         // Show error message
         function showError(message) {
             const container = document.querySelector('.reports-container');

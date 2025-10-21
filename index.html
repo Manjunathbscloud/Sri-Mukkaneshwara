@@ -321,6 +321,9 @@
     <script>
         // Add some interactive effects
         document.addEventListener('DOMContentLoaded', function() {
+            // Mark that user has visited before
+            localStorage.setItem('hasVisitedBefore', 'true');
+            
             const enterButton = document.getElementById('enterButton');
             
             // Auto redirect after 5 seconds

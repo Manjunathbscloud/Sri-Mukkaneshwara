@@ -108,6 +108,7 @@
                 <li><a href="index.html">Overview</a></li>
                 <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="admin-financial.html" style="color: var(--primary);">Financial Admin</a></li>
+                <li><a href="#" onclick="logout()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -129,6 +130,10 @@
                 <div class="data-item">
                     <span>Last Updated:</span>
                     <span id="currentLastUpdated">Loading...</span>
+                </div>
+                <div class="data-item">
+                    <span>Connection Status:</span>
+                    <span id="connectionStatus" style="color: #f39c12;">Testing...</span>
                 </div>
             </div>
 
@@ -159,28 +164,42 @@
         </div>
     </main>
 
+    <script src="sheets-config.js"></script>
+    <script src="js/auth-utils.js"></script>
     <script>
+        (function() {
+            // Use new AuthUtils for session validation
+            if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
+                // Session is valid, continue
+                return;
+            } else {
+                // Session is invalid, redirect to login
+                sessionStorage.clear();
+                sessionStorage.setItem('returnUrl', window.location.href);
+                window.location.href = 'login.html';
+            }
+        })();
+
         // Check admin access using accounts authentication
         function checkAdminAccess() {
             try {
                 console.log('Admin Financial - Checking accounts authentication...');
                 
-                // Check if user is authenticated through accounts
-                var isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true' || localStorage.getItem('isAuthenticated') === 'true';
-                
-                if (!isAuthenticated) {
+                // Use new AuthUtils for session validation
+                if (!window.AuthUtils || !window.AuthUtils.isSessionValid()) {
                     console.log('User not authenticated, redirecting to login');
-                    alert('Please login to your account first.');
+                    sessionStorage.clear();
+                    sessionStorage.setItem('returnUrl', window.location.href);
                     window.location.href = 'login.html';
                     return false;
                 }
                 
                 // Check if user is president (only president has admin access)
                 var userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
-                var userRole = userDetails.role || '';
-                var isAdmin = userRole === 'president';
+                var userName = userDetails.name || '';
+                var isAdmin = userName === 'President';
                 
-                console.log('User role:', userRole, 'Is admin:', isAdmin);
+                console.log('User name:', userName, 'Is admin:', isAdmin);
                 
                 if (!isAdmin) {
                     console.log('User is not admin, redirecting to accounts');
@@ -345,6 +364,24 @@
                     displayCurrentData(currentData);
                     console.log('Current data loaded from Google Sheets:', currentData);
                 } else {
+                    // Check local storage for fallback data
+                    const localData = localStorage.getItem('financialData');
+                    if (localData) {
+                        try {
+                            const parsedData = JSON.parse(localData);
+                            const fallbackData = {
+                                bankBalance: parsedData.bankBalance || 183790,
+                                availableLoanAmount: parsedData.availableLoanAmount || 175000,
+                                lastUpdated: parsedData.lastUpdated || new Date().toISOString().split('T')[0]
+                            };
+                            displayCurrentData(fallbackData);
+                            console.log('Using local storage fallback data:', fallbackData);
+                            return;
+                        } catch (error) {
+                            console.error('Error parsing local storage data:', error);
+                        }
+                    }
+                    
                     // Use default values if no data available
                     const defaultData = {
                         bankBalance: 183790,
@@ -388,12 +425,16 @@
         // Store current data for comparison
         let currentFinancialData = null;
 
-        // Update financial data - Google Sheets integration
+        // Update financial data - Google Apps Script integration
         async function updateFinancialData(formData) {
             // Show loader
             showLoader();
             
             try {
+                // Get user details first
+                const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
+                console.log('User details from session:', userDetails);
+                
                 // Capture old data before update
                 const oldData = currentFinancialData || {
                     bankBalance: 183790,
@@ -401,20 +442,64 @@
                 };
                 
                 // Update Google Sheet via Google Apps Script
-                const response = await fetch('https://script.google.com/macros/s/AKfycbzhDI2gZ2T9wnpUMEeV-niGLJaLxFmhs1jTHDCNyGfLDfwCKjSrlfIQreS3vGYA41fM/exec', {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
+                const params = new URLSearchParams({
+                    action: 'updateFinancialData',
+                    bankBalance: formData.bankBalance,
+                    availableLoanAmount: formData.availableLoanAmount,
+                    lastUpdated: formData.lastUpdated
                 });
                 
-                console.log('Financial data updated in Google Sheet');
+                console.log('Updating Google Sheet via Apps Script:', params.toString());
+                console.log('Form data being sent:', formData);
                 
-                // Get admin name from user details
-                const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
-                console.log('User details from session:', userDetails);
+                // Update Google Sheet via Google Apps Script
+                try {
+                    const updateUrl = window.SHEETS_CONFIG?.financialUpdateUrl || 'https://script.google.com/macros/s/AKfycbyMSWWzvoAdk4h0LEXuuB0GWiS_M-OjErpUMQqcDoyQlaEEgKQxWOu3tXHjcsNmzF7Y/exec';
+                    
+                    // Use POST method instead of GET for better data handling
+                    const response = await fetch(updateUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: params.toString()
+                    });
+                    
+                    console.log('Google Apps Script response status:', response.status);
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log('Google Apps Script response:', result);
+                        if (result.success) {
+                            console.log('Financial data updated successfully in Google Sheet');
+                        } else {
+                            console.error('Google Apps Script error:', result.message);
+                            alert('Error updating Google Sheet: ' + result.message);
+                        }
+                    } else {
+                        console.log('Response not ok, status:', response.status);
+                        const errorText = await response.text();
+                        console.log('Error response:', errorText);
+                        alert('Error connecting to Google Apps Script. Status: ' + response.status);
+                    }
+                    
+                } catch (fetchError) {
+                    console.error('Fetch error:', fetchError);
+                    alert('Error connecting to Google Apps Script: ' + fetchError.message);
+                }
+                
+                console.log('Financial data update completed successfully!');
+                
+                // Trigger refresh of accounts page data
+                window.dispatchEvent(new CustomEvent('financialDataUpdated', {
+                    detail: {
+                        bankBalance: formData.bankBalance,
+                        availableLoanAmount: formData.availableLoanAmount,
+                        lastUpdated: formData.lastUpdated
+                    }
+                }));
+                
+                // Get admin name from user details (already declared above)
                 const adminName = userDetails.name || 'Manjunath Banakar';
                 console.log('Admin name for email:', adminName);
                 
@@ -438,7 +523,26 @@
             } catch (error) {
                 console.error('Error updating financial data:', error);
                 hideLoader();
-                alert('Error updating financial data. Please try again.');
+                
+                // Show specific error message
+                let errorMessage = 'Error updating financial data. Please try again.';
+                if (error.message.includes('HTTP error')) {
+                    errorMessage = 'Server error occurred. Please check your connection and try again.';
+                } else if (error.message.includes('fetch')) {
+                    errorMessage = 'Network error. Please check your internet connection.';
+                } else if (error.message.includes('userDetails')) {
+                    errorMessage = 'Session error. Please refresh the page and try again.';
+                }
+                
+                alert(errorMessage);
+                
+                // Log detailed error for debugging
+                console.error('Detailed error:', {
+                    message: error.message,
+                    stack: error.stack,
+                    formData: formData,
+                    userDetails: userDetails
+                });
             }
         }
         
@@ -497,18 +601,109 @@
         document.getElementById('financialForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const formData = {
-                bankBalance: parseInt(document.getElementById('bankBalance').value),
-                availableLoanAmount: parseInt(document.getElementById('availableLoanAmount').value),
-                lastUpdated: document.getElementById('lastUpdated').value,
-                notes: "Updated via admin interface"
-            };
-            
-            updateFinancialData(formData);
+            try {
+                const bankBalance = parseInt(document.getElementById('bankBalance').value);
+                const availableLoanAmount = parseInt(document.getElementById('availableLoanAmount').value);
+                const lastUpdated = document.getElementById('lastUpdated').value;
+                
+                // Validate form data
+                if (!bankBalance || bankBalance <= 0) {
+                    alert('Please enter a valid bank balance greater than 0');
+                    return;
+                }
+                
+                if (!availableLoanAmount || availableLoanAmount <= 0) {
+                    alert('Please enter a valid available loan amount greater than 0');
+                    return;
+                }
+                
+                if (!lastUpdated) {
+                    alert('Please select a valid date');
+                    return;
+                }
+                
+                const formData = {
+                    bankBalance: bankBalance,
+                    availableLoanAmount: availableLoanAmount,
+                    lastUpdated: lastUpdated,
+                    notes: "Updated via admin interface"
+                };
+                
+                console.log('Form data validated:', formData);
+                updateFinancialData(formData);
+                
+            } catch (error) {
+                console.error('Error in form submission:', error);
+                alert('Error processing form data. Please check your inputs and try again.');
+            }
         });
 
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear all session data
+                sessionStorage.clear();
+                localStorage.clear();
+                
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Test function to verify Google Apps Script connection
+        async function testGoogleAppsScript() {
+            const statusElement = document.getElementById('connectionStatus');
+            if (statusElement) {
+                statusElement.textContent = 'Testing...';
+                statusElement.style.color = '#f39c12';
+            }
+            
+            try {
+                console.log('Testing Google Apps Script connection...');
+                // Test with the financial data script
+                const params = new URLSearchParams({
+                    action: 'test'
+                });
+                
+                const testUrl = window.SHEETS_CONFIG?.financialUpdateUrl || 'https://script.google.com/macros/s/AKfycbyMSWWzvoAdk4h0LEXuuB0GWiS_M-OjErpUMQqcDoyQlaEEgKQxWOu3tXHjcsNmzF7Y/exec';
+                const response = await fetch(`${testUrl}?${params.toString()}`);
+                
+                if (response.ok) {
+                    const result = await response.text();
+                    console.log('Google Apps Script test successful:', result);
+                    if (statusElement) {
+                        statusElement.textContent = 'Connected ✓';
+                        statusElement.style.color = '#27ae60';
+                    }
+                    return true;
+                } else {
+                    console.error('Google Apps Script test failed:', response.status);
+                    if (statusElement) {
+                        statusElement.textContent = 'Connection Failed ✗';
+                        statusElement.style.color = '#e74c3c';
+                    }
+                    return false;
+                }
+            } catch (error) {
+                console.error('Google Apps Script test error:', error);
+                if (statusElement) {
+                    statusElement.textContent = 'Connection Error ✗';
+                    statusElement.style.color = '#e74c3c';
+                }
+                return false;
+            }
+        }
+
         // Load data when page loads
-        document.addEventListener('DOMContentLoaded', loadCurrentData);
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadCurrentData();
+            
+            // Test Google Apps Script connection
+            const isConnected = await testGoogleAppsScript();
+            if (!isConnected) {
+                console.warn('Google Apps Script connection test failed. Update functionality may not work.');
+            }
+        });
     </script>
 </body>
 </html>

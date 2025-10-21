@@ -171,15 +171,19 @@
     </header>
 
     <main>
+        <script src="js/auth-utils.js"></script>
+        <script src="sheets-config.js"></script>
+        <script src="sheets-utils.js"></script>
+        <script src="loans-render.js"></script>
         <script>
             (function() {
-                function hasValidUser() {
-                    var raw = localStorage.getItem('userDetails') || sessionStorage.getItem('userDetails');
-                    if (!raw) return false;
-                    try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
-                }
-                var isAuth = (localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true') && hasValidUser();
-                if (!isAuth) {
+                // Use new AuthUtils for session validation
+                if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
+                    // Session is valid, continue
+                    return;
+                } else {
+                    // Clear all session data
+                    sessionStorage.clear();
                     sessionStorage.setItem('returnUrl', window.location.href);
                     window.location.href = 'login.html';
                 }
@@ -627,6 +631,19 @@
             });
             
             return loanData;
+        }
+
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear all session data
+                sessionStorage.clear();
+                localStorage.clear();
+                
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
         }
     </script>
 </body>
