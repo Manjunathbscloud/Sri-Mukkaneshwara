@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fifth Year Deposits (2025-2026) - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="js/auth-utils.js"></script>
     <script>
         (function() {
-            function hasValidUser() {
-                var raw = localStorage.getItem('userDetails') || sessionStorage.getItem('userDetails');
-                if (!raw) return false;
-                try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
-            }
-            var isAuth = (localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true') && hasValidUser();
-            if (!isAuth) {
+            // Use new AuthUtils for session validation
+            if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
+                // Session is valid, continue
+                return;
+            } else {
+                // Clear all session data
+                sessionStorage.clear();
                 sessionStorage.setItem('returnUrl', window.location.href);
                 window.location.href = 'login.html';
             }

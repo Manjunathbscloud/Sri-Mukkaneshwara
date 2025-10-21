@@ -1,9 +1,28 @@
 // User Header Display Functions
 function displayUserHeader() {
-    // Always hide the user header badge
+    // Check if user is logged in
+    const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
     const userHeaderInfo = document.getElementById('userHeaderInfo');
-    if (userHeaderInfo) {
-        userHeaderInfo.style.display = 'none';
+    const headerUserName = document.getElementById('headerUserName');
+    const headerUserRole = document.getElementById('headerUserRole');
+    if (userDetails && userDetails.name) {
+        // Show user header if logged in
+        if (userHeaderInfo) {
+            userHeaderInfo.style.display = 'flex';
+        }
+        if (headerUserName) {
+            headerUserName.textContent = userDetails.name;
+        }
+        if (headerUserRole) {
+            headerUserRole.textContent = userDetails.name === 'President' ? 'President' : 'Member';
+        }
+        console.log('User header displayed for:', userDetails.name);
+    } else {
+        // Hide user header if not logged in
+        if (userHeaderInfo) {
+            userHeaderInfo.style.display = 'none';
+        }
+        console.log('User not logged in, hiding user header');
     }
 }
 

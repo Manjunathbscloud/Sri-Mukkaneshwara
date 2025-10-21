@@ -11,6 +11,7 @@ class FinancialData {
     async init() {
         try {
             await this.loadFinancialData();
+            this.setupStorageListener();
         } catch (error) {
             console.error('Error initializing financial data:', error);
             this.setDefaultData();
@@ -100,6 +101,22 @@ class FinancialData {
         } catch (error) {
             console.error('Error refreshing financial data:', error);
         }
+    }
+
+    // Listen for storage changes (when admin updates data)
+    setupStorageListener() {
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'financialData' && event.newValue) {
+                console.log('Financial data updated in another tab, refreshing...');
+                this.refresh();
+            }
+        });
+        
+        // Also listen for custom events (same tab updates)
+        window.addEventListener('financialDataUpdated', () => {
+            console.log('Financial data updated event received, refreshing...');
+            this.refresh();
+        });
     }
 
     getCurrentData() {

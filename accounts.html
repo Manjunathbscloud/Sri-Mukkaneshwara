@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 </head>
 <body>
+    <script src="js/auth-utils.js"></script>
     <script>
         (function() {
             function hasValidUser() {
@@ -51,8 +52,11 @@
                 return true;
             }
             
-            var isAuth = sessionStorage.getItem('isAuthenticated') === 'true' && hasValidUser() && checkSessionTimeout();
-            if (!isAuth) {
+            // Use new AuthUtils for session validation
+            if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
+                // Session is valid, continue
+                return;
+            } else {
                 // Clear all session data
                 sessionStorage.clear();
                 sessionStorage.setItem('returnUrl', window.location.href);
@@ -67,7 +71,7 @@
         <h1>Sri Mukkanneshwara Associate</h1>
         <nav>
             <ul>
-                <li><a href="index.html">Overview</a></li>
+                <li><a href="main.html">Overview</a></li>
                 <li><a href="members.html">Members</a></li>
                 <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
@@ -110,12 +114,11 @@
             <i class="fas fa-times"></i>
         </button>
             <ul>
-                <li><a href="index.html" onclick="toggleMobileNav()">Overview</a></li>
+                <li><a href="main.html" onclick="toggleMobileNav()">Overview</a></li>
                 <li><a href="members.html" onclick="toggleMobileNav()">Members</a></li>
                 <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
                 <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
                 <li><a href="rules.html" onclick="toggleMobileNav()">Rules</a></li>
-                <li><a href="#" id="mobileLogoutBtn" onclick="toggleMobileNav()" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
     </div>
 
@@ -278,6 +281,18 @@
                         <i class="fas fa-user-cog"></i> Manage Members
                     </a>
                 </div>
+
+                <!-- User Management -->
+                <div class="admin-card">
+                    <div class="admin-card-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h3>User Management</h3>
+                    <p>Review and approve new user registrations. Manage user accounts and access permissions.</p>
+                    <a href="admin-users.html" class="admin-btn">
+                        <i class="fas fa-user-shield"></i> Manage Users
+                    </a>
+                </div>
             </div>
         </section>
     </main>
@@ -290,10 +305,10 @@
         document.addEventListener('DOMContentLoaded', function () {
             // Check if user is president (only president has admin access)
             const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
-            const userRole = userDetails.role || '';
-            const isAdmin = userRole === 'president';
+            const userName = userDetails.name || '';
+            const isAdmin = userName === 'President';
             
-            console.log('User role:', userRole, 'Is admin:', isAdmin);
+            console.log('User name:', userName, 'Is admin:', isAdmin);
             
             // User details are now displayed in the header with member images
             
@@ -304,7 +319,41 @@
                 console.log('Admin section displayed for user:', userDetails.name);
             }
 
+            // Show user header info
+            const userHeaderInfo = document.getElementById('userHeaderInfo');
+            const headerUserName = document.getElementById('headerUserName');
+            const headerUserRole = document.getElementById('headerUserRole');
+            
+            if (userDetails && userDetails.name) {
+                userHeaderInfo.style.display = 'flex';
+                headerUserName.textContent = userDetails.name;
+                headerUserRole.textContent = isAdmin ? 'President' : 'Member';
+                console.log('User header displayed for:', userDetails.name);
+            }
+
         });
+
+        // Toggle user menu dropdown
+        function toggleUserMenu() {
+            const userMenu = document.getElementById('userMenu');
+            if (userMenu.style.display === 'none' || userMenu.style.display === '') {
+                userMenu.style.display = 'block';
+            } else {
+                userMenu.style.display = 'none';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear all session data
+                sessionStorage.clear();
+                localStorage.clear();
+                
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        }
 
         // Mobile Navigation Functions
         function toggleMobileNav() {
