@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sign Up - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <style>
+        /* Horizontal Signup Layout */
+        .signup-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+        }
+
+        .signup-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .signup-content {
+            display: flex;
+            min-height: 600px;
+        }
+
+        .signup-left {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .signup-right {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .signup-header .logo {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+        }
+
+        .signup-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .signup-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .signup-benefits {
+            margin-top: 2rem;
+        }
+
+        .signup-benefits h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .signup-benefits ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .signup-benefits li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .signup-benefits li i {
+            color: #4ade80;
+            margin-right: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .signup-form {
+            width: 100%;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 0.25rem;
+            color: #6b7280;
+            font-size: 0.8rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            margin-right: 0.5rem;
+            margin-top: 0.2rem;
+        }
+
+        .terms-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .terms-link:hover {
+            color: #5a67d8;
+            border-bottom-color: #5a67d8;
+        }
+
+        .terms-notice {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .signup-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .signup-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            background: #9ca3af;
+            box-shadow: none;
+        }
+
+        .signup-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .signup-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .signup-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            padding: 0.875rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .signup-content {
+                flex-direction: column;
+            }
+
+            .signup-left {
+                padding: 2rem;
+            }
+
+            .signup-right {
+                padding: 2rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .signup-header h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 1rem;
+            }
+
+            .signup-left,
+            .signup-right {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-card">
+            <div class="signup-content">
+                <!-- Left Side - Header and Info -->
+                <div class="signup-left">
+                    <div class="signup-header">
+                        <div class="logo">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2>Join Our Association</h2>
+                        <p>Create your account to access member services and enjoy exclusive benefits</p>
+                    </div>
+                    
+                    <div class="signup-benefits">
+                        <h3>What you'll get:</h3>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Access to financial services</li>
+                            <li><i class="fas fa-check"></i> Loan application system</li>
+                            <li><i class="fas fa-check"></i> Meeting schedules and updates</li>
+                            <li><i class="fas fa-check"></i> Member-only resources</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Side - Form -->
+                <div class="signup-right">
+                    <form id="signupForm" class="signup-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Login Name *</label>
+                                <input type="text" id="name" name="name" required placeholder="Choose your login name">
+                                <small>This will be your username for login</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email (Optional)</label>
+                                <input type="email" id="email" name="email" placeholder="your.email@example.com">
+                                <small>We'll notify you about your account status</small>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="password">Password *</label>
+                                <input type="password" id="password" name="password" required placeholder="Minimum 6 characters">
+                                <small>Password must be at least 6 characters long</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password *</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Re-enter your password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="terms" required>
+                                <span class="checkmark"></span>
+                                I agree to the <a href="rules.html" target="_blank" class="terms-link">terms and conditions</a> of the association
+                            </label>
+                        </div>
+
+                        <button type="submit" class="signup-btn" id="signupBtn" disabled>
+                            <span class="btn-text">Create Account</span>
+                            <div class="btn-loader" style="display: none;">
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                        <p class="terms-notice" id="termsNotice">Please agree to the terms and conditions to continue</p>
+                    </form>
+
+                    <div class="signup-footer">
+                        <p>Already have an account? <a href="login.html">Sign In</a></p>
+                    </div>
+
+                    <div id="signupMessage" class="message" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth-utils.js"></script>
+    <script src="js/sheets-auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const signupForm = document.getElementById('signupForm');
+            const signupBtn = document.getElementById('signupBtn');
+            const btnText = signupBtn.querySelector('.btn-text');
+            const btnLoader = signupBtn.querySelector('.btn-loader');
+            const messageDiv = document.getElementById('signupMessage');
+            const termsCheckbox = document.getElementById('terms');
+            const termsNotice = document.getElementById('termsNotice');
+
+            // Enable/disable button based on terms checkbox
+            function toggleButtonState() {
+                if (termsCheckbox.checked) {
+                    signupBtn.disabled = false;
+                    signupBtn.style.opacity = '1';
+                    signupBtn.style.cursor = 'pointer';
+                    termsNotice.style.display = 'none';
+                } else {
+                    signupBtn.disabled = true;
+                    signupBtn.style.opacity = '0.6';
+                    signupBtn.style.cursor = 'not-allowed';
+                    termsNotice.style.display = 'block';
+                }
+            }
+
+            // Add event listener to terms checkbox
+            termsCheckbox.addEventListener('change', toggleButtonState);
+
+            // Initialize button state
+            toggleButtonState();
+
+            // Password validation
+            function validatePassword(password) {
+                return password.length >= 6;
+            }
+
+            // Show message
+            function showMessage(message, type = 'info') {
+                messageDiv.textContent = message;
+                messageDiv.className = `message ${type}`;
+                messageDiv.style.display = 'block';
+                
+                if (type === 'success') {
+                    messageDiv.style.backgroundColor = '#d4edda';
+                    messageDiv.style.color = '#155724';
+                    messageDiv.style.border = '1px solid #c3e6cb';
+                } else if (type === 'error') {
+                    messageDiv.style.backgroundColor = '#f8d7da';
+                    messageDiv.style.color = '#721c24';
+                    messageDiv.style.border = '1px solid #f5c6cb';
+                }
+            }
+
+            // Hide message
+            function hideMessage() {
+                messageDiv.style.display = 'none';
+            }
+
+            // Form submission
+            signupForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                hideMessage();
+
+                const formData = new FormData(signupForm);
+                const name = formData.get('name').trim();
+                const password = formData.get('password');
+                const confirmPassword = formData.get('confirmPassword');
+                const email = formData.get('email').trim();
+                const terms = document.getElementById('terms').checked;
+
+                // Validation
+                if (!name) {
+                    showMessage('Please enter a login name', 'error');
+                    return;
+                }
+
+                if (!validatePassword(password)) {
+                    showMessage('Password must be at least 6 characters long', 'error');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    showMessage('Passwords do not match', 'error');
+                    return;
+                }
+
+                if (!terms) {
+                    showMessage('Please agree to the terms and conditions', 'error');
+                    return;
+                }
+
+                // Show loading state
+                signupBtn.disabled = true;
+                btnText.style.display = 'none';
+                btnLoader.style.display = 'inline-block';
+
+                try {
+                    // Check if user already exists
+                    const existingUser = await window.SheetsAuth.checkUserExists(name);
+                    if (existingUser) {
+                        showMessage('This login name is already taken. Please choose another.', 'error');
+                        return;
+                    }
+
+                    // Create new user
+                    const result = await window.SheetsAuth.createUser({
+                        name: name,
+                        password: password,
+                        email: email || ''
+                    });
+
+                    if (result.success) {
+                        showMessage('Account created successfully! Your account is pending approval from the President. You will be notified once approved.', 'success');
+                        signupForm.reset();
+                        
+                        // Send notification email to president
+                        if (window.EmailJS) {
+                            try {
+                                await window.EmailJS.send('service_id', 'template_id', {
+                                    to_name: 'President',
+                                    user_name: name,
+                                    user_email: email || 'Not provided',
+                                    signup_date: new Date().toLocaleDateString()
+                                });
+                            } catch (emailError) {
+                                console.log('Email notification failed:', emailError);
+                            }
+                        }
+                    } else {
+                        showMessage(result.message || 'Failed to create account. Please try again.', 'error');
+                    }
+                } catch (error) {
+                    console.error('Signup error:', error);
+                    showMessage('An error occurred. Please try again later.', 'error');
+                } finally {
+                    // Reset button state
+                    signupBtn.disabled = false;
+                    btnText.style.display = 'inline';
+                    btnLoader.style.display = 'none';
+                }
+            });
+
+            // Real-time password validation
+            document.getElementById('password').addEventListener('input', function() {
+                const password = this.value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (password.length > 0 && password.length < 6) {
+                    this.style.borderColor = '#dc3545';
+                } else {
+                    this.style.borderColor = '#28a745';
+                }
+
+                if (confirmPassword && password !== confirmPassword) {
+                    document.getElementById('confirmPassword').style.borderColor = '#dc3545';
+                } else if (confirmPassword) {
+                    document.getElementById('confirmPassword').style.borderColor = '#28a745';
+                }
+            });
+
+            document.getElementById('confirmPassword').addEventListener('input', function() {
+                const password = document.getElementById('password').value;
+                const confirmPassword = this.value;
+                
+                if (confirmPassword && password !== confirmPassword) {
+                    this.style.borderColor = '#dc3545';
+                } else if (confirmPassword) {
+                    this.style.borderColor = '#28a745';
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .login-header h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .login-header p {
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            position: relative;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-loader {
+            display: none;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff40;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        .login-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</body>
+</html>

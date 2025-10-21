@@ -36,15 +36,16 @@
             color: #007bff; /* Blue header for Total Balance */
         }
     </style>
+    <script src="js/auth-utils.js"></script>
     <script>
         (function() {
-            function hasValidUser() {
-                var raw = localStorage.getItem('userDetails') || sessionStorage.getItem('userDetails');
-                if (!raw) return false;
-                try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
-            }
-            var isAuth = (localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true') && hasValidUser();
-            if (!isAuth) {
+            // Use new AuthUtils for session validation
+            if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
+                // Session is valid, continue
+                return;
+            } else {
+                // Clear all session data
+                sessionStorage.clear();
                 sessionStorage.setItem('returnUrl', window.location.href);
                 window.location.href = 'login.html';
             }
@@ -56,7 +57,7 @@
         <h1>Sri Mukkanneshwara Associate</h1>
         <nav>
             <ul>
-                <li><a href="index.html">Overview</a></li>
+                <li><a href="main.html">Overview</a></li>
                 <li><a href="members.html">Members</a></li>
                 <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
@@ -150,15 +151,15 @@
                                 <td>Fifth Year (2025)</td>
                                 <td>₹1,49,000</td>
                                 <td>₹1,03,350</td>
-                                <td>₹TBD</td>
-                                <td>₹2,52,350</td>
+                                <td>₹20,580</td>
+                                <td>₹2,31,770</td>
                             </tr>
                             <tr class="total-row">
                                 <td>Total</td>
                                 <td>₹6,94,500</td>
                                 <td>₹2,48,650</td>
-                                <td>₹69,735</td>
-                                <td>₹8,73,415</td>
+                                <td>₹90,315</td>
+                                <td>₹8,52,835</td>
                             </tr>
                         </tbody>
                     </table>
@@ -208,6 +209,34 @@
     
     <!-- User Header Script -->
     <script src="js/user-header.js"></script>
+    <script>
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear all session data
+                sessionStorage.clear();
+                localStorage.clear();
+                
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Show user header if logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
+            const userHeaderInfo = document.getElementById('userHeaderInfo');
+            const headerUserName = document.getElementById('headerUserName');
+            const headerUserRole = document.getElementById('headerUserRole');
+            
+            if (userDetails && userDetails.name) {
+                userHeaderInfo.style.display = 'flex';
+                headerUserName.textContent = userDetails.name;
+                headerUserRole.textContent = userDetails.name === 'President' ? 'President' : 'Member';
+                console.log('User header displayed for:', userDetails.name);
+            }
+        });
+    </script>
 
 </body>
 </html>

@@ -7,10 +7,20 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <script src="js/auth-utils.js"></script>
     <script>
-        if (!sessionStorage.getItem('isAuthenticated')) {
-            window.location.href = 'login.html';
-        }
+        (function() {
+            // Use new AuthUtils for session validation
+            if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
+                // Session is valid, continue
+                return;
+            } else {
+                // Clear all session data
+                sessionStorage.clear();
+                sessionStorage.setItem('returnUrl', window.location.href);
+                window.location.href = 'login.html';
+            }
+        })();
     </script>
 
     <header>

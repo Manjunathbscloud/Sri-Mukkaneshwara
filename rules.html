@@ -98,6 +98,18 @@
 
                 <div class="rule-box">
                     <div class="rule-header">
+                        <h3><i class="fas fa-user-plus"></i> New Member Rules</h3>
+                    </div>
+                    <ul id="rules-newmember">
+                        <li><i class="fas fa-check"></i> New members require approval from existing members</li>
+                        <li><i class="fas fa-check"></i> Joining amount equivalent to present share value</li>
+                        <li><i class="fas fa-check"></i> Additional percentage decided by current members</li>
+                        <li><i class="fas fa-check"></i> EMI installments available for joining amount</li>
+                    </ul>
+                </div>
+
+                <div class="rule-box">
+                    <div class="rule-header">
                         <h3><i class="fas fa-handshake"></i> Administrative Guidelines</h3>
                     </div>
                     <ul id="rules-admin">
@@ -112,7 +124,7 @@
 
             <div class="rules-note">
                 <i class="fas fa-info-circle"></i>
-                <p>Last updated: November 2024</p>
+                <p>Last updated: October 2025 (After 5th Year Annual Meeting)</p>
             </div>
         </section>
     </main>
@@ -128,6 +140,7 @@
             RulesRender.loadRules({
                 membershipListSelector: '#rules-membership',
                 loanListSelector: '#rules-loan',
+                newMemberListSelector: '#rules-newmember',
                 adminListSelector: '#rules-admin'
             });
 

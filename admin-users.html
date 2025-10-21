@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .user-management {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e1e5e9;
+        }
+        
+        .user-header h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .user-header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card.pending {
+            border-color: #ffc107;
+            background: #fff3cd;
+        }
+        
+        .stat-card.approved {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .stat-card.rejected {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .users-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .users-table {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table-header {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        
+        .table-title {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .table-content {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .user-email {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-approve {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-approve:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+        
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-reject:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+        
+        .btn-approved {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: not-allowed;
+            font-size: 0.9rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+        }
+        
+        .no-users {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+        
+        .no-users i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #dee2e6;
+        }
+        
+        .back-nav {
+            margin-bottom: 2rem;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .back-button:hover {
+            color: #0056b3;
+        }
+        
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="user-management">
+        <div class="back-nav">
+            <a href="accounts.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Back to Accounts
+            </a>
+        </div>
+
+        <div class="user-header">
+            <h1><i class="fas fa-user-check"></i> User Management</h1>
+            <p>Review and approve new user registrations</p>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <!-- User Statistics -->
+        <div class="user-stats">
+            <div class="stat-card pending">
+                <div class="stat-number" id="pendingCount">0</div>
+                <div class="stat-label">Pending Approval</div>
+            </div>
+            <div class="stat-card approved">
+                <div class="stat-number" id="approvedCount">0</div>
+                <div class="stat-label">Approved Users</div>
+            </div>
+            <div class="stat-card rejected">
+                <div class="stat-number" id="rejectedCount">0</div>
+                <div class="stat-label">Rejected Users</div>
+            </div>
+        </div>
+
+        <!-- Pending Users -->
+        <div class="users-section">
+            <h2 class="section-title">
+                <i class="fas fa-clock"></i>
+                Pending Approval
+            </h2>
+            <div class="users-table">
+                <div class="table-header">
+                    <h3 class="table-title">New User Registrations</h3>
+                </div>
+                <div class="table-content">
+                    <div id="pendingUsersTable">
+                        <div class="loading">
+                            <i class="fas fa-spinner fa-spin"></i> Loading users...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Users -->
+        <div class="users-section">
+            <h2 class="section-title">
+                <i class="fas fa-users"></i>
+                All Users
+            </h2>
+            <div class="users-table">
+                <div class="table-header">
+                    <h3 class="table-title">User Directory</h3>
+                </div>
+                <div class="table-content">
+                    <div id="allUsersTable">
+                        <div class="loading">
+                            <i class="fas fa-spinner fa-spin"></i> Loading users...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/session-manager.js"></script>
+    <script src="sheets-config.js"></script>
+    <script src="sheets-utils.js"></script>
+    <script src="js/auth-utils.js"></script>
+    <script src="js/sheets-auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const messageDiv = document.getElementById('message');
+            const pendingCountEl = document.getElementById('pendingCount');
+            const approvedCountEl = document.getElementById('approvedCount');
+            const rejectedCountEl = document.getElementById('rejectedCount');
+            const pendingUsersTable = document.getElementById('pendingUsersTable');
+            const allUsersTable = document.getElementById('allUsersTable');
+
+            // Show message
+            function showMessage(message, type = 'success') {
+                messageDiv.textContent = message;
+                messageDiv.className = `message ${type}`;
+                messageDiv.style.display = 'block';
+                
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            }
+
+            // Load users data
+            async function loadUsers() {
+                try {
+                    // Initialize authentication
+                    await window.SheetsAuth.init();
+
+                    // Get all users (this would need to be implemented in SheetsAuth)
+                    const users = await getAllUsers();
+                    
+                    // Update statistics
+                    const pending = users.filter(user => user.status === 'pending');
+                    const approved = users.filter(user => user.status === 'approved');
+                    const rejected = users.filter(user => user.status === 'rejected');
+                    
+                    pendingCountEl.textContent = pending.length;
+                    approvedCountEl.textContent = approved.length;
+                    rejectedCountEl.textContent = rejected.length;
+
+                    // Render pending users table
+                    renderPendingUsersTable(pending);
+                    
+                    // Render all users table
+                    renderAllUsersTable(users);
+
+                } catch (error) {
+                    console.error('Error loading users:', error);
+                    showMessage('Failed to load users. Please try again.', 'error');
+                }
+            }
+
+            // Get all users from Google Apps Script
+            async function getAllUsers() {
+                try {
+                    return await window.SheetsAuth.getAllUsers();
+                } catch (error) {
+                    console.error('Error fetching all users:', error);
+                    return [];
+                }
+            }
+
+            // Render pending users table
+            function renderPendingUsersTable(users) {
+                if (users.length === 0) {
+                    pendingUsersTable.innerHTML = `
+                        <div class="no-users">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>No Pending Users</h3>
+                            <p>All user registrations have been processed.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const tableHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Registration Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${users.map(user => `
+                                <tr>
+                                    <td>
+                                        <div class="user-name">${user.name}</div>
+                                    </td>
+                                    <td>
+                                        <div class="user-email">${user.email || 'Not provided'}</div>
+                                    </td>
+                                    <td>${new Date(user.createdDate).toLocaleDateString()}</td>
+                                    <td>
+                                        <span class="status-badge status-${user.status}">${user.status}</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-approve" onclick="approveUser('${user.id}')">
+                                                <i class="fas fa-check"></i> Approve
+                                            </button>
+                                            <button class="btn-reject" onclick="rejectUser('${user.id}')">
+                                                <i class="fas fa-times"></i> Reject
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                pendingUsersTable.innerHTML = tableHTML;
+            }
+
+            // Render all users table
+            function renderAllUsersTable(users) {
+                if (users.length === 0) {
+                    allUsersTable.innerHTML = `
+                        <div class="no-users">
+                            <i class="fas fa-users"></i>
+                            <h3>No Users Found</h3>
+                            <p>No users have been registered yet.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const tableHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Registration Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${users.map(user => `
+                                <tr>
+                                    <td>
+                                        <div class="user-name">${user.name}</div>
+                                    </td>
+                                    <td>
+                                        <div class="user-email">${user.email || 'Not provided'}</div>
+                                    </td>
+                                    <td>${new Date(user.createdDate).toLocaleDateString()}</td>
+                                    <td>
+                                        <span class="status-badge status-${user.status}">${user.status}</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            ${user.status === 'pending' ? `
+                                                <button class="btn-approve" onclick="approveUser('${user.id}')">
+                                                    <i class="fas fa-check"></i> Approve
+                                                </button>
+                                                <button class="btn-reject" onclick="rejectUser('${user.id}')">
+                                                    <i class="fas fa-times"></i> Reject
+                                                </button>
+                                            ` : `
+                                                <button class="btn-approved" disabled>
+                                                    <i class="fas fa-check"></i> ${user.status === 'approved' ? 'Approved' : 'Rejected'}
+                                                </button>
+                                            `}
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                allUsersTable.innerHTML = tableHTML;
+            }
+
+            // Approve user
+            window.approveUser = async function(userId) {
+                try {
+                    const result = await window.SheetsAuth.updateUserStatus(userId, 'approved', 'President');
+                    if (result.success) {
+                        showMessage('User approved successfully!', 'success');
+                        loadUsers(); // Reload the data
+                    } else {
+                        showMessage(result.message || 'Failed to approve user', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error approving user:', error);
+                    showMessage('Failed to approve user. Please try again.', 'error');
+                }
+            };
+
+            // Reject user
+            window.rejectUser = async function(userId) {
+                if (!confirm('Are you sure you want to reject this user?')) {
+                    return;
+                }
+
+                try {
+                    const result = await window.SheetsAuth.updateUserStatus(userId, 'rejected', 'President');
+                    if (result.success) {
+                        showMessage('User rejected successfully!', 'success');
+                        loadUsers(); // Reload the data
+                    } else {
+                        showMessage(result.message || 'Failed to reject user', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error rejecting user:', error);
+                    showMessage('Failed to reject user. Please try again.', 'error');
+                }
+            };
+
+            // Load users on page load
+            loadUsers();
+        });
+    </script>
+</body>
+</html>

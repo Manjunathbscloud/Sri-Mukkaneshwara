@@ -1,80 +1,88 @@
-// Lightweight CSV fetch and parse utilities
-
-async function fetchCsv(url) {
-    // Add cache-busting parameter to ensure fresh data
-    const cacheBuster = '?t=' + Date.now();
-    const urlWithCacheBuster = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
-    
-    console.log('Fetching CSV from URL:', urlWithCacheBuster);
-    const response = await fetch(urlWithCacheBuster, { 
-        cache: 'no-store',
-        headers: {
-            'Cache-Control': 'no-cache'
+// Google Sheets Utilities
+window.SheetsUtils = {
+    async fetchCsv(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.text();
+        } catch (error) {
+            console.error('Error fetching CSV:', error);
+            throw error;
         }
-    });
-    if (!response.ok) throw new Error(`Failed to fetch CSV: ${response.status}`);
-    return await response.text();
-}
+    },
 
-function parseCsv(csvText) {
-    // Simple CSV parser, handles quoted fields and commas
-    const rows = [];
-    let current = '';
-    let row = [];
-    let inQuotes = false;
-    for (let i = 0; i < csvText.length; i++) {
-        const char = csvText[i];
-        if (char === '"') {
-            if (inQuotes && csvText[i + 1] === '"') {
-                current += '"';
-                i++;
-            } else {
+    parseCsv(csvText) {
+        const lines = csvText.split('\n');
+        const rows = [];
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (line) {
+                // Simple CSV parsing - split by comma but handle quoted values
+                const row = this.parseCsvLine(line);
+                if (row.length > 0) {
+                    rows.push(row);
+                }
+            }
+        }
+        
+        return rows;
+    },
+
+    parseCsvLine(line) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            
+            if (char === '"') {
                 inQuotes = !inQuotes;
-            }
-        } else if (char === ',' && !inQuotes) {
-            row.push(current);
-            current = '';
-        } else if ((char === '\n' || char === '\r') && !inQuotes) {
-            if (current !== '' || row.length) {
-                row.push(current);
-                rows.push(row);
-                row = [];
+            } else if (char === ',' && !inQuotes) {
+                result.push(current.trim());
                 current = '';
+            } else {
+                current += char;
             }
-        } else {
-            current += char;
         }
+        
+        result.push(current.trim());
+        return result;
+    },
+
+    rowsToObjects(rows) {
+        if (rows.length === 0) return [];
+        
+        const headers = rows[0];
+        const objects = [];
+        
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (row.length >= headers.length) {
+                const obj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = row[j] || '';
+                }
+                objects.push(obj);
+            }
+        }
+        
+        return objects;
+    },
+
+    clearElement(element) {
+        if (element) {
+            element.innerHTML = '';
+        }
+    },
+
+    currency(value) {
+        if (value === undefined || value === null || value === '') return '-';
+        const num = parseFloat(String(value).replace(/[^\d.-]/g, ''));
+        if (isNaN(num)) return '-';
+        return '₹' + num.toLocaleString('en-IN');
     }
-    if (current !== '' || row.length) {
-        row.push(current);
-        rows.push(row);
-    }
-    return rows;
-}
-
-function rowsToObjects(rows) {
-    if (!rows || rows.length === 0) return [];
-    const headers = rows[0].map(h => h.trim());
-    return rows.slice(1).filter(r => r.some(v => v && v.trim() !== '')).map(r => {
-        const obj = {};
-        headers.forEach((h, idx) => {
-            obj[h] = (r[idx] || '').trim();
-        });
-        return obj;
-    });
-}
-
-function currency(value) {
-    if (value === undefined || value === null || value === '') return '-';
-    const num = Number(String(value).replace(/[,\s]/g, ''));
-    if (Number.isNaN(num)) return value;
-    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(num).replace('₹\u00A0', '₹');
-}
-
-function clearElement(el) {
-    while (el.firstChild) el.removeChild(el.firstChild);
-}
-
-window.SheetsUtils = { fetchCsv, parseCsv, rowsToObjects, currency, clearElement };
-
-
+};
