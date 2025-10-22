@@ -176,12 +176,67 @@
     border: none;
     background: transparent;
     font-size: 16px;
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
     outline: none;
+    -webkit-text-fill-color: var(--text-primary) !important;
+    -webkit-opacity: 1 !important;
 }
 
 .input-wrapper input::placeholder {
     color: var(--text-light);
+}
+
+/* Ensure input text is always visible */
+.input-wrapper input[type="text"],
+.input-wrapper input[type="password"],
+.input-wrapper input[type="email"] {
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-opacity: 1 !important;
+    opacity: 1 !important;
+}
+
+/* Focus state for better visibility */
+.input-wrapper:focus-within input {
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-opacity: 1 !important;
+    opacity: 1 !important;
+}
+
+/* Handle autofill styles */
+.input-wrapper input:-webkit-autofill,
+.input-wrapper input:-webkit-autofill:hover,
+.input-wrapper input:-webkit-autofill:focus,
+.input-wrapper input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    color: #1f2937 !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Force input text visibility - debugging */
+#mobileUsername,
+#mobilePassword {
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-opacity: 1 !important;
+    opacity: 1 !important;
+    font-weight: 500 !important;
+}
+
+/* Ensure input wrapper has proper contrast */
+.input-wrapper {
+    background: #ffffff !important;
+    border: 2px solid #e5e7eb !important;
+}
+
+.input-wrapper:focus-within {
+    background: #ffffff !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
 }
 
 .password-toggle {
