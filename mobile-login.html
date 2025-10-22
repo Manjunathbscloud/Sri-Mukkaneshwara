@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Sri Mukkanneshwara Associate - Banking App</title>
+    
+    <!-- App Meta Tags -->
+    <meta name="description" content="Sri Mukkanneshwara Associate Banking Application - Secure financial management for members">
+    <meta name="keywords" content="banking, finance, association, mobile app, Sri Mukkanneshwara">
+    <meta name="author" content="Sri Mukkanneshwara Associate">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e40af">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SMA Banking">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="SMA Banking">
+    
+    <!-- App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icons/icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="icons/icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="icons/icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="icons/icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="icons/icon-57x57.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="mobile/mobile-styles.css">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="mobile/mobile-styles.css" as="style">
+    <link rel="preload" href="mobile/mobile-auth.js" as="script">
+    <link rel="preload" href="mobile/mobile-navigation.js" as="script">
+</head>
+<body class="mobile-body">
+    <!-- Mobile App Container -->
+    <div class="mobile-app-container">
+        <!-- Status Bar -->
+        <div class="mobile-status-bar">
+            <div class="status-left">
+                <span class="time" id="currentTime">9:41</span>
+            </div>
+            <div class="status-right">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-three-quarters"></i>
+            </div>
+        </div>
+
+        <!-- Login Screen -->
+        <div class="mobile-login-screen" id="loginScreen">
+            <!-- App Header -->
+            <div class="mobile-app-header">
+                <div class="app-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Sri Mukkanneshwara</h1>
+                        <p>Associate</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="mobile-login-form">
+                <div class="form-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to your account</p>
+                </div>
+
+                <form id="mobileLoginForm" class="mobile-form">
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="mobileUsername" placeholder="Username" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="mobilePassword" placeholder="Password" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                <i class="fas fa-eye" id="passwordToggleIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="rememberMe">
+                            <span class="checkmark"></span>
+                            Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="mobile-login-btn">
+                        <span class="btn-text">Sign In</span>
+                        <i class="fas fa-arrow-right btn-icon"></i>
+                    </button>
+                </form>
+
+            </div>
+
+            <!-- App Footer -->
+            <div class="mobile-app-footer">
+                <p>&copy; 2025 Sri Mukkanneshwara Associate</p>
+                <p>Secure Banking Solution</p>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div class="mobile-loading-screen" id="loadingScreen" style="display: none;">
+            <div class="loading-content">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                </div>
+                <h3>Authenticating...</h3>
+                <p>Please wait while we verify your credentials</p>
+            </div>
+        </div>
+
+        <!-- Main App (Hidden initially) -->
+        <div class="mobile-main-app" id="mainApp" style="display: none;">
+            <!-- Navigation will be added here -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth-utils.js"></script>
+    <script src="js/sheets-auth.js"></script>
+    <script src="mobile/mobile-auth.js"></script>
+    <script src="mobile/mobile-navigation.js"></script>
+    <script src="mobile/mobile-utils.js"></script>
+    <script src="mobile/mobile-pwa.js"></script>
+    <script>
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: false 
+            });
+            document.getElementById('currentTime').textContent = time;
+        }
+
+        // Update time every minute
+        updateTime();
+        setInterval(updateTime, 60000);
+
+        // Initialize mobile app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure we're in mobile mode
+            if (!isMobileDevice()) {
+                // Redirect to desktop version if not mobile
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Check if user is already logged in
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
+            if (userDetails && userDetails.name) {
+                // User is logged in, show main app
+                showMainApp();
+            } else {
+                // Show login screen
+                showLoginScreen();
+            }
+        });
+
+        // Mobile device detection
+        function isMobileDevice() {
+            return (
+                window.innerWidth <= 768 || 
+                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) ||
+                window.matchMedia('(max-width: 768px)').matches
+            );
+        }
+
+        function showLoginScreen() {
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('mainApp').style.display = 'none';
+        }
+
+        function showMainApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            // Load main app content
+            loadMainAppContent();
+        }
+
+        function loadMainAppContent() {
+            // This will be implemented in mobile-navigation.js
+            console.log('Loading main app content...');
+        }
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('mobilePassword');
+            const toggleIcon = document.getElementById('passwordToggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+    </script>
+</body>
+</html>
