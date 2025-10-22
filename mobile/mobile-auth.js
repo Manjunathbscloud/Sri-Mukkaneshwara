@@ -30,6 +30,17 @@ class MobileAuth {
         // Fallback to mobile-specific session check
         const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
         if (userDetails && userDetails.name) {
+            // Check if user is President based on name (Manjunath Banakar or President)
+            const isPresident = userDetails.name === 'Manjunath Banakar' || 
+                              userDetails.name === 'Manjunath' ||
+                              userDetails.name.toLowerCase().includes('manjunath') ||
+                              userDetails.name === 'President';
+            
+            if (isPresident) {
+                userDetails.role = 'president';
+                userDetails.isPresident = true;
+            }
+            
             this.userDetails = userDetails;
             this.isAuthenticated = true;
             this.showMainApp();
@@ -86,11 +97,18 @@ class MobileAuth {
                 throw new Error(result.message || 'Invalid username or password');
             }
 
+            // Check if user is President based on name (Manjunath Banakar or President)
+            const isPresident = result.user.name === 'Manjunath Banakar' || 
+                              result.user.name === 'Manjunath' ||
+                              result.user.name.toLowerCase().includes('manjunath') ||
+                              result.user.name === 'President';
+            
             // Store user details in the same format as the main website
             this.userDetails = {
                 id: result.user.id,
                 name: result.user.name,
-                role: result.user.role || 'Member',
+                role: isPresident ? 'president' : (result.user.role || 'Member'),
+                isPresident: isPresident,
                 status: result.user.status,
                 username: username,
                 loginTime: new Date().toISOString()
