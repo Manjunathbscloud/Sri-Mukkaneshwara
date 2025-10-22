@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Sri Mukkanneshwara Associate - Create Account</title>
+    
+    <!-- App Meta Tags -->
+    <meta name="description" content="Create your account for Sri Mukkanneshwara Associate Banking Application">
+    <meta name="keywords" content="banking, finance, association, signup, register, Sri Mukkanneshwara">
+    <meta name="author" content="Sri Mukkanneshwara Associate">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e40af">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SMA Banking">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="SMA Banking">
+    
+    <!-- App Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icons/icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="icons/icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="icons/icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="icons/icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="icons/icon-57x57.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="mobile/mobile-styles.css">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="mobile/mobile-styles.css" as="style">
+    <link rel="preload" href="mobile/mobile-auth.js" as="script">
+    <link rel="preload" href="mobile/mobile-navigation.js" as="script">
+</head>
+<body class="mobile-body">
+    <!-- Mobile App Container -->
+    <div class="mobile-app-container">
+
+        <!-- Signup Screen -->
+        <div class="mobile-signup-screen" id="signupScreen">
+            <!-- App Header -->
+            <div class="mobile-app-header">
+                <div class="app-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Sri Mukkanneshwara</h1>
+                        <p>Associate</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="mobile-signup-form">
+                <div class="form-header">
+                    <h2>Create Account</h2>
+                    <p>Join Sri Mukkanneshwara Associate</p>
+                </div>
+
+                <form id="mobileSignupForm" class="mobile-form">
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="mobileSignupName" placeholder="Login Name" required>
+                        </div>
+                        <small class="input-help">This will be your username for login</small>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="mobileSignupEmail" placeholder="Email (Optional)">
+                        </div>
+                        <small class="input-help">Optional - for notifications</small>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="mobileSignupPassword" placeholder="Password" required>
+                            <button type="button" class="password-toggle" onclick="toggleSignupPassword()">
+                                <i class="fas fa-eye" id="signupPasswordToggleIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="mobileSignupConfirmPassword" placeholder="Confirm Password" required>
+                            <button type="button" class="password-toggle" onclick="toggleSignupConfirmPassword()">
+                                <i class="fas fa-eye" id="signupConfirmPasswordToggleIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="terms-agreement">
+                            <input type="checkbox" id="mobileTerms" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="rules.html" target="_blank">Terms & Conditions</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="mobile-signup-btn">
+                        <span class="btn-text">Create Account</span>
+                        <i class="fas fa-user-plus btn-icon"></i>
+                    </button>
+                </form>
+
+                <!-- Login Link -->
+                <div class="login-link-section">
+                    <p>Already have an account? <a href="mobile-login.html" class="login-link">Sign In</a></p>
+                </div>
+            </div>
+
+            <!-- App Footer -->
+            <div class="mobile-app-footer">
+                <p>&copy; 2025 Sri Mukkanneshwara Associate</p>
+                <p>Secure Banking Solution</p>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div class="mobile-loading-screen" id="loadingScreen" style="display: none;">
+            <div class="loading-content">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                </div>
+                <h3>Creating Account...</h3>
+                <p>Please wait while we set up your account</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth-utils.js"></script>
+    <script src="js/sheets-auth.js"></script>
+    <script src="sheets-config.js"></script>
+    <script src="mobile/mobile-auth.js"></script>
+    <script src="mobile/mobile-utils.js"></script>
+    <script>
+
+        // Mobile device detection
+        function isMobileDevice() {
+            return (
+                window.innerWidth <= 768 || 
+                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                (navigator.maxTouchPoints && navigator.maxTouchPoints > 1) ||
+                window.matchMedia('(max-width: 768px)').matches
+            );
+        }
+
+        // Initialize mobile app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ensure we're in mobile mode
+            if (!isMobileDevice()) {
+                // Redirect to desktop version if not mobile
+                window.location.href = 'signup.html';
+                return;
+            }
+            
+            // Check if user is already logged in
+            const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
+            if (userDetails && userDetails.name) {
+                // User is logged in, redirect to main app
+                window.location.href = 'mobile-login.html';
+                return;
+            }
+        });
+
+        function toggleSignupPassword() {
+            const passwordInput = document.getElementById('mobileSignupPassword');
+            const toggleIcon = document.getElementById('signupPasswordToggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        function toggleSignupConfirmPassword() {
+            const passwordInput = document.getElementById('mobileSignupConfirmPassword');
+            const toggleIcon = document.getElementById('signupConfirmPasswordToggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Handle signup form submission
+        document.getElementById('mobileSignupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('mobileSignupName').value.trim();
+            const email = document.getElementById('mobileSignupEmail').value.trim();
+            const password = document.getElementById('mobileSignupPassword').value;
+            const confirmPassword = document.getElementById('mobileSignupConfirmPassword').value;
+            const terms = document.getElementById('mobileTerms').checked;
+
+            // Validation
+            if (!name) {
+                showError('Please enter a login name');
+                return;
+            }
+
+            if (!password) {
+                showError('Please enter a password');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+
+            if (!terms) {
+                showError('Please agree to the terms and conditions');
+                return;
+            }
+
+            // Validate using AuthUtils
+            const nameValidation = window.AuthUtils.validateLoginName(name);
+            if (!nameValidation.valid) {
+                showError(nameValidation.message);
+                return;
+            }
+
+            const passwordValidation = window.AuthUtils.validatePassword(password);
+            if (!passwordValidation.valid) {
+                showError(passwordValidation.message);
+                return;
+            }
+
+            if (email) {
+                const emailValidation = window.AuthUtils.validateEmail(email);
+                if (!emailValidation.valid) {
+                    showError(emailValidation.message);
+                    return;
+                }
+            }
+
+            // Show loading
+            showLoading();
+
+            try {
+                // Initialize SheetsAuth
+                await window.SheetsAuth.init();
+
+                // Check if user already exists
+                const existingUser = await window.SheetsAuth.checkUserExists(name);
+                if (existingUser) {
+                    hideLoading();
+                    showError('This login name is already taken. Please choose another.');
+                    return;
+                }
+
+                // Create new user
+                const result = await window.SheetsAuth.createUser({
+                    name: name,
+                    password: password,
+                    email: email || ''
+                });
+
+                if (result.success) {
+                    hideLoading();
+                    showSuccess('Account created successfully! Your account is pending approval from the President. You will be notified once approved.');
+                    
+                    // Redirect to login after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'mobile-login.html';
+                    }, 3000);
+                } else {
+                    hideLoading();
+                    showError(result.message || 'Account creation failed');
+                }
+            } catch (error) {
+                hideLoading();
+                showError('Account creation failed. Please try again.');
+                console.error('Signup error:', error);
+            }
+        });
+
+        function showLoading() {
+            document.getElementById('loadingScreen').style.display = 'flex';
+            document.getElementById('signupScreen').style.display = 'none';
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('signupScreen').style.display = 'block';
+        }
+
+        function showError(message) {
+            // Create error notification
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'mobile-error-notification';
+            errorDiv.innerHTML = `
+                <div class="error-content">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Add error styles
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                right: 20px;
+                background: #ef4444;
+                color: white;
+                padding: 16px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+                z-index: 1000;
+                animation: slideDown 0.3s ease;
+            `;
+
+            document.body.appendChild(errorDiv);
+
+            // Auto remove after 4 seconds
+            setTimeout(() => {
+                if (errorDiv.parentNode) {
+                    errorDiv.style.animation = 'slideDown 0.3s ease reverse';
+                    setTimeout(() => {
+                        errorDiv.remove();
+                    }, 300);
+                }
+            }, 4000);
+        }
+
+        function showSuccess(message) {
+            // Create success notification
+            const successDiv = document.createElement('div');
+            successDiv.className = 'mobile-success-notification';
+            successDiv.innerHTML = `
+                <div class="success-content">
+                    <i class="fas fa-check-circle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Add success styles
+            successDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                right: 20px;
+                background: #10b981;
+                color: white;
+                padding: 16px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+                z-index: 1000;
+                animation: slideDown 0.3s ease;
+            `;
+
+            document.body.appendChild(successDiv);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (successDiv.parentNode) {
+                    successDiv.style.animation = 'slideDown 0.3s ease reverse';
+                    setTimeout(() => {
+                        successDiv.remove();
+                    }, 300);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

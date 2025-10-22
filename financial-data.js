@@ -22,19 +22,39 @@ class FinancialData {
     async loadFinancialData() {
         try {
             console.log('Loading financial data from Google Sheets...');
-            const response = await fetch(this.googleSheetsUrl);
+            const response = await fetch(this.googleSheetsUrl, {
+                method: 'GET',
+                redirect: 'follow' // Follow redirects automatically
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
             const csv = await response.text();
+            console.log('Raw CSV data from Google Sheets:', csv);
             
             if (csv && csv.trim()) {
                 const rows = csv.split('\n');
+                console.log('CSV rows:', rows);
+                
                 if (rows.length >= 2) {
                     const headers = rows[0].split(',');
                     const data = rows[1].split(',');
+                    
+                    console.log('CSV headers:', headers);
+                    console.log('CSV data:', data);
                     
                     // Clean the data (remove quotes and extra spaces)
                     const bankBalance = parseFloat(data[0].replace(/"/g, '').trim()) || 183790;
                     const availableLoanAmount = parseFloat(data[1].replace(/"/g, '').trim()) || 175000;
                     const lastUpdated = data[2].replace(/"/g, '').trim() || new Date().toISOString().split('T')[0];
+                    
+                    console.log('Parsed financial data:', {
+                        bankBalance,
+                        availableLoanAmount,
+                        lastUpdated
+                    });
                     
                     this.currentData = {
                         bankBalance: bankBalance,
