@@ -14,7 +14,12 @@ function displayUserHeader() {
             headerUserName.textContent = userDetails.name;
         }
         if (headerUserRole) {
-            headerUserRole.textContent = userDetails.name === 'President' ? 'President' : 'Member';
+            // Advanced President detection (same as mobile app)
+            var isPresident = userDetails.name === 'Manjunath Banakar' || 
+                             userDetails.name === 'Manjunath' ||
+                             userDetails.name.toLowerCase().includes('manjunath');
+            
+            headerUserRole.textContent = (userDetails.name === 'President' || isPresident) ? 'President' : 'Member';
         }
         console.log('User header displayed for:', userDetails.name);
     } else {

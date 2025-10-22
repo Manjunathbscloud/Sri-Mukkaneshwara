@@ -45,17 +45,6 @@
 <body class="mobile-body">
     <!-- Mobile App Container -->
     <div class="mobile-app-container">
-        <!-- Status Bar -->
-        <div class="mobile-status-bar">
-            <div class="status-left">
-                <span class="time" id="currentTime">9:41</span>
-            </div>
-            <div class="status-right">
-                <i class="fas fa-signal"></i>
-                <i class="fas fa-wifi"></i>
-                <i class="fas fa-battery-three-quarters"></i>
-            </div>
-        </div>
 
         <!-- Login Screen -->
         <div class="mobile-login-screen" id="loginScreen">
@@ -103,7 +92,7 @@
                             <span class="checkmark"></span>
                             Remember me
                         </label>
-                        <a href="#" class="forgot-password">Forgot Password?</a>
+                        <a href="mobile-signup.html" class="signup-link">Create Account</a>
                     </div>
 
                     <button type="submit" class="mobile-login-btn">
@@ -141,25 +130,12 @@
     <!-- Scripts -->
     <script src="js/auth-utils.js"></script>
     <script src="js/sheets-auth.js"></script>
+    <script src="sheets-config.js"></script>
     <script src="mobile/mobile-auth.js"></script>
     <script src="mobile/mobile-navigation.js"></script>
     <script src="mobile/mobile-utils.js"></script>
     <script src="mobile/mobile-pwa.js"></script>
     <script>
-        // Update time
-        function updateTime() {
-            const now = new Date();
-            const time = now.toLocaleTimeString('en-US', { 
-                hour: 'numeric', 
-                minute: '2-digit',
-                hour12: false 
-            });
-            document.getElementById('currentTime').textContent = time;
-        }
-
-        // Update time every minute
-        updateTime();
-        setInterval(updateTime, 60000);
 
         // Initialize mobile app
         document.addEventListener('DOMContentLoaded', function() {

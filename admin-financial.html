@@ -197,7 +197,13 @@
                 // Check if user is president (only president has admin access)
                 var userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
                 var userName = userDetails.name || '';
-                var isAdmin = userName === 'President';
+                
+                // Advanced President detection (same as mobile app)
+                var isPresident = userName === 'Manjunath Banakar' || 
+                                 userName === 'Manjunath' ||
+                                 userName.toLowerCase().includes('manjunath');
+                
+                var isAdmin = userName === 'President' || isPresident;
                 
                 console.log('User name:', userName, 'Is admin:', isAdmin);
                 
