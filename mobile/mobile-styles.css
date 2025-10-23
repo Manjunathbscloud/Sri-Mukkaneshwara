@@ -122,14 +122,14 @@
 }
 
 .form-header h2 {
-    color: var(--text-primary);
+    color: #1f2937 !important;
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 8px;
 }
 
 .form-header p {
-    color: var(--text-secondary);
+    color: #4b5563 !important;
     font-size: 16px;
 }
 
@@ -239,6 +239,384 @@
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
 }
 
+/* GLOBAL MOBILE TEXT VISIBILITY FIX - FOR ALL MOBILE PAGES */
+.mobile-app-container,
+.mobile-login-screen,
+.mobile-signup-screen,
+.mobile-main-app {
+    /* Force all text to be visible */
+    color: #1f2937 !important;
+}
+
+/* Headers - Force visibility */
+.mobile-app-container h1,
+.mobile-app-container h2,
+.mobile-app-container h3,
+.mobile-app-container h4,
+.mobile-app-container h5,
+.mobile-app-container h6 {
+    color: #1f2937 !important;
+    font-weight: 600 !important;
+}
+
+/* Paragraphs and text */
+.mobile-app-container p,
+.mobile-app-container span,
+.mobile-app-container div,
+.mobile-app-container label {
+    color: #4b5563 !important;
+}
+
+/* Links */
+.mobile-app-container a {
+    color: #3b82f6 !important;
+    text-decoration: none !important;
+}
+
+.mobile-app-container a:hover {
+    color: #1d4ed8 !important;
+    text-decoration: underline !important;
+}
+
+/* Form elements */
+.mobile-app-container input,
+.mobile-app-container textarea,
+.mobile-app-container select {
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-opacity: 1 !important;
+    opacity: 1 !important;
+}
+
+.mobile-app-container input::placeholder,
+.mobile-app-container textarea::placeholder {
+    color: #9ca3af !important;
+}
+
+/* Buttons */
+.mobile-app-container button {
+    color: white !important;
+}
+
+.mobile-app-container .btn-text {
+    color: white !important;
+}
+
+/* Specific page fixes */
+.mobile-login-screen .form-header h2 {
+    color: #1f2937 !important;
+}
+
+.mobile-login-screen .form-header p {
+    color: #4b5563 !important;
+}
+
+.mobile-login-screen .remember-me {
+    color: #4b5563 !important;
+}
+
+.mobile-login-screen .signup-link {
+    color: #3b82f6 !important;
+}
+
+.mobile-login-screen .mobile-app-footer p {
+    color: #6b7280 !important;
+}
+
+/* Signup page fixes */
+.mobile-signup-screen .form-header h2 {
+    color: #1f2937 !important;
+}
+
+.mobile-signup-screen .form-header p {
+    color: #4b5563 !important;
+}
+
+.mobile-signup-screen .input-help {
+    color: #6b7280 !important;
+}
+
+.mobile-signup-screen .terms-agreement {
+    color: #4b5563 !important;
+}
+
+.mobile-signup-screen .login-link {
+    color: #3b82f6 !important;
+}
+
+.mobile-signup-screen .mobile-app-footer p {
+    color: #6b7280 !important;
+}
+
+/* Main mobile app content fixes */
+.mobile-main-app h1,
+.mobile-main-app h2,
+.mobile-main-app h3,
+.mobile-main-app h4,
+.mobile-main-app h5,
+.mobile-main-app h6 {
+    color: #1f2937 !important;
+    font-weight: 600 !important;
+}
+
+.mobile-main-app p,
+.mobile-main-app span,
+.mobile-main-app div,
+.mobile-main-app label {
+    color: #4b5563 !important;
+}
+
+.mobile-main-app a {
+    color: #3b82f6 !important;
+}
+
+.mobile-main-app button {
+    color: white !important;
+}
+
+.mobile-main-app input,
+.mobile-main-app textarea,
+.mobile-main-app select {
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-opacity: 1 !important;
+    opacity: 1 !important;
+}
+
+/* Navigation and menu items */
+.mobile-navigation h1,
+.mobile-navigation h2,
+.mobile-navigation h3 {
+    color: #1f2937 !important;
+}
+
+.mobile-navigation p,
+.mobile-navigation span,
+.mobile-navigation div {
+    color: #4b5563 !important;
+}
+
+.mobile-navigation a {
+    color: #3b82f6 !important;
+}
+
+/* Dashboard content */
+.mobile-dashboard h1,
+.mobile-dashboard h2,
+.mobile-dashboard h3 {
+    color: #1f2937 !important;
+}
+
+.mobile-dashboard p,
+.mobile-dashboard span,
+.mobile-dashboard div {
+    color: #4b5563 !important;
+}
+
+/* Accounts, Deposits, Loans, Members, Meetings, Rules pages */
+.mobile-accounts,
+.mobile-deposits,
+.mobile-loans,
+.mobile-members,
+.mobile-meetings,
+.mobile-rules {
+    color: #1f2937 !important;
+}
+
+.mobile-accounts h1,
+.mobile-accounts h2,
+.mobile-accounts h3,
+.mobile-deposits h1,
+.mobile-deposits h2,
+.mobile-deposits h3,
+.mobile-loans h1,
+.mobile-loans h2,
+.mobile-loans h3,
+.mobile-members h1,
+.mobile-members h2,
+.mobile-members h3,
+.mobile-meetings h1,
+.mobile-meetings h2,
+.mobile-meetings h3,
+.mobile-rules h1,
+.mobile-rules h2,
+.mobile-rules h3 {
+    color: #1f2937 !important;
+    font-weight: 600 !important;
+}
+
+.mobile-accounts p,
+.mobile-accounts span,
+.mobile-accounts div,
+.mobile-deposits p,
+.mobile-deposits span,
+.mobile-deposits div,
+.mobile-loans p,
+.mobile-loans span,
+.mobile-loans div,
+.mobile-members p,
+.mobile-members span,
+.mobile-members div,
+.mobile-meetings p,
+.mobile-meetings span,
+.mobile-meetings div,
+.mobile-rules p,
+.mobile-rules span,
+.mobile-rules div {
+    color: #4b5563 !important;
+}
+
+/* COMPREHENSIVE MOBILE TEXT VISIBILITY - CATCH ALL */
+/* Force all text in mobile app to be visible */
+.mobile-app-container * {
+    /* Override any inherited colors that might be invisible */
+}
+
+.mobile-app-container h1,
+.mobile-app-container h2,
+.mobile-app-container h3,
+.mobile-app-container h4,
+.mobile-app-container h5,
+.mobile-app-container h6 {
+    color: #1f2937 !important;
+    font-weight: 600 !important;
+}
+
+.mobile-app-container p,
+.mobile-app-container span,
+.mobile-app-container div,
+.mobile-app-container label,
+.mobile-app-container li,
+.mobile-app-container td,
+.mobile-app-container th {
+    color: #4b5563 !important;
+}
+
+.mobile-app-container a {
+    color: #3b82f6 !important;
+}
+
+.mobile-app-container button {
+    color: white !important;
+}
+
+.mobile-app-container input,
+.mobile-app-container textarea,
+.mobile-app-container select {
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-opacity: 1 !important;
+    opacity: 1 !important;
+}
+
+/* Specific fixes for common mobile app elements */
+.mobile-app-container .card,
+.mobile-app-container .info-card,
+.mobile-app-container .stat-card {
+    color: #1f2937 !important;
+}
+
+.mobile-app-container .card h1,
+.mobile-app-container .card h2,
+.mobile-app-container .card h3,
+.mobile-app-container .info-card h1,
+.mobile-app-container .info-card h2,
+.mobile-app-container .info-card h3,
+.mobile-app-container .stat-card h1,
+.mobile-app-container .stat-card h2,
+.mobile-app-container .stat-card h3 {
+    color: #1f2937 !important;
+    font-weight: 600 !important;
+}
+
+.mobile-app-container .card p,
+.mobile-app-container .card span,
+.mobile-app-container .card div,
+.mobile-app-container .info-card p,
+.mobile-app-container .info-card span,
+.mobile-app-container .info-card div,
+.mobile-app-container .stat-card p,
+.mobile-app-container .stat-card span,
+.mobile-app-container .stat-card div {
+    color: #4b5563 !important;
+}
+
+/* Table content */
+.mobile-app-container table,
+.mobile-app-container table th,
+.mobile-app-container table td {
+    color: #1f2937 !important;
+}
+
+.mobile-app-container table th {
+    font-weight: 600 !important;
+    color: #1f2937 !important;
+}
+
+.mobile-app-container table td {
+    color: #4b5563 !important;
+}
+
+/* Form elements */
+.mobile-app-container .form-group,
+.mobile-app-container .input-group {
+    color: #1f2937 !important;
+}
+
+.mobile-app-container .form-group label,
+.mobile-app-container .input-group label {
+    color: #1f2937 !important;
+    font-weight: 500 !important;
+}
+
+.mobile-app-container .form-group input,
+.mobile-app-container .form-group textarea,
+.mobile-app-container .form-group select,
+.mobile-app-container .input-group input,
+.mobile-app-container .input-group textarea,
+.mobile-app-container .input-group select {
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-opacity: 1 !important;
+    opacity: 1 !important;
+}
+
+/* Navigation elements */
+.mobile-app-container .nav-item,
+.mobile-app-container .menu-item {
+    color: #4b5563 !important;
+}
+
+.mobile-app-container .nav-item a,
+.mobile-app-container .menu-item a {
+    color: #3b82f6 !important;
+}
+
+/* Status and notification text */
+.mobile-app-container .status,
+.mobile-app-container .notification,
+.mobile-app-container .alert {
+    color: #1f2937 !important;
+}
+
+.mobile-app-container .status.success,
+.mobile-app-container .notification.success,
+.mobile-app-container .alert.success {
+    color: #059669 !important;
+}
+
+.mobile-app-container .status.error,
+.mobile-app-container .notification.error,
+.mobile-app-container .alert.error {
+    color: #dc2626 !important;
+}
+
+.mobile-app-container .status.warning,
+.mobile-app-container .notification.warning,
+.mobile-app-container .alert.warning {
+    color: #d97706 !important;
+}
+
 .password-toggle {
     background: none;
     border: none;
@@ -266,7 +644,7 @@
     gap: 8px;
     cursor: pointer;
     font-size: 14px;
-    color: var(--text-secondary);
+    color: #4b5563 !important;
 }
 
 .remember-me input[type="checkbox"] {
@@ -304,8 +682,8 @@
 }
 
 .mobile-login-btn {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    color: white !important;
     border: none;
     border-radius: var(--radius-lg);
     padding: 16px 24px;
@@ -348,7 +726,7 @@
 }
 
 .mobile-app-footer p {
-    color: var(--text-light);
+    color: #6b7280 !important;
     font-size: 12px;
     margin-bottom: 4px;
 }
@@ -641,7 +1019,7 @@
 }
 
 .signup-link {
-    color: var(--primary-color);
+    color: #3b82f6 !important;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
