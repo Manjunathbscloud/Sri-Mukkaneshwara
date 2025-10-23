@@ -1,8 +1,8 @@
 /* Mobile Banking App Styles */
 :root {
-    --primary-color: #1e40af;
-    --primary-dark: #1e3a8a;
-    --secondary-color: #3b82f6;
+    --primary-color: #10b981;
+    --primary-dark: #059669;
+    --secondary-color: #10b981;
     --accent-color: #10b981;
     --danger-color: #ef4444;
     --warning-color: #f59e0b;
@@ -34,7 +34,7 @@
 
 .mobile-body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -60,7 +60,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     position: relative;
 }
 
@@ -235,8 +235,8 @@
 
 .input-wrapper:focus-within {
     background: #ffffff !important;
-    border-color: #3b82f6 !important;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
 }
 
 /* GLOBAL MOBILE TEXT VISIBILITY FIX - FOR ALL MOBILE PAGES */
@@ -269,7 +269,7 @@
 
 /* Links */
 .mobile-app-container a {
-    color: #3b82f6 !important;
+    color: #10b981 !important;
     text-decoration: none !important;
 }
 
@@ -316,7 +316,7 @@
 }
 
 .mobile-login-screen .signup-link {
-    color: #3b82f6 !important;
+    color: #10b981 !important;
 }
 
 .mobile-login-screen .mobile-app-footer p {
@@ -341,7 +341,7 @@
 }
 
 .mobile-signup-screen .login-link {
-    color: #3b82f6 !important;
+    color: #10b981 !important;
 }
 
 .mobile-signup-screen .mobile-app-footer p {
@@ -367,7 +367,7 @@
 }
 
 .mobile-main-app a {
-    color: #3b82f6 !important;
+    color: #10b981 !important;
 }
 
 .mobile-main-app button {
@@ -397,7 +397,7 @@
 }
 
 .mobile-navigation a {
-    color: #3b82f6 !important;
+    color: #10b981 !important;
 }
 
 /* Dashboard content */
@@ -493,7 +493,7 @@
 }
 
 .mobile-app-container a {
-    color: #3b82f6 !important;
+    color: #10b981 !important;
 }
 
 .mobile-app-container button {
@@ -589,7 +589,7 @@
 
 .mobile-app-container .nav-item a,
 .mobile-app-container .menu-item a {
-    color: #3b82f6 !important;
+    color: #10b981 !important;
 }
 
 /* Status and notification text */
@@ -969,7 +969,7 @@
 }
 
 .mobile-login-btn {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
     color: white !important;
     border: none;
     border-radius: var(--radius-lg);
@@ -1071,6 +1071,7 @@
 .mobile-main-app {
     min-height: calc(100vh - 40px);
     background: var(--bg-secondary);
+    padding-bottom: 80px !important;
 }
 
 /* Responsive Design */
@@ -1306,7 +1307,7 @@
 }
 
 .signup-link {
-    color: #3b82f6 !important;
+    color: #10b981 !important;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
@@ -1691,7 +1692,7 @@
 }
 
 .contact-btn:hover {
-    background: #1e40af;
+    background: #10b981;
     transform: scale(1.05);
 }
 
@@ -1990,7 +1991,7 @@
 }
 
 .submit-btn:hover {
-    background: #1e40af;
+    background: #10b981;
 }
 
 .submit-btn:disabled {
@@ -2435,7 +2436,7 @@
 }
 
 .update-financial-btn:hover {
-    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
@@ -2657,9 +2658,9 @@
 }
 
 .application-note {
-    background: #dbeafe;
-    color: #1e40af;
-    border: 1px solid #bfdbfe;
+    background: #d1fae5;
+    color: #10b981;
+    border: 1px solid #a7f3d0;
 }
 
 .application-note.approved {
@@ -2724,14 +2725,14 @@
     text-align: center;
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 2px solid #3b82f6;
+    border-bottom: 2px solid #10b981;
 }
 
 .admin-header h3 {
     margin: 0 0 8px 0;
     font-size: 20px;
     font-weight: 700;
-    color: #1e40af;
+    color: #10b981;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2755,7 +2756,7 @@
     background: white;
     border-radius: 12px;
     padding: 20px;
-    border-left: 4px solid #3b82f6;
+    border-left: 4px solid #10b981;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -2786,7 +2787,7 @@
     align-items: center;
     gap: 12px;
     padding: 16px 20px;
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
     border: none;
     border-radius: 10px;
@@ -2799,7 +2800,7 @@
 }
 
 .admin-btn:hover {
-    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
@@ -3157,12 +3158,17 @@
 
 /* Bottom Navigation */
 .mobile-bottom-nav {
-    display: flex;
-    background: white;
-    border-top: 1px solid var(--border-color);
-    position: sticky;
-    bottom: 0;
-    z-index: 100;
+    display: flex !important;
+    background: white !important;
+    border-top: 1px solid var(--border-color) !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    max-width: 414px !important;
+    margin: 0 auto !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1) !important;
 }
 
 .nav-item {
@@ -3638,8 +3644,8 @@
 }
 
 .status-badge.new {
-    background: #dbeafe;
-    color: #1e40af;
+    background: #d1fae5;
+    color: #10b981;
 }
 
 /* Loans Styles */
@@ -4017,7 +4023,7 @@
 
 .president-btn:hover {
     background: #e2e8f0;
-    border-color: #3b82f6;
+    border-color: #10b981;
     transform: translateY(-1px);
 }
 
@@ -4125,13 +4131,13 @@
 }
 
 .filter-btn.active {
-    background: #3b82f6;
-    border-color: #3b82f6;
+    background: #10b981;
+    border-color: #10b981;
     color: white;
 }
 
 .filter-btn:hover {
-    border-color: #3b82f6;
+    border-color: #10b981;
 }
 
 .filter-btn i {
@@ -4348,7 +4354,7 @@
 }
 
 .retry-btn {
-    background: #3b82f6;
+    background: #10b981;
     color: white;
     border: none;
     border-radius: 8px;
@@ -4545,7 +4551,7 @@
 }
 
 .reports-stats .stat-icon:first-child {
-    background: #dbeafe;
+    background: #d1fae5;
     color: #3b82f6;
 }
 
@@ -4619,7 +4625,7 @@
 
 .reports-actions .action-btn {
     padding: 12px 24px;
-    background: #3b82f6;
+    background: #10b981;
     color: white;
     border: none;
     border-radius: 8px;
@@ -4718,4 +4724,901 @@
     .chart-wrapper {
         height: 180px;
     }
+}
+
+/* Hide back buttons and notification bell in mobile app */
+.back-btn,
+.notification-btn,
+.notification-badge {
+    display: none !important;
+}
+
+/* Fix navigation visibility */
+.nav-item {
+    color: #6b7280 !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    color: #ffffff !important;
+    background: #10b981 !important;
+    font-weight: 600 !important;
+}
+
+.nav-icon {
+    color: inherit !important;
+    font-size: 18px !important;
+}
+
+.nav-label {
+    color: inherit !important;
+    font-weight: inherit !important;
+    font-size: 10px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Additional navigation text visibility fixes */
+.mobile-bottom-nav .nav-item * {
+    color: inherit !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.mobile-bottom-nav .nav-item.active * {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Fix loans section button text visibility */
+.loan-application-btn,
+.my-application-btn,
+.application-status-btn {
+    color: #ffffff !important;
+    background: #10b981 !important;
+    border: 1px solid #10b981 !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    transition: all 0.3s ease !important;
+}
+
+.loan-application-btn:hover,
+.my-application-btn:hover,
+.application-status-btn:hover {
+    background: #059669 !important;
+    border-color: #059669 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+.loan-application-btn *,
+.my-application-btn *,
+.application-status-btn * {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Fix button text inside loan sections */
+.loan-section button,
+.loan-section .btn,
+.loan-section a {
+    color: #ffffff !important;
+    background: #10b981 !important;
+    border: 1px solid #10b981 !important;
+    padding: 10px 16px !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+}
+
+.loan-section button:hover,
+.loan-section .btn:hover,
+.loan-section a:hover {
+    background: #059669 !important;
+    border-color: #059669 !important;
+}
+
+.loan-section button *,
+.loan-section .btn *,
+.loan-section a * {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Loan Status Card Styles */
+.loan-status-card {
+    background: white !important;
+    border-radius: 16px !important;
+    padding: 20px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #e5e7eb !important;
+    margin-bottom: 20px !important;
+}
+
+.card-title {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+    margin-bottom: 16px !important;
+    text-align: center !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.status-content {
+    margin-bottom: 20px !important;
+}
+
+.status-item {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 12px 0 !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+}
+
+.status-item:last-child {
+    border-bottom: none !important;
+}
+
+.status-label {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #1f2937 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.status-value {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    padding: 4px 8px !important;
+    border-radius: 6px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.status-value.pending {
+    background: #fef3c7 !important;
+    color: #d97706 !important;
+}
+
+.status-value.approved {
+    background: #d1fae5 !important;
+    color: #059669 !important;
+}
+
+.loan-actions {
+    text-align: center !important;
+}
+
+.new-application-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 12px 24px !important;
+    background: #10b981 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.new-application-btn * {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow: none !important;
+}
+
+.new-application-btn:hover {
+    background: #059669 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+.new-application-btn i {
+    font-size: 16px !important;
+}
+
+/* Force loan section text visibility */
+.loan-section * {
+    color: inherit !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.loan-section h3,
+.loan-section .card-title {
+    color: #111827 !important;
+    font-weight: 600 !important;
+}
+
+.loan-section .status-label {
+    color: #374151 !important;
+    font-weight: 500 !important;
+}
+
+.loan-section .status-value {
+    color: inherit !important;
+    font-weight: 600 !important;
+}
+
+.loan-section .new-application-btn,
+.loan-section .new-application-btn * {
+    color: #ffffff !important;
+    background: #10b981 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    text-shadow: none !important;
+}
+
+/* Force all loan status card text to be visible */
+.loan-status-card h3,
+.loan-status-card .card-title {
+    color: #111827 !important;
+    font-weight: 700 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.loan-status-card .status-label {
+    color: #1f2937 !important;
+    font-weight: 600 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.loan-status-card .status-value {
+    font-weight: 700 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.loan-status-card * {
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* NUCLEAR FIX - Force ALL President Access button text to be visible */
+.president-access,
+.president-access *,
+.president-access button,
+.president-access .btn,
+.president-access a,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn,
+.president-access .btn-content,
+.president-access .btn-title,
+.president-access .btn-subtitle,
+.president-access h1,
+.president-access h2,
+.president-access h3,
+.president-access h4,
+.president-access h5,
+.president-access h5,
+.president-access p,
+.president-access span,
+.president-access div,
+.president-access label {
+    color: #2563eb !important;
+    background: #ffffff !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* Specific President Access Button Fixes */
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #10b981 !important;
+    color: #ffffff !important;
+    border: 2px solid #10b981 !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access .admin-btn:hover,
+.president-access .close-btn:hover,
+.president-access .president-access-btn:hover {
+    background: #059669 !important;
+    color: #ffffff !important;
+    border-color: #059669 !important;
+}
+
+.president-access .btn-content,
+.president-access .btn-title,
+.president-access .btn-subtitle {
+    color: #ffffff !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* NUCLEAR FIX - Force ALL text to be blue and visible */
+.loan-status-card,
+.loan-status-card h3,
+.loan-status-card .card-title,
+.loan-status-card .status-label,
+.loan-status-card .status-item,
+.loan-status-card .status-content,
+.loan-status-card div,
+.loan-status-card span {
+    color: #2563eb !important;
+    background: #ffffff !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+/* Specific President Access Button Fixes */
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #10b981 !important;
+    color: #ffffff !important;
+    border: 2px solid #10b981 !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access .admin-btn:hover,
+.president-access .close-btn:hover,
+.president-access .president-access-btn:hover {
+    background: #059669 !important;
+    color: #ffffff !important;
+    border-color: #059669 !important;
+}
+
+.president-access .btn-content,
+.president-access .btn-title,
+.president-access .btn-subtitle {
+    color: #ffffff !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* FINAL NUCLEAR FIX - Override everything */
+.president-access button,
+.president-access .btn,
+.president-access .admin-btn,
+.president-access .close-btn,
+.president-access .president-access-btn {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 3px solid #000000 !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.president-access button *,
+.president-access .btn *,
+.president-access .admin-btn *,
+.president-access .close-btn *,
+.president-access .president-access-btn * {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }

@@ -1596,8 +1596,8 @@ class MobileNavigation {
             return;
         }
         
-        // Show comprehensive President panel
-        this.showComprehensivePresidentPanel();
+        // Redirect to the new President Access page
+        window.location.href = 'mobile-president-access.html';
     }
 
     showComprehensivePresidentPanel() {

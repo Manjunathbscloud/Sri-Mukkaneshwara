@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Loan Application - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="mobile/mobile-styles.css">
+    <style>
+        .mobile-loan-form {
+            padding: 20px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .form-header h2 {
+            color: #111827;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #111827;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .back-to-loans {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 20px;
+            padding: 8px 0;
+        }
+
+        .back-to-loans:hover {
+            color: #059669;
+        }
+
+        .loan-types {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .loan-type-btn {
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .loan-type-btn:hover,
+        .loan-type-btn.selected {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .loan-type-btn i {
+            font-size: 24px;
+            color: #10b981;
+            margin-bottom: 8px;
+        }
+
+        .loan-type-btn h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+        }
+
+        .loan-type-btn p {
+            font-size: 12px;
+            color: #6b7280;
+            margin: 4px 0 0 0;
+        }
+
+        @media (max-width: 375px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .loan-types {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="mobile-body">
+    <div class="mobile-app-container">
+        <div class="mobile-main-app">
+            <!-- Header -->
+            <div class="mobile-header">
+                <div class="header-left">
+                    <a href="mobile-simple.html" class="back-to-loans">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Loans
+                    </a>
+                </div>
+                <div class="header-right">
+                    <h3>Loan Application</h3>
+                </div>
+            </div>
+
+            <!-- Loan Application Form -->
+            <div class="mobile-loan-form">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2>Apply for Loan</h2>
+                        <p>Fill in your details to apply for a loan</p>
+                    </div>
+
+                    <form id="loanApplicationForm">
+                        <!-- Loan Type Selection -->
+                        <div class="form-group">
+                            <label class="form-label">Loan Type</label>
+                            <div class="loan-types">
+                                <div class="loan-type-btn" data-type="personal">
+                                    <i class="fas fa-user"></i>
+                                    <h4>Personal Loan</h4>
+                                    <p>Up to ₹2,00,000</p>
+                                </div>
+                                <div class="loan-type-btn" data-type="home">
+                                    <i class="fas fa-home"></i>
+                                    <h4>Home Loan</h4>
+                                    <p>Up to ₹10,00,000</p>
+                                </div>
+                                <div class="loan-type-btn" data-type="business">
+                                    <i class="fas fa-briefcase"></i>
+                                    <h4>Business Loan</h4>
+                                    <p>Up to ₹5,00,000</p>
+                                </div>
+                                <div class="loan-type-btn" data-type="vehicle">
+                                    <i class="fas fa-car"></i>
+                                    <h4>Vehicle Loan</h4>
+                                    <p>Up to ₹3,00,000</p>
+                                </div>
+                            </div>
+                            <input type="hidden" id="loanType" name="loanType" required>
+                        </div>
+
+                        <!-- Personal Information -->
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-input" name="fullName" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-input" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-input" name="phone" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Date of Birth</label>
+                                <input type="date" class="form-input" name="dateOfBirth" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Gender</label>
+                                <select class="form-select" name="gender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Address Information -->
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <textarea class="form-textarea" name="address" placeholder="Enter your full address" required></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-input" name="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Pincode</label>
+                                <input type="text" class="form-input" name="pincode" required>
+                            </div>
+                        </div>
+
+                        <!-- Employment Information -->
+                        <div class="form-group">
+                            <label class="form-label">Occupation</label>
+                            <input type="text" class="form-input" name="occupation" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Monthly Income</label>
+                                <input type="number" class="form-input" name="monthlyIncome" placeholder="₹" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Loan Amount</label>
+                                <input type="number" class="form-input" name="loanAmount" placeholder="₹" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Loan Purpose</label>
+                            <textarea class="form-textarea" name="loanPurpose" placeholder="Describe the purpose of your loan" required></textarea>
+                        </div>
+
+                        <!-- Additional Information -->
+                        <div class="form-group">
+                            <label class="form-label">Any existing loans?</label>
+                            <select class="form-select" name="existingLoans" required>
+                                <option value="">Select</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Additional Information</label>
+                            <textarea class="form-textarea" name="additionalInfo" placeholder="Any additional information you'd like to share"></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Submit Application
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="mobile-bottom-nav">
+            <a href="mobile-simple.html" class="nav-item">
+                <i class="nav-icon fas fa-home"></i>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-credit-card"></i>
+                <span class="nav-label">Accounts</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="nav-icon fas fa-hand-holding-usd"></i>
+                <span class="nav-label">Loans</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-users"></i>
+                <span class="nav-label">Members</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-user"></i>
+                <span class="nav-label">Profile</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        // Loan type selection
+        document.querySelectorAll('.loan-type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove selected class from all buttons
+                document.querySelectorAll('.loan-type-btn').forEach(b => b.classList.remove('selected'));
+                
+                // Add selected class to clicked button
+                this.classList.add('selected');
+                
+                // Set the hidden input value
+                document.getElementById('loanType').value = this.dataset.type;
+            });
+        });
+
+        // Form submission
+        document.getElementById('loanApplicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Show loading state
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                alert('Loan application submitted successfully! We will review your application and get back to you soon.');
+                
+                // Reset form
+                this.reset();
+                document.querySelectorAll('.loan-type-btn').forEach(b => b.classList.remove('selected'));
+                document.getElementById('loanType').value = '';
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Redirect back to loans
+                window.location.href = 'mobile-simple.html';
+            }, 2000);
+        });
+
+        // Navigation functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all items
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
