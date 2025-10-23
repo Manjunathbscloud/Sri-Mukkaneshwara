@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Mobile Banking App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .mobile-container {
+            max-width: 414px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: white;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Login Screen */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-screen::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .app-header {
+            padding: 40px 20px 20px;
+            text-align: center;
+            animation: slideInDown 0.8s ease-out;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .app-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        .logo-icon i {
+            font-size: 32px;
+            color: white;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logo-text h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+
+        .logo-text p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .login-form {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 32px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: fadeInScale 1s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .form-header h2 {
+            color: white;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideInLeft 0.6s ease-out both;
+        }
+
+        .input-wrapper input:nth-child(1) { animation-delay: 0.1s; }
+        .input-wrapper input:nth-child(2) { animation-delay: 0.2s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .input-wrapper input::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            margin-top: 8px;
+            animation: slideInUp 0.8s ease-out 0.7s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 16px 0;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 24px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .signup-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .app-footer {
+            padding: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 12px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            padding: 20px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            margin-bottom: 24px;
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-subtitle {
+            font-size: 14px;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: slideInUp 0.8s ease-out 0.2s both;
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .balance-title {
+            font-size: 16px;
+            font-weight: 600;
+            opacity: 0.95;
+            margin-bottom: 16px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .balance-amount {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .balance-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 8px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: #1f2937;
+            animation: fadeInScale 0.6s ease-out both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-item:nth-child(1) { animation-delay: 0.1s; }
+        .action-item:nth-child(2) { animation-delay: 0.2s; }
+        .action-item:nth-child(3) { animation-delay: 0.3s; }
+        .action-item:nth-child(4) { animation-delay: 0.4s; }
+
+        .action-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-item:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-item:hover::before {
+            left: 100%;
+        }
+
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        .action-item:hover .action-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-item:hover .action-icon::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .action-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            color: #111827;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInScale 0.6s ease-out both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px) scale(1.02);
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-title {
+            font-size: 14px;
+            color: #374151;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 414px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-around;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            text-decoration: none !important;
+            color: #6b7280 !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500 !important;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #ffffff !important;
+            background: #10b981 !important;
+            transform: translateY(-2px);
+            font-weight: 600 !important;
+        }
+
+        .nav-item:hover::before,
+        .nav-item.active::before {
+            left: 100%;
+        }
+
+        .nav-icon {
+            font-size: 18px !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: inherit !important;
+        }
+
+        .nav-item:hover .nav-icon,
+        .nav-item.active .nav-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .nav-label {
+            font-size: 10px !important;
+            font-weight: inherit !important;
+            transition: all 0.3s ease;
+            color: inherit !important;
+            text-shadow: none !important;
+        }
+
+        .nav-item:hover .nav-label,
+        .nav-item.active .nav-label {
+            transform: translateY(-1px);
+        }
+
+        /* Loan Section Styles */
+        .loan-section {
+            margin-bottom: 24px;
+        }
+
+        .loan-status-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+            text-align: center;
+            text-shadow: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .status-content {
+            margin-bottom: 20px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            text-shadow: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .status-value {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-shadow: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .status-value.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-value.approved {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .loan-actions {
+            text-align: center;
+        }
+
+        .new-application-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #10b981;
+            color: #ffffff !important;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .new-application-btn * {
+            color: #ffffff !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            text-shadow: none !important;
+        }
+
+        .new-application-btn:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .new-application-btn i {
+            font-size: 16px;
+        }
+
+        /* NUCLEAR FIX - Force ALL loan card text to be blue and visible */
+        .loan-status-card,
+        .loan-status-card h3,
+        .loan-status-card .card-title,
+        .loan-status-card .status-label,
+        .loan-status-card .status-item,
+        .loan-status-card .status-content,
+        .loan-status-card div,
+        .loan-status-card span {
+            color: #2563eb !important;
+            background: #ffffff !important;
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2) !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 375px) {
+            .mobile-container {
+                max-width: 375px;
+            }
+            
+            .dashboard {
+                padding: 16px;
+            }
+            
+            .actions-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .mobile-container {
+                max-width: 320px;
+            }
+            
+            .dashboard {
+                padding: 12px;
+            }
+            
+            .actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .balance-amount {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <div class="app-header">
+                <div class="app-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Sri Mukkanneshwara</h1>
+                        <p>Associate</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-form">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to your account</p>
+                    </div>
+
+                    <form>
+                        <div class="input-group">
+                            <label class="input-label">Username</label>
+                            <div class="input-wrapper">
+                                <input type="text" placeholder="Enter your username" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Password</label>
+                            <div class="input-wrapper">
+                                <input type="password" placeholder="Enter your password" required>
+                            </div>
+                        </div>
+
+                        <div class="remember-me">
+                            <input type="checkbox" id="rememberMe">
+                            <label for="rememberMe">Remember me</label>
+                        </div>
+
+                        <button type="submit" class="login-btn">
+                            Sign In
+                        </button>
+
+                        <div class="signup-link">
+                            Don't have an account? <a href="#">Create Account</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="app-footer">
+                <p>&copy; 2025 Sri Mukkanneshwara Associate</p>
+                <p>Secure Banking Solution</p>
+            </div>
+        </div>
+
+        <!-- Dashboard (Hidden initially) -->
+        <div class="dashboard" id="dashboard" style="display: none;">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Dashboard</h1>
+                <p class="dashboard-subtitle">Welcome back, John!</p>
+            </div>
+
+            <div class="balance-card">
+                <div class="balance-title">Account Balance</div>
+                <div class="balance-amount">₹25,000.00</div>
+                <div class="balance-subtitle">Available Balance</div>
+            </div>
+
+            <div class="actions-grid">
+                <a href="#" class="action-item">
+                    <div class="action-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <span class="action-label">Transfer</span>
+                </a>
+                <a href="#" class="action-item">
+                    <div class="action-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <span class="action-label">Pay Bills</span>
+                </a>
+                <a href="#" class="action-item">
+                    <div class="action-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <span class="action-label">Deposit</span>
+                </a>
+                <a href="#" class="action-item">
+                    <div class="action-icon">
+                        <i class="fas fa-minus"></i>
+                    </div>
+                    <span class="action-label">Withdraw</span>
+                </a>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Total Deposits</div>
+                    <div class="stat-value">₹1,25,000</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Active Loans</div>
+                    <div class="stat-value">₹50,000</div>
+                </div>
+            </div>
+
+            <!-- Loan Section -->
+            <div class="loan-section">
+                <div class="loan-status-card">
+                    <h3 class="card-title">My Application Status</h3>
+                    <div class="status-content">
+                        <div class="status-item">
+                            <span class="status-label">Personal Loan</span>
+                            <span class="status-value pending">Under Review</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Home Loan</span>
+                            <span class="status-value approved">Approved</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Business Loan</span>
+                            <span class="status-value pending">Pending Documents</span>
+                        </div>
+                    </div>
+                    <div class="loan-actions">
+                        <a href="mobile-loan-application.html" class="new-application-btn">
+                            <i class="fas fa-plus"></i>
+                            New Application
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <i class="nav-icon fas fa-home"></i>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-credit-card"></i>
+                <span class="nav-label">Accounts</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-hand-holding-usd"></i>
+                <span class="nav-label">Loans</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-users"></i>
+                <span class="nav-label">Members</span>
+            </a>
+            <a href="mobile-president-access.html" class="nav-item">
+                <i class="nav-icon fas fa-user-shield"></i>
+                <span class="nav-label">Admin</span>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        // Simple login functionality
+        document.querySelector('.login-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Show loading
+            this.innerHTML = 'Signing In...';
+            this.style.background = 'rgba(255, 255, 255, 0.3)';
+            
+            // Simulate login
+            setTimeout(() => {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+            }, 1500);
+        });
+
+        // Navigation functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all items
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+            });
+        });
+
+        // Application status function
+        function showApplicationStatus() {
+            alert('Application Status:\n\n• Personal Loan: Under Review\n• Home Loan: Approved\n• Business Loan: Pending Documents\n\nPlease contact support for more details.');
+        }
+    </script>
+</body>
+</html>
