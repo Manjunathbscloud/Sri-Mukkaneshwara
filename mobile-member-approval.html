@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Member Approval - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .mobile-container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: #ffffff;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: #10b981;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .stat-card.pending .stat-number {
+            color: #f59e0b;
+        }
+
+        .stat-card.approved .stat-number {
+            color: #10b981;
+        }
+
+        .stat-card.rejected .stat-number {
+            color: #ef4444;
+        }
+
+        /* Filter Buttons */
+        .filter-section {
+            margin-bottom: 20px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        .filter-btn:hover {
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        /* Member Cards */
+        .members-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .member-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .member-card:hover {
+            border-color: #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+        }
+
+        .member-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .member-avatar {
+            width: 50px;
+            height: 50px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .member-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .member-email {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .member-date {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .member-status {
+            margin-bottom: 16px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-badge.approved {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-badge.rejected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .member-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .approve-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .approve-btn:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .reject-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .reject-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .view-btn {
+            background: #6b7280;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #4b5563;
+            transform: translateY(-1px);
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .loading i {
+            font-size: 24px;
+            margin-bottom: 12px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #d1d5db;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 414px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-around;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 375px) {
+            .mobile-container {
+                max-width: 375px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            
+            .stat-card {
+                padding: 12px;
+            }
+            
+            .member-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <!-- Header -->
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1>Member Approval</h1>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card pending">
+                    <div class="stat-number" id="pendingCount">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card approved">
+                    <div class="stat-number" id="approvedCount">0</div>
+                    <div class="stat-label">Approved</div>
+                </div>
+                <div class="stat-card rejected">
+                    <div class="stat-number" id="rejectedCount">0</div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="filter-section">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="approved">Approved</button>
+                    <button class="filter-btn" data-filter="rejected">Rejected</button>
+                </div>
+            </div>
+
+            <!-- Members List -->
+            <div class="members-list" id="membersList">
+                <div class="loading">
+                    <i class="fas fa-spinner"></i>
+                    <p>Loading members...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="mobile-simple.html" class="nav-item">
+                <i class="nav-icon fas fa-home"></i>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-credit-card"></i>
+                <span class="nav-label">Accounts</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-hand-holding-usd"></i>
+                <span class="nav-label">Loans</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-users"></i>
+                <span class="nav-label">Members</span>
+            </a>
+            <a href="mobile-president-access.html" class="nav-item active">
+                <i class="nav-icon fas fa-user-shield"></i>
+                <span class="nav-label">Admin</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="js/sheets-auth.js"></script>
+    <script>
+        // Real data from Google Sheets
+        let membersData = [];
+        let currentFilter = 'all';
+        let filteredMembers = [];
+
+        function goBack() {
+            window.history.back();
+        }
+
+        async function loadMembers() {
+            const membersList = document.getElementById('membersList');
+            
+            try {
+                // Show loading state
+                membersList.innerHTML = `
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i>
+                        <p>Loading members...</p>
+                    </div>
+                `;
+
+                // Initialize SheetsAuth
+                await window.SheetsAuth.init();
+                
+                // Fetch real data from Google Sheets
+                membersData = await window.SheetsAuth.getAllUsers();
+                
+                // Filter members based on current filter
+                if (currentFilter === 'all') {
+                    filteredMembers = [...membersData];
+                } else {
+                    filteredMembers = membersData.filter(member => member.status === currentFilter);
+                }
+                
+                // Update stats
+                updateStats();
+                
+                // Render members
+                renderMembers();
+                
+            } catch (error) {
+                console.error('Error loading members:', error);
+                membersList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Error loading members</h3>
+                        <p>Failed to load member data. Please try again.</p>
+                        <button class="action-btn approve-btn" onclick="loadMembers()" style="margin-top: 16px;">
+                            <i class="fas fa-refresh"></i> Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function renderMembers() {
+            const membersList = document.getElementById('membersList');
+            
+            if (filteredMembers.length === 0) {
+                membersList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <h3>No members found</h3>
+                        <p>No members match the current filter</p>
+                    </div>
+                `;
+                return;
+            }
+
+            membersList.innerHTML = filteredMembers.map(member => `
+                <div class="member-card" data-status="${member.status}">
+                    <div class="member-header">
+                        <div class="member-avatar">
+                            ${member.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div class="member-info">
+                            <h3>${member.name}</h3>
+                            <div class="member-email">${member.email || 'No email provided'}</div>
+                            <div class="member-date">Applied: ${formatDate(member.createdAt || member.applicationDate)}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="member-status">
+                        <span class="status-badge ${member.status}">${member.status.charAt(0).toUpperCase() + member.status.slice(1)}</span>
+                    </div>
+                    
+                    <div class="member-actions">
+                        <button class="action-btn view-btn" onclick="viewMember('${member.id}')">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                        ${member.status === 'pending' ? `
+                            <button class="action-btn approve-btn" onclick="approveMember('${member.id}')">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="action-btn reject-btn" onclick="rejectMember('${member.id}')">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            const pending = membersData.filter(m => m.status === 'pending').length;
+            const approved = membersData.filter(m => m.status === 'approved').length;
+            const rejected = membersData.filter(m => m.status === 'rejected').length;
+
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('approvedCount').textContent = approved;
+            document.getElementById('rejectedCount').textContent = rejected;
+        }
+
+        function filterMembers(filter) {
+            currentFilter = filter;
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+            
+            // Filter members
+            if (filter === 'all') {
+                filteredMembers = [...membersData];
+            } else {
+                filteredMembers = membersData.filter(member => member.status === filter);
+            }
+            
+            loadMembers();
+        }
+
+        function viewMember(id) {
+            const member = membersData.find(m => m.id === id);
+            if (!member) return;
+
+            const details = `
+Member Details:
+• Name: ${member.name}
+• Email: ${member.email || 'Not provided'}
+• Application Date: ${formatDate(member.createdAt || member.applicationDate)}
+• Status: ${member.status.charAt(0).toUpperCase() + member.status.slice(1)}
+• Approved By: ${member.approvedBy || 'Not approved yet'}
+• Last Updated: ${member.updatedAt ? formatDate(member.updatedAt) : 'Not updated'}
+            `;
+            
+            alert(details);
+        }
+
+        async function approveMember(id) {
+            if (confirm('Are you sure you want to approve this member?')) {
+                try {
+                    const result = await window.SheetsAuth.updateUserStatus(id, 'approved', 'President');
+                    if (result.success) {
+                        alert('Member approved successfully!');
+                        // Reload the data
+                        await loadMembers();
+                    } else {
+                        alert(result.message || 'Failed to approve member');
+                    }
+                } catch (error) {
+                    console.error('Error approving member:', error);
+                    alert('Failed to approve member. Please try again.');
+                }
+            }
+        }
+
+        async function rejectMember(id) {
+            if (confirm('Are you sure you want to reject this member?')) {
+                try {
+                    const result = await window.SheetsAuth.updateUserStatus(id, 'rejected', 'President');
+                    if (result.success) {
+                        alert('Member rejected successfully!');
+                        // Reload the data
+                        await loadMembers();
+                    } else {
+                        alert(result.message || 'Failed to reject member');
+                    }
+                } catch (error) {
+                    console.error('Error rejecting member:', error);
+                    alert('Failed to reject member. Please try again.');
+                }
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadMembers();
+            
+            // Filter button event listeners
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+                    filterMembers(filter);
+                });
+            });
+        });
+
+        // Navigation functionality
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all items
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                
+                // Add active class to clicked item
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
