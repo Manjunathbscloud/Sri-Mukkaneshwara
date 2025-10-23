@@ -617,6 +617,293 @@
     color: #d97706 !important;
 }
 
+/* FIX TEXT INSIDE COLORED BACKGROUNDS */
+/* Blue backgrounds - use white text */
+.mobile-app-container .btn-primary,
+.mobile-app-container .primary-btn,
+.mobile-app-container .mobile-login-btn,
+.mobile-app-container .action-btn.primary,
+.mobile-app-container .president-access-btn,
+.mobile-app-container .admin-btn,
+.mobile-app-container .president-btn,
+.mobile-app-container .stat-card.primary,
+.mobile-app-container .card.primary,
+.mobile-app-container .info-card.primary {
+    color: white !important;
+}
+
+.mobile-app-container .btn-primary *,
+.mobile-app-container .primary-btn *,
+.mobile-app-container .mobile-login-btn *,
+.mobile-app-container .action-btn.primary *,
+.mobile-app-container .president-access-btn *,
+.mobile-app-container .admin-btn *,
+.mobile-app-container .president-btn *,
+.mobile-app-container .stat-card.primary *,
+.mobile-app-container .card.primary *,
+.mobile-app-container .info-card.primary * {
+    color: white !important;
+}
+
+/* Green backgrounds - use white text */
+.mobile-app-container .btn-success,
+.mobile-app-container .success-btn,
+.mobile-app-container .action-btn.success,
+.mobile-app-container .stat-card.success,
+.mobile-app-container .card.success,
+.mobile-app-container .info-card.success {
+    color: white !important;
+}
+
+.mobile-app-container .btn-success *,
+.mobile-app-container .success-btn *,
+.mobile-app-container .action-btn.success *,
+.mobile-app-container .stat-card.success *,
+.mobile-app-container .card.success *,
+.mobile-app-container .info-card.success * {
+    color: white !important;
+}
+
+/* Red backgrounds - use white text */
+.mobile-app-container .btn-danger,
+.mobile-app-container .danger-btn,
+.mobile-app-container .action-btn.danger,
+.mobile-app-container .stat-card.danger,
+.mobile-app-container .card.danger,
+.mobile-app-container .info-card.danger {
+    color: white !important;
+}
+
+.mobile-app-container .btn-danger *,
+.mobile-app-container .danger-btn *,
+.mobile-app-container .action-btn.danger *,
+.mobile-app-container .stat-card.danger *,
+.mobile-app-container .card.danger *,
+.mobile-app-container .info-card.danger * {
+    color: white !important;
+}
+
+/* Orange backgrounds - use white text */
+.mobile-app-container .btn-warning,
+.mobile-app-container .warning-btn,
+.mobile-app-container .action-btn.warning,
+.mobile-app-container .stat-card.warning,
+.mobile-app-container .card.warning,
+.mobile-app-container .info-card.warning {
+    color: white !important;
+}
+
+.mobile-app-container .btn-warning *,
+.mobile-app-container .warning-btn *,
+.mobile-app-container .action-btn.warning *,
+.mobile-app-container .stat-card.warning *,
+.mobile-app-container .card.warning *,
+.mobile-app-container .info-card.warning * {
+    color: white !important;
+}
+
+/* Gray backgrounds - use white text */
+.mobile-app-container .btn-secondary,
+.mobile-app-container .secondary-btn,
+.mobile-app-container .action-btn.secondary,
+.mobile-app-container .stat-card.secondary,
+.mobile-app-container .card.secondary,
+.mobile-app-container .info-card.secondary {
+    color: white !important;
+}
+
+.mobile-app-container .btn-secondary *,
+.mobile-app-container .secondary-btn *,
+.mobile-app-container .action-btn.secondary *,
+.mobile-app-container .stat-card.secondary *,
+.mobile-app-container .card.secondary *,
+.mobile-app-container .info-card.secondary * {
+    color: white !important;
+}
+
+/* Gradient backgrounds - use white text */
+.mobile-app-container .gradient-bg,
+.mobile-app-container .gradient-card,
+.mobile-app-container .gradient-btn {
+    color: white !important;
+}
+
+.mobile-app-container .gradient-bg *,
+.mobile-app-container .gradient-card *,
+.mobile-app-container .gradient-btn * {
+    color: white !important;
+}
+
+/* Specific mobile app colored elements */
+.mobile-app-container .quick-stats .stat-card,
+.mobile-app-container .dashboard-stats .stat-card,
+.mobile-app-container .financial-stats .stat-card {
+    color: white !important;
+}
+
+.mobile-app-container .quick-stats .stat-card *,
+.mobile-app-container .dashboard-stats .stat-card *,
+.mobile-app-container .financial-stats .stat-card * {
+    color: white !important;
+}
+
+/* Navigation colored elements */
+.mobile-app-container .nav-item.active,
+.mobile-app-container .menu-item.active {
+    color: white !important;
+}
+
+.mobile-app-container .nav-item.active *,
+.mobile-app-container .menu-item.active * {
+    color: white !important;
+}
+
+/* Header colored elements */
+.mobile-app-container .mobile-app-header,
+.mobile-app-container .app-header {
+    color: white !important;
+}
+
+.mobile-app-container .mobile-app-header *,
+.mobile-app-container .app-header * {
+    color: white !important;
+}
+
+/* Footer colored elements */
+.mobile-app-container .mobile-app-footer {
+    color: #6b7280 !important;
+}
+
+.mobile-app-container .mobile-app-footer * {
+    color: #6b7280 !important;
+}
+
+/* SPECIFIC MOBILE APP COLORED ELEMENTS */
+/* Dashboard quick stats cards */
+.mobile-app-container .quick-stats .stat-card,
+.mobile-app-container .dashboard .stat-card,
+.mobile-app-container .financial-overview .stat-card {
+    color: white !important;
+}
+
+.mobile-app-container .quick-stats .stat-card *,
+.mobile-app-container .dashboard .stat-card *,
+.mobile-app-container .financial-overview .stat-card * {
+    color: white !important;
+}
+
+/* President access button */
+.mobile-app-container .president-access-section .president-access-btn,
+.mobile-app-container .president-panel .president-btn {
+    color: white !important;
+}
+
+.mobile-app-container .president-access-section .president-access-btn *,
+.mobile-app-container .president-panel .president-btn * {
+    color: white !important;
+}
+
+/* Admin panel buttons */
+.mobile-app-container .admin-panel .admin-btn,
+.mobile-app-container .president-panel .president-btn {
+    color: white !important;
+}
+
+.mobile-app-container .admin-panel .admin-btn *,
+.mobile-app-container .president-panel .president-btn * {
+    color: white !important;
+}
+
+/* Action buttons */
+.mobile-app-container .action-btn,
+.mobile-app-container .btn {
+    color: white !important;
+}
+
+.mobile-app-container .action-btn *,
+.mobile-app-container .btn * {
+    color: white !important;
+}
+
+/* Financial update form buttons */
+.mobile-app-container .update-financial-btn,
+.mobile-app-container .financial-update-btn {
+    color: white !important;
+}
+
+.mobile-app-container .update-financial-btn *,
+.mobile-app-container .financial-update-btn * {
+    color: white !important;
+}
+
+/* Member approval buttons */
+.mobile-app-container .approve-btn,
+.mobile-app-container .reject-btn,
+.mobile-app-container .member-actions .action-btn {
+    color: white !important;
+}
+
+.mobile-app-container .approve-btn *,
+.mobile-app-container .reject-btn *,
+.mobile-app-container .member-actions .action-btn * {
+    color: white !important;
+}
+
+/* Reports refresh button */
+.mobile-app-container .reports-actions .action-btn {
+    color: white !important;
+}
+
+.mobile-app-container .reports-actions .action-btn * {
+    color: white !important;
+}
+
+/* Navigation active states */
+.mobile-app-container .nav-item.active,
+.mobile-app-container .menu-item.active,
+.mobile-app-container .tab-item.active {
+    color: white !important;
+}
+
+.mobile-app-container .nav-item.active *,
+.mobile-app-container .menu-item.active *,
+.mobile-app-container .tab-item.active * {
+    color: white !important;
+}
+
+/* Status badges */
+.mobile-app-container .status-badge,
+.mobile-app-container .badge {
+    color: white !important;
+}
+
+.mobile-app-container .status-badge *,
+.mobile-app-container .badge * {
+    color: white !important;
+}
+
+/* Filter buttons */
+.mobile-app-container .filter-btn.active,
+.mobile-app-container .filter-btn.selected {
+    color: white !important;
+}
+
+.mobile-app-container .filter-btn.active *,
+.mobile-app-container .filter-btn.selected * {
+    color: white !important;
+}
+
+/* Any element with background color should have white text */
+.mobile-app-container [style*="background-color"],
+.mobile-app-container [style*="background:"] {
+    color: white !important;
+}
+
+.mobile-app-container [style*="background-color"] *,
+.mobile-app-container [style*="background:"] * {
+    color: white !important;
+}
+
 .password-toggle {
     background: none;
     border: none;
