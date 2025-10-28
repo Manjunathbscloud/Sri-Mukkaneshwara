@@ -87,6 +87,22 @@
 
                     <div class="input-group">
                         <div class="input-wrapper">
+                            <i class="fas fa-user-friends input-icon"></i>
+                            <input type="text" id="mobileSignupNominee" placeholder="Nominee Name" required>
+                        </div>
+                        <small class="input-help">Person who will receive benefits</small>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-wrapper">
+                            <i class="fas fa-phone input-icon"></i>
+                            <input type="tel" id="mobileSignupPhone" placeholder="Phone Number (Optional)">
+                        </div>
+                        <small class="input-help">For contact purposes</small>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-wrapper">
                             <i class="fas fa-lock input-icon"></i>
                             <input type="password" id="mobileSignupPassword" placeholder="Password" required>
                             <button type="button" class="password-toggle" onclick="toggleSignupPassword()">
@@ -102,6 +118,29 @@
                             <button type="button" class="password-toggle" onclick="toggleSignupConfirmPassword()">
                                 <i class="fas fa-eye" id="signupConfirmPasswordToggleIcon"></i>
                             </button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="photo-upload-section">
+                            <label class="photo-upload-label">
+                                <i class="fas fa-camera"></i>
+                                <span>Profile Photo (Optional)</span>
+                            </label>
+                            <div class="mobile-photo-upload">
+                                <input type="file" id="mobileSignupPhoto" accept="image/*" style="display: none;">
+                                <button type="button" class="mobile-photo-btn" onclick="document.getElementById('mobileSignupPhoto').click()">
+                                    <i class="fas fa-camera"></i>
+                                    <span id="mobilePhotoText">Choose Photo</span>
+                                </button>
+                                <div id="mobilePhotoPreview" class="mobile-photo-preview" style="display: none;">
+                                    <img id="mobilePhotoPreviewImg" src="" alt="Photo Preview">
+                                    <button type="button" class="mobile-remove-photo" onclick="removeMobilePhoto()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <small class="input-help">Upload a clear photo (JPG, PNG, max 2MB)</small>
                         </div>
                     </div>
 
@@ -216,13 +255,21 @@
             
             const name = document.getElementById('mobileSignupName').value.trim();
             const email = document.getElementById('mobileSignupEmail').value.trim();
+            const nominee = document.getElementById('mobileSignupNominee').value.trim();
+            const phone = document.getElementById('mobileSignupPhone').value.trim();
             const password = document.getElementById('mobileSignupPassword').value;
             const confirmPassword = document.getElementById('mobileSignupConfirmPassword').value;
+            const photo = document.getElementById('mobileSignupPhoto').files[0];
             const terms = document.getElementById('mobileTerms').checked;
 
             // Validation
             if (!name) {
                 showError('Please enter a login name');
+                return;
+            }
+
+            if (!nominee) {
+                showError('Please enter nominee name');
                 return;
             }
 
@@ -238,6 +285,12 @@
 
             if (!terms) {
                 showError('Please agree to the terms and conditions');
+                return;
+            }
+
+            // Photo validation
+            if (photo && photo.size > 2 * 1024 * 1024) {
+                showError('Photo size must be less than 2MB');
                 return;
             }
 
@@ -277,11 +330,20 @@
                     return;
                 }
 
+                // Handle photo upload (convert to base64 for now)
+                let photoUrl = '';
+                if (photo) {
+                    photoUrl = await convertToBase64(photo);
+                }
+
                 // Create new user
                 const result = await window.SheetsAuth.createUser({
                     name: name,
                     password: password,
-                    email: email || ''
+                    email: email || '',
+                    nominee: nominee,
+                    phone: phone || '',
+                    photo: photoUrl
                 });
 
                 if (result.success) {
@@ -390,6 +452,127 @@
                 }
             }, 5000);
         }
+
+        // Convert file to base64
+        function convertToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Remove mobile photo
+        function removeMobilePhoto() {
+            document.getElementById('mobileSignupPhoto').value = '';
+            document.getElementById('mobilePhotoPreview').style.display = 'none';
+            document.getElementById('mobilePhotoText').textContent = 'Choose Photo';
+        }
+
+        // Mobile photo upload handling
+        document.getElementById('mobileSignupPhoto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('mobilePhotoPreview');
+                    const previewImg = document.getElementById('mobilePhotoPreviewImg');
+                    const photoText = document.getElementById('mobilePhotoText');
+                    
+                    previewImg.src = e.target.result;
+                    preview.style.display = 'block';
+                    photoText.textContent = 'Change Photo';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
+
+    <style>
+        /* Mobile Photo Upload Styles */
+        .photo-upload-section {
+            width: 100%;
+        }
+
+        .photo-upload-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .mobile-photo-upload {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-photo-btn {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .mobile-photo-btn:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .mobile-photo-preview {
+            position: relative;
+            display: inline-block;
+        }
+
+        .mobile-photo-preview img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+        }
+
+        .mobile-remove-photo {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+        }
+
+        .mobile-remove-photo:hover {
+            background: #c82333;
+        }
+
+        .input-help {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+    </style>
 </body>
 </html>

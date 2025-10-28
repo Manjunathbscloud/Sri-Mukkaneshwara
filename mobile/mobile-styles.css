@@ -3567,6 +3567,37 @@
     gap: 20px;
 }
 
+/* Member Actions for Mobile */
+.member-actions {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+.delete-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+}
+
+.delete-btn i {
+    font-size: 0.7rem;
+}
+
 .members-header {
     display: flex;
     justify-content: space-between;
