@@ -324,6 +324,20 @@
 
                         <div class="form-row">
                             <div class="form-group">
+                                <label for="nominee">Nominee Name *</label>
+                                <input type="text" id="nominee" name="nominee" required placeholder="Enter nominee name">
+                                <small>Person who will receive benefits in case of emergency</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Phone Number (Optional)</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+91 9876543210">
+                                <small>For contact purposes</small>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
                                 <label for="password">Password *</label>
                                 <input type="password" id="password" name="password" required placeholder="Minimum 6 characters">
                                 <small>Password must be at least 6 characters long</small>
@@ -333,6 +347,24 @@
                                 <label for="confirmPassword">Confirm Password *</label>
                                 <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Re-enter your password">
                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photo">Profile Photo (Optional)</label>
+                            <div class="photo-upload-container">
+                                <input type="file" id="photo" name="photo" accept="image/*" style="display: none;">
+                                <button type="button" class="photo-upload-btn" onclick="document.getElementById('photo').click()">
+                                    <i class="fas fa-camera"></i>
+                                    <span id="photoText">Choose Photo</span>
+                                </button>
+                                <div id="photoPreview" class="photo-preview" style="display: none;">
+                                    <img id="photoPreviewImg" src="" alt="Photo Preview">
+                                    <button type="button" class="remove-photo" onclick="removePhoto()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <small>Upload a clear photo of yourself (JPG, PNG, max 2MB)</small>
                         </div>
 
                         <div class="form-group">
@@ -432,11 +464,19 @@
                 const password = formData.get('password');
                 const confirmPassword = formData.get('confirmPassword');
                 const email = formData.get('email').trim();
+                const nominee = formData.get('nominee').trim();
+                const phone = formData.get('phone').trim();
+                const photo = formData.get('photo');
                 const terms = document.getElementById('terms').checked;
 
                 // Validation
                 if (!name) {
                     showMessage('Please enter a login name', 'error');
+                    return;
+                }
+
+                if (!nominee) {
+                    showMessage('Please enter nominee name', 'error');
                     return;
                 }
 
@@ -455,6 +495,12 @@
                     return;
                 }
 
+                // Photo validation
+                if (photo && photo.size > 2 * 1024 * 1024) {
+                    showMessage('Photo size must be less than 2MB', 'error');
+                    return;
+                }
+
                 // Show loading state
                 signupBtn.disabled = true;
                 btnText.style.display = 'none';
@@ -468,11 +514,20 @@
                         return;
                     }
 
+                    // Handle photo upload (convert to base64 for now)
+                    let photoUrl = '';
+                    if (photo) {
+                        photoUrl = await convertToBase64(photo);
+                    }
+
                     // Create new user
                     const result = await window.SheetsAuth.createUser({
                         name: name,
                         password: password,
-                        email: email || ''
+                        email: email || '',
+                        nominee: nominee,
+                        phone: phone || '',
+                        photo: photoUrl
                     });
 
                     if (result.success) {
@@ -534,7 +589,42 @@
                     this.style.borderColor = '#28a745';
                 }
             });
+
+            // Photo upload handling
+            document.getElementById('photo').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById('photoPreview');
+                        const previewImg = document.getElementById('photoPreviewImg');
+                        const photoText = document.getElementById('photoText');
+                        
+                        previewImg.src = e.target.result;
+                        preview.style.display = 'block';
+                        photoText.textContent = 'Change Photo';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
         });
+
+        // Convert file to base64
+        function convertToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Remove photo
+        function removePhoto() {
+            document.getElementById('photo').value = '';
+            document.getElementById('photoPreview').style.display = 'none';
+            document.getElementById('photoText').textContent = 'Choose Photo';
+        }
     </script>
 
     <style>
@@ -701,6 +791,70 @@
             .login-card {
                 padding: 30px 20px;
             }
+        }
+
+        /* Photo Upload Styles */
+        .photo-upload-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .photo-upload-btn {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .photo-upload-btn:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .photo-preview {
+            position: relative;
+            display: inline-block;
+        }
+
+        .photo-preview img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+        }
+
+        .remove-photo {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        .remove-photo:hover {
+            background: #c82333;
         }
     </style>
 </body>

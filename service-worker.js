@@ -1,7 +1,7 @@
 // Service Worker for Sri Mukkanneshwara Associate Mobile App
-const CACHE_NAME = 'sma-banking-v1.0.0';
-const STATIC_CACHE = 'sma-static-v1.0.0';
-const DYNAMIC_CACHE = 'sma-dynamic-v1.0.0';
+const CACHE_NAME = 'sma-banking-v1.0.1';
+const STATIC_CACHE = 'sma-static-v1.0.1';
+const DYNAMIC_CACHE = 'sma-dynamic-v1.0.1';
 
 // Files to cache for offline functionality
 const STATIC_FILES = [
@@ -86,14 +86,32 @@ self.addEventListener('fetch', (event) => {
 
 // Handle document requests (HTML pages)
 async function handleDocumentRequest(request) {
+    const url = new URL(request.url);
+    
+    // Always fetch fresh for members.html to ensure latest Google Sheets data
+    if (url.pathname.includes('members.html')) {
+        console.log('Service Worker: Fetching fresh members.html');
+        try {
+            const networkResponse = await fetch(request);
+            if (networkResponse.ok) {
+                // Don't cache members.html, always get fresh data
+                return networkResponse;
+            }
+        } catch (error) {
+            console.error('Service Worker: Failed to fetch fresh members.html', error);
+        }
+    }
+    
     try {
-        // Try network first for HTML pages
+        // Try network first for other HTML pages
         const networkResponse = await fetch(request);
         
         if (networkResponse.ok) {
-            // Cache successful responses
-            const cache = await caches.open(DYNAMIC_CACHE);
-            cache.put(request, networkResponse.clone());
+            // Cache successful responses (except members.html)
+            if (!url.pathname.includes('members.html')) {
+                const cache = await caches.open(DYNAMIC_CACHE);
+                cache.put(request, networkResponse.clone());
+            }
             return networkResponse;
         }
         
