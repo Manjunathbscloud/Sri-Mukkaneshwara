@@ -12,7 +12,7 @@
         <h1>Sri Mukkanneshwara Associate</h1>
         <nav>
             <ul>
-                <li><a href="index.html">Overview</a></li>
+                <li><a href="main.html">Overview</a></li>
                 <li><a href="members.html">Members</a></li>
                 <li><a href="accounts.html">Accounts</a></li>
                 <li><a href="meetings.html">Meetings</a></li>
@@ -55,7 +55,7 @@
             <i class="fas fa-times"></i>
         </button>
         <ul>
-            <li><a href="index.html" onclick="toggleMobileNav()">Overview</a></li>
+            <li><a href="main.html" onclick="toggleMobileNav()">Overview</a></li>
             <li><a href="members.html" onclick="toggleMobileNav()">Members</a></li>
             <li><a href="accounts.html" onclick="toggleMobileNav()">Accounts</a></li>
             <li><a href="meetings.html" onclick="toggleMobileNav()">Meetings</a></li>
@@ -79,15 +79,15 @@
                     <i class="fas fa-spinner fa-spin"></i>
                 </div>
                 <p>Loading members from Google Sheets...</p>
-            </div>
+                </div>
 
             <!-- Error State -->
             <div id="membersError" class="error-state" style="display: none;">
                 <i class="fas fa-exclamation-triangle"></i>
                 <p id="errorMessage">Failed to load members. Please try again.</p>
-                <button onclick="loadMembers()" class="retry-btn">Retry</button>
+                <button onclick="retryLoadMembers()" class="retry-btn">Retry</button>
                 <button onclick="testGoogleSheets()" class="retry-btn" style="background: #28a745; margin-left: 10px;">Test Google Sheets</button>
-            </div>
+                </div>
 
             <!-- Members Grid -->
             <div id="membersGrid" class="members-grid" style="display: none;">
@@ -126,16 +126,27 @@
                 sessionStorage.removeItem('membersCache');
             }
             
-            // Check if user is logged in
+            // Initialize with retry mechanism
+            initializeWithRetry();
+        });
+
+        // Initialize with retry mechanism
+        async function initializeWithRetry() {
+            // Wait for authentication to initialize
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            // Check if user is logged in (optional - for admin features)
             if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
                 currentUser = window.AuthUtils.getCurrentUser();
                 console.log('User is logged in:', currentUser);
-                loadMembers();
             } else {
-                console.log('User not logged in');
-                showError('Please login to view members');
+                console.log('User not logged in - showing public members list');
+                currentUser = null;
             }
-        });
+            
+            // Load members regardless of login status
+            loadMembers();
+        }
 
         // Load members from Google Sheets
         async function loadMembers() {
@@ -150,6 +161,9 @@
                 loadingDiv.style.display = 'block';
                 errorDiv.style.display = 'none';
                 membersGrid.style.display = 'none';
+
+                // Authentication is optional - members list is public
+                // currentUser will be null for non-logged-in users
 
                 // Initialize SheetsAuth
                 console.log('Initializing SheetsAuth...');
@@ -212,7 +226,13 @@
                 console.error('Error loading members:', error);
                 loadingDiv.style.display = 'none';
                 errorDiv.style.display = 'block';
-                showError('Error loading members: ' + error.message);
+                
+                let errorMessage = 'Error loading members: ' + error.message;
+                if (error.message.includes('network') || error.message.includes('fetch')) {
+                    errorMessage = 'Network error. Please check your connection and try again.';
+                }
+                
+                showError(errorMessage);
             }
         }
 
@@ -377,6 +397,26 @@
             loadMembers();
         }
 
+        // Retry function for retry button
+        function retryLoadMembers() {
+            console.log('=== RETRY BUTTON CLICKED ===');
+            
+            // Clear all caches
+            if (window.localStorage) {
+                localStorage.removeItem('membersCache');
+            }
+            if (window.sessionStorage) {
+                sessionStorage.removeItem('membersCache');
+            }
+            
+            // Clear current data
+            membersData = [];
+            document.getElementById('membersGrid').innerHTML = '';
+            
+            // Simple retry - just call loadMembers directly
+            loadMembers();
+        }
+
         // Remove member function (changes status to rejected)
         async function deleteMember(memberId, memberName) {
             if (!confirm(`Are you sure you want to remove ${memberName} from the members list? This will change their status to "rejected".`)) {
@@ -405,7 +445,7 @@
                     console.log('Member status updated to rejected successfully');
                     // Reload members list
                     loadMembers();
-                } else {
+            } else {
                     throw new Error(result.message || 'Failed to update member status');
                 }
                 
