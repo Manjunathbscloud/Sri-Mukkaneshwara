@@ -426,133 +426,195 @@ class MobileNavigation {
         this.setupMobileFinancialDataListeners();
     }
 
-    loadMembers() {
+    async loadMembers() {
         const content = document.getElementById('mobileContent');
         if (!content) return;
+
+        // Show loading state
+        content.innerHTML = `
+            <div class="mobile-members">
+                <div class="members-header">
+                    <h3>Association Members</h3>
+                    <span class="member-count">Loading...</span>
+                </div>
+                <div class="members-list">
+                    <div class="loading-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading members from Google Sheets...</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        try {
+            // Initialize SheetsAuth
+            await window.SheetsAuth.init();
+            
+            // Fetch all users
+            const users = await window.SheetsAuth.getAllUsers();
+            console.log('Mobile: Fetched users from Google Sheets:', users);
+            
+            // Filter only approved users
+            const approvedMembers = users.filter(user => {
+                const status = (user.Status || user.status || '').toString().toLowerCase();
+                const name = user.Name || user.name || user.FullName || user.fullname || '';
+                return (status === 'approved' || status === 'active' || status === '1' || status === 'true') && 
+                       name && name.trim() !== '' && name.toLowerCase() !== 'unknown';
+            });
+            
+            console.log('Mobile: Filtered approved members:', approvedMembers);
+            
+            // Render members
+            this.renderMobileMembers(approvedMembers);
+            
+        } catch (error) {
+            console.error('Mobile: Error loading members:', error);
+            content.innerHTML = `
+                <div class="mobile-members">
+                    <div class="members-header">
+                        <h3>Association Members</h3>
+                        <span class="member-count">Error Loading</span>
+                    </div>
+                    <div class="members-list">
+                        <div class="error-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Failed to load members</p>
+                            <button class="retry-btn" onclick="window.MobileNavigation.loadMembers()">
+                                <i class="fas fa-redo"></i> Retry
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    renderMobileMembers(members) {
+        const content = document.getElementById('mobileContent');
+        if (!content) return;
+
+        // Check if current user is President
+        const isPresident = window.AuthUtils && window.AuthUtils.getCurrentUser() && (
+            window.AuthUtils.getCurrentUser().name && window.AuthUtils.getCurrentUser().name.toLowerCase().includes('manjunath') ||
+            window.AuthUtils.getCurrentUser().role === 'president' ||
+            window.AuthUtils.getCurrentUser().isPresident === true
+        );
+
+        const membersHTML = members.map((member, index) => {
+            // Get data from various possible fields
+            const actualName = member.Name || member.name || member.FullName || member.fullname || 'Unknown';
+            const phone = member.Phone || member.phone || member.PhoneNumber || member.phone_number || '';
+            const email = member.Email || member.email || member.EmailAddress || member.email_address || '';
+            const nominee = member.Nominee || member.nominee || member.NomineeName || member.nominee_name || '';
+            const photoUrl = member['Photo URL'] || member['Photo'] || member.photo_url || member.photo || '';
+            const memberId = member.ID || member.id || member.MemberID || member.member_id || '';
+            
+            // Determine role
+            let role = 'Member';
+            let roleClass = '';
+            let iconClass = 'fas fa-user';
+            
+            if (actualName.toLowerCase().includes('manjunath')) {
+                role = 'President';
+                roleClass = 'president';
+                iconClass = 'fas fa-crown';
+            } else if (index === 1) {
+                role = 'Vice President';
+                roleClass = 'vice-president';
+                iconClass = 'fas fa-star';
+            }
+            
+            const hasPhoto = photoUrl && photoUrl.trim() !== '' && photoUrl !== 'undefined' && photoUrl !== 'null' && photoUrl.startsWith('http');
+            
+            return `
+                <div class="member-item ${roleClass}">
+                    <div class="member-avatar">
+                        ${hasPhoto ? 
+                            `<img src="${photoUrl}" alt="${actualName}" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">` : 
+                            ''
+                        }
+                        <i class="${iconClass}" style="display: ${hasPhoto ? 'none' : 'block'};"></i>
+                    </div>
+                    <div class="member-info">
+                        <h4>${actualName}</h4>
+                        <p class="member-role">${role}</p>
+                        ${nominee ? `<p class="member-nominee"><i class="fas fa-user-friends"></i> ${nominee}</p>` : ''}
+                        ${email ? `<p class="member-email"><i class="fas fa-envelope"></i> ${email}</p>` : ''}
+                        ${phone ? `<p class="member-phone"><i class="fas fa-phone"></i> ${phone}</p>` : ''}
+                    </div>
+                    ${isPresident && role !== 'President' ? `
+                        <div class="member-actions">
+                            <button class="delete-btn" onclick="window.MobileNavigation.deleteMember('${memberId || actualName}', '${actualName}')" title="Remove Member">
+                                <i class="fas fa-user-times"></i>
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }).join('');
 
         content.innerHTML = `
             <div class="mobile-members">
                 <div class="members-header">
                     <h3>Association Members</h3>
-                    <span class="member-count">8 Active Members</span>
+                    <span class="member-count">${members.length} Active Members</span>
                 </div>
-
                 <div class="members-list">
-                    <div class="member-item president">
-                        <div class="member-avatar">
-                            <i class="fas fa-crown"></i>
-                        </div>
-                        <div class="member-info">
-                            <h4>Manjunath Banakar</h4>
-                            <p class="member-role">President</p>
-                            <p class="member-id">Member ID: 001</p>
-                        </div>
-                        <button class="contact-btn" onclick="window.MobileNavigation.showContact('+919591382942')">
-                            <i class="fas fa-phone"></i>
-                        </button>
-                    </div>
-
-                    <div class="member-item vice-president">
-                        <div class="member-avatar">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="member-info">
-                            <h4>Pratap Banakar</h4>
-                            <p class="member-role">Vice President</p>
-                            <p class="member-id">Member ID: 002</p>
-                        </div>
-                        <button class="contact-btn" onclick="window.MobileNavigation.showContact('+917259907409')">
-                            <i class="fas fa-phone"></i>
-                        </button>
-                    </div>
-
-                    <div class="member-item">
-                        <div class="member-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="member-info">
-                            <h4>Sarpabhushana Banakar</h4>
-                            <p class="member-role">Member</p>
-                            <p class="member-id">Member ID: 003</p>
-                        </div>
-                        <button class="contact-btn" onclick="window.MobileNavigation.showContact('+919740373454')">
-                            <i class="fas fa-phone"></i>
-                        </button>
-                    </div>
-
-                    <div class="member-item">
-                        <div class="member-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="member-info">
-                            <h4>Mukkanna Banakar</h4>
-                            <p class="member-role">Member</p>
-                            <p class="member-id">Member ID: 004</p>
-                        </div>
-                        <button class="contact-btn" onclick="window.MobileNavigation.showContact('+918618600807')">
-                            <i class="fas fa-phone"></i>
-                        </button>
-                    </div>
-
-                    <div class="member-item">
-                        <div class="member-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="member-info">
-                            <h4>Santosh Banakar</h4>
-                            <p class="member-role">Member</p>
-                            <p class="member-id">Member ID: 005</p>
-                        </div>
-                        <button class="contact-btn" onclick="window.MobileNavigation.showContact('+919739678816')">
-                            <i class="fas fa-phone"></i>
-                        </button>
-                    </div>
-
-                    <div class="member-item">
-                        <div class="member-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="member-info">
-                            <h4>Pradeep Banakar</h4>
-                            <p class="member-role">Member</p>
-                            <p class="member-id">Member ID: 006</p>
-                        </div>
-                        <button class="contact-btn" onclick="window.MobileNavigation.showContact('+919663644751')">
-                            <i class="fas fa-phone"></i>
-                        </button>
-                    </div>
-
-                    <div class="member-item">
-                        <div class="member-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="member-info">
-                            <h4>Praveen Banakar</h4>
-                            <p class="member-role">Member</p>
-                            <p class="member-id">Member ID: 007</p>
-                        </div>
-                        <button class="contact-btn" onclick="window.MobileNavigation.showContact('+919538913204')">
-                            <i class="fas fa-phone"></i>
-                        </button>
-                    </div>
-
-                    <div class="member-item new-member">
-                        <div class="member-avatar">
-                            <i class="fas fa-user-plus"></i>
-                        </div>
-                        <div class="member-info">
-                            <h4>Appanna Banakar</h4>
-                            <p class="member-role">Member</p>
-                            <p class="member-id">Member ID: 008</p>
-                            <p class="member-joined">Joined: 2025</p>
-                        </div>
-                        <button class="contact-btn" onclick="window.MobileNavigation.showContact('+91XXXXXXXXXX')">
-                            <i class="fas fa-phone"></i>
-                        </button>
-                    </div>
+                    ${membersHTML}
                 </div>
             </div>
         `;
+    }
+
+    // Remove member function for mobile (changes status to rejected)
+    async deleteMember(memberId, memberName) {
+        if (!confirm(`Are you sure you want to remove ${memberName} from the members list? This will change their status to "rejected".`)) {
+            return;
+        }
+
+        try {
+            console.log('Mobile: Removing member:', memberId, memberName);
+            
+            // Show loading state
+            const content = document.getElementById('mobileContent');
+            content.innerHTML = `
+                <div class="mobile-members">
+                    <div class="members-header">
+                        <h3>Association Members</h3>
+                        <span class="member-count">Removing...</span>
+                    </div>
+                    <div class="members-list">
+                        <div class="loading-state">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Removing member...</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Initialize SheetsAuth
+            await window.SheetsAuth.init();
+            
+            // Get current user
+            const currentUser = window.AuthUtils ? window.AuthUtils.getCurrentUser() : null;
+            
+            // Update user status to rejected
+            const result = await window.SheetsAuth.updateUserStatus(memberId, 'rejected', currentUser ? currentUser.name : 'President');
+            
+            if (result.success) {
+                console.log('Mobile: Member status updated to rejected successfully');
+                // Reload members list
+                this.loadMembers();
+            } else {
+                throw new Error(result.message || 'Failed to update member status');
+            }
+            
+        } catch (error) {
+            console.error('Mobile: Error removing member:', error);
+            this.showNotification('Failed to remove member: ' + error.message, 'error');
+            // Reload members list
+            this.loadMembers();
+        }
     }
 
     loadLoans() {

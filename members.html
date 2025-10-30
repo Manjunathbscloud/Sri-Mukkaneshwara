@@ -68,136 +68,30 @@
             <h2 class="page-title">
                 <i class="fas fa-users"></i> 
                 Members List
+                <button onclick="forceRefresh()" class="refresh-btn" title="Refresh Members">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
             </h2>
-            <div class="members-grid">
-                <!-- President -->
-                <div class="member-card">
-                    <div class="member-avatar">
-                        <img src="images/members/member-001.jpeg" alt="Manjunath Banakar" 
-                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                        <i class="fas fa-user" style="display: none;"></i>
-                    </div>
-                    <span class="member-role role-president">President</span>
-                    <h3 class="member-name">Manjunath Banakar</h3>
-                    <div class="member-id">Member ID: 001</div>
-                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919591382942">
-                        <i class="fas fa-phone"></i> Contact
-                    </button>
-                    <div class="phone-number hidden">+919591382942</div>
+            
+            <!-- Loading State -->
+            <div id="membersLoading" class="loading-state">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
                 </div>
+                <p>Loading members from Google Sheets...</p>
+            </div>
 
-                <!-- Vice President -->
-                <div class="member-card">
-                    <div class="member-avatar">
-                        <img src="images/members/member-002.jpeg" alt="Pratap Banakar" 
-                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                        <i class="fas fa-user" style="display: none;"></i>
-                    </div>
-                    <span class="member-role role-vice-president">Vice President</span>
-                    <h3 class="member-name">Pratap Banakar</h3>
-                    <div class="member-id">Member ID: 002</div>
-                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+917259907409">
-                        <i class="fas fa-phone"></i> Contact
-                    </button>
-                    <div class="phone-number hidden">+917259907409</div>
-                </div>
+            <!-- Error State -->
+            <div id="membersError" class="error-state" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p id="errorMessage">Failed to load members. Please try again.</p>
+                <button onclick="loadMembers()" class="retry-btn">Retry</button>
+                <button onclick="testGoogleSheets()" class="retry-btn" style="background: #28a745; margin-left: 10px;">Test Google Sheets</button>
+            </div>
 
-                <!-- Member 003 -->
-                <div class="member-card">
-                    <div class="member-avatar">
-                        <img src="images/members/member-003.jpeg" alt="Sarpabhushana Banakar" 
-                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                        <i class="fas fa-user" style="display: none;"></i>
-                    </div>
-                    <span class="member-role role-member">Member</span>
-                    <h3 class="member-name">Sarpabhushana Banakar</h3>
-                    <div class="member-id">Member ID: 003</div>
-                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919740373454">
-                        <i class="fas fa-phone"></i> Contact
-                    </button>
-                    <div class="phone-number hidden">+919740373454</div>
-                </div>
-
-                <!-- Member 004 -->
-                <div class="member-card">
-                    <div class="member-avatar">
-                        <img src="images/members/member-004.jpeg" alt="Mukkanna Banakar" 
-                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                        <i class="fas fa-user" style="display: none;"></i>
-                    </div>
-                    <span class="member-role role-member">Member</span>
-                    <h3 class="member-name">Mukkanna Banakar</h3>
-                    <div class="member-id">Member ID: 004</div>
-                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+918618600807">
-                        <i class="fas fa-phone"></i> Contact
-                    </button>
-                    <div class="phone-number hidden">+918618600807</div>
-                </div>
-
-                <!-- Member 005 -->
-                <div class="member-card">
-                    <div class="member-avatar">
-                        <img src="images/members/member-005.jpeg" alt="Santosh Banakar" 
-                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                        <i class="fas fa-user" style="display: none;"></i>
-                    </div>
-                    <span class="member-role role-member">Member</span>
-                    <h3 class="member-name">Santosh Banakar</h3>
-                    <div class="member-id">Member ID: 005</div>
-                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919739678816">
-                        <i class="fas fa-phone"></i> Contact
-                    </button>
-                    <div class="phone-number hidden">+919739678816</div>
-                </div>
-
-                <!-- Member 006 -->
-                <div class="member-card">
-                    <div class="member-avatar">
-                        <img src="images/members/member-006.jpeg" alt="Pradeep Banakar" 
-                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                        <i class="fas fa-user" style="display: none;"></i>
-                    </div>
-                    <span class="member-role role-member">Member</span>
-                    <h3 class="member-name">Pradeep Banakar</h3>
-                    <div class="member-id">Member ID: 006</div>
-                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919663644751">
-                        <i class="fas fa-phone"></i> Contact
-                    </button>
-                    <div class="phone-number hidden">+919663644751</div>
-                </div>
-
-                <!-- Member 007 -->
-                <div class="member-card">
-                    <div class="member-avatar">
-                        <img src="images/members/member-007.jpeg" alt="Praveen Banakar" 
-                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                        <i class="fas fa-user" style="display: none;"></i>
-                    </div>
-                    <span class="member-role role-member">Member</span>
-                    <h3 class="member-name">Praveen Banakar</h3>
-                    <div class="member-id">Member ID: 007</div>
-                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+919538913204">
-                        <i class="fas fa-phone"></i> Contact
-                    </button>
-                    <div class="phone-number hidden">+919538913204</div>
-                </div>
-
-                <!-- Member 008 -->
-                <div class="member-card">
-                    <div class="member-avatar">
-                        <img src="images/members/member-008.jpeg" alt="Appanna Banakar" 
-                             onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-                        <i class="fas fa-user" style="display: none;"></i>
-                    </div>
-                    <span class="member-role role-member">Member</span>
-                    <h3 class="member-name">Appanna Banakar</h3>
-                    <div class="member-id">Member ID: 008</div>
-                    <div class="member-joined">Joined: 2025</div>
-                    <button class="contact-btn" onclick="togglePhone(this)" data-phone="+91XXXXXXXXXX">
-                        <i class="fas fa-phone"></i> Contact
-                    </button>
-                    <div class="phone-number hidden">+91XXXXXXXXXX</div>
-                </div>
+            <!-- Members Grid -->
+            <div id="membersGrid" class="members-grid" style="display: none;">
+                <!-- Members will be dynamically loaded here from Google Sheets -->
             </div>
         </section>
     </main>
@@ -206,17 +100,318 @@
         <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
 
+    <script src="js/auth-utils.js"></script>
+    <script src="js/sheets-auth.js"></script>
     <script>
-        function togglePhone(button) {
-            const phoneSpan = button.nextElementSibling;
-            if (phoneSpan.classList.contains('hidden')) {
-                // Show phone number
-                phoneSpan.classList.remove('hidden');
-                button.innerHTML = '<i class="fas fa-times"></i> Hide';
+        // Global variables
+        let membersData = [];
+        let currentUser = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('=== MEMBERS PAGE LOADED ===');
+            console.log('User Agent:', navigator.userAgent);
+            console.log('Is Mobile:', /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+            
+            // Clear any existing data and cache
+            membersData = [];
+            const membersGrid = document.getElementById('membersGrid');
+            membersGrid.innerHTML = '';
+            
+            // Force clear any cached data
+            if (window.localStorage) {
+                localStorage.removeItem('membersCache');
+            }
+            if (window.sessionStorage) {
+                sessionStorage.removeItem('membersCache');
+            }
+            
+            // Check if user is logged in
+            if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
+                currentUser = window.AuthUtils.getCurrentUser();
+                console.log('User is logged in:', currentUser);
+                loadMembers();
             } else {
-                // Hide phone number
-                phoneSpan.classList.add('hidden');
-                button.innerHTML = '<i class="fas fa-phone"></i> Contact';
+                console.log('User not logged in');
+                showError('Please login to view members');
+            }
+        });
+
+        // Load members from Google Sheets
+        async function loadMembers() {
+            console.log('=== LOADING MEMBERS FROM GOOGLE SHEETS ===');
+            
+            const loadingDiv = document.getElementById('membersLoading');
+            const errorDiv = document.getElementById('membersError');
+            const membersGrid = document.getElementById('membersGrid');
+
+            try {
+                // Show loading state
+                loadingDiv.style.display = 'block';
+                errorDiv.style.display = 'none';
+                membersGrid.style.display = 'none';
+
+                // Initialize SheetsAuth
+                console.log('Initializing SheetsAuth...');
+                await window.SheetsAuth.init();
+
+                // Fetch all users with cache busting
+                console.log('Fetching all users from Google Sheets...');
+                const users = await window.SheetsAuth.getAllUsers();
+                console.log('Raw users data from Google Sheets:', users);
+                
+                if (!users || users.length === 0) {
+                    showError('No users found in Google Sheets');
+                    return;
+                }
+                
+                // Debug: Check what status values we have
+                const statusValues = users.map(user => user.Status || user.status || 'undefined');
+                console.log('All status values found:', [...new Set(statusValues)]);
+                
+                // Debug: Check what names we have
+                const names = users.map(user => user.Name || user.name || 'undefined');
+                console.log('All names found:', names);
+                
+                // Debug: Show sample user data structure
+                if (users.length > 0) {
+                    console.log('Sample user data structure:', users[0]);
+                    console.log('All user data:', users);
+                }
+                
+                // Filter only approved users with valid names - try multiple status variations
+                membersData = users.filter(user => {
+                    const status = (user.Status || user.status || '').toString().toLowerCase();
+                    const name = user.Name || user.name || '';
+                    const hasValidName = name && name.trim() !== '' && name.toLowerCase() !== 'unknown';
+                    const isApproved = status === 'approved' || 
+                                     status === 'active' ||
+                                     status === '1' ||
+                                     status === 'true';
+                    
+                    console.log(`User: "${name}", Status: "${status}", HasValidName: ${hasValidName}, Approved: ${isApproved}`);
+                    
+                    return isApproved && hasValidName;
+                });
+                
+                console.log('Filtered approved members:', membersData);
+                
+                if (membersData.length === 0) {
+                    showError('No approved members found. Please check if users have been approved in the system.');
+                    return;
+                }
+
+                // Render members
+                renderMembers();
+                
+                // Hide loading and show members
+                loadingDiv.style.display = 'none';
+                membersGrid.style.display = 'grid';
+
+            } catch (error) {
+                console.error('Error loading members:', error);
+                loadingDiv.style.display = 'none';
+                errorDiv.style.display = 'block';
+                showError('Error loading members: ' + error.message);
+            }
+        }
+
+        // Render members in the grid
+        function renderMembers() {
+            console.log('=== RENDERING MEMBERS ===');
+            console.log('Members data to render:', membersData);
+            
+            const membersGrid = document.getElementById('membersGrid');
+            
+            // Clear any existing content
+            membersGrid.innerHTML = '';
+
+            if (membersData.length === 0) {
+                membersGrid.innerHTML = '<p>No members to display</p>';
+                return;
+            }
+
+            membersData.forEach((member, index) => {
+                console.log(`Creating card for member ${index + 1}:`, member);
+                const memberCard = createMemberCard(member, index + 1);
+                membersGrid.appendChild(memberCard);
+            });
+        }
+
+        // Create individual member card
+        function createMemberCard(member, memberNumber) {
+            const card = document.createElement('div');
+            card.className = 'member-card';
+
+            // Get data from various possible fields
+            const actualName = member.Name || member.name || member.FullName || member.fullname || member.Username || member.username || '';
+            const actualDate = member['Approved Date'] || member['Created Date'] || member['Join Date'] || member['Date'] || member.approved_date || member.created_date || member.join_date || '';
+            const photoUrl = member['Photo URL'] || member['Photo'] || member.photo_url || member.photo || member.Image || member.image || member.ProfilePhoto || member.profile_photo || '';
+            const memberId = member.ID || member.id || member.MemberID || member.member_id || '';
+            const nominee = member.Nominee || member.nominee || member.NomineeName || member.nominee_name || '';
+            const email = member.Email || member.email || member.EmailAddress || member.email_address || '';
+            const phone = member.Phone || member.phone || member.PhoneNumber || member.phone_number || '';
+            const address = member.Address || member.address || member.Location || member.location || '';
+            const status = member.Status || member.status || '';
+            const role = member.Role || member.role || '';
+
+            // Determine role if not provided
+            let displayRole = role;
+            let roleClass = 'role-member';
+            
+            if (!displayRole) {
+                if (actualName && actualName.toLowerCase().includes('manjunath')) {
+                    displayRole = 'President';
+                    roleClass = 'role-president';
+                } else if (memberNumber === 2) {
+                    displayRole = 'Vice President';
+                    roleClass = 'role-vice-president';
+                } else {
+                    displayRole = 'Member';
+                }
+            }
+
+            // Check if current user is President
+            const isPresident = currentUser && (
+                currentUser.name && currentUser.name.toLowerCase().includes('manjunath') ||
+                currentUser.role === 'president' ||
+                currentUser.isPresident === true
+            );
+
+            // Format date
+            const memberSince = actualDate ? new Date(actualDate).getFullYear() : '';
+            const hasPhoto = photoUrl && photoUrl.trim() !== '' && photoUrl !== 'undefined' && photoUrl !== 'null' && photoUrl.startsWith('http');
+
+            card.innerHTML = `
+                <div class="member-header">
+                    <div class="member-avatar">
+                        ${hasPhoto ? 
+                            `<img src="${photoUrl}" alt="${actualName}" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">` : 
+                            ''
+                        }
+                        <i class="fas fa-user" style="display: ${hasPhoto ? 'none' : 'block'};"></i>
+                    </div>
+                    <div class="member-basic-info">
+                        <span class="member-role ${roleClass}">${displayRole}</span>
+                        <h3 class="member-name">${actualName || 'Name not provided'}</h3>
+                    </div>
+                </div>
+                
+                <div class="member-details">
+                    ${nominee ? `<div class="member-detail-item">
+                        <i class="fas fa-user-friends"></i>
+                        <span class="detail-label">Nominee:</span>
+                        <span class="detail-value">${nominee}</span>
+                    </div>` : ''}
+                    
+                    ${email ? `<div class="member-detail-item">
+                        <i class="fas fa-envelope"></i>
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">${email}</span>
+                    </div>` : ''}
+                    
+                    ${phone ? `<div class="member-detail-item">
+                        <i class="fas fa-phone"></i>
+                        <span class="detail-label">Phone:</span>
+                        <span class="detail-value">${phone}</span>
+                    </div>` : ''}
+                </div>
+                
+                ${isPresident && displayRole !== 'President' ? `
+                    <div class="member-actions">
+                        <button class="delete-btn" onclick="deleteMember('${memberId || actualName}', '${actualName}')" title="Remove Member">
+                            <i class="fas fa-user-times"></i>
+                            Remove
+                        </button>
+                    </div>
+                ` : ''}
+            `;
+
+            return card;
+        }
+
+
+        // Show error message
+        function showError(message) {
+            console.log('Showing error:', message);
+            const errorDiv = document.getElementById('membersError');
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('membersLoading').style.display = 'none';
+            document.getElementById('membersGrid').style.display = 'none';
+        }
+
+        // Test Google Sheets connection
+        async function testGoogleSheets() {
+            try {
+                console.log('=== TESTING GOOGLE SHEETS CONNECTION ===');
+                await window.SheetsAuth.init();
+                const users = await window.SheetsAuth.getAllUsers();
+                console.log('Google Sheets test successful. Users found:', users.length);
+                console.log('Sample user data:', users[0]);
+                alert('Google Sheets connection successful! Found ' + users.length + ' users. Check console for details.');
+            } catch (error) {
+                console.error('Google Sheets test failed:', error);
+                alert('Google Sheets connection failed: ' + error.message);
+            }
+        }
+
+        // Force refresh members data
+        function forceRefresh() {
+            console.log('=== FORCE REFRESH TRIGGERED ===');
+            
+            // Clear all caches
+            if (window.localStorage) {
+                localStorage.clear();
+            }
+            if (window.sessionStorage) {
+                sessionStorage.clear();
+            }
+            
+            // Clear current data
+            membersData = [];
+            document.getElementById('membersGrid').innerHTML = '';
+            
+            // Reload members
+            loadMembers();
+        }
+
+        // Remove member function (changes status to rejected)
+        async function deleteMember(memberId, memberName) {
+            if (!confirm(`Are you sure you want to remove ${memberName} from the members list? This will change their status to "rejected".`)) {
+                return;
+            }
+
+            try {
+                console.log('Removing member:', memberId, memberName);
+                
+                // Show loading state
+                const loadingDiv = document.getElementById('membersLoading');
+                const errorDiv = document.getElementById('membersError');
+                const membersGrid = document.getElementById('membersGrid');
+                
+                loadingDiv.style.display = 'block';
+                errorDiv.style.display = 'none';
+                membersGrid.style.display = 'none';
+
+                // Initialize SheetsAuth
+                await window.SheetsAuth.init();
+                
+                // Update user status to rejected
+                const result = await window.SheetsAuth.updateUserStatus(memberId, 'rejected', currentUser.name || 'President');
+                
+                if (result.success) {
+                    console.log('Member status updated to rejected successfully');
+                    // Reload members list
+                    loadMembers();
+                } else {
+                    throw new Error(result.message || 'Failed to update member status');
+                }
+                
+            } catch (error) {
+                console.error('Error removing member:', error);
+                showError('Failed to remove member: ' + error.message);
             }
         }
 
@@ -239,34 +434,343 @@
     </script>
 
     <style>
-        .contact-btn {
-            padding: 0.5rem 1rem;
-            background: #3498db;
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .loading-spinner {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .loading-state p {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Error State */
+        .error-state {
+            text-align: center;
+            padding: 3rem;
+            color: #e74c3c;
+        }
+
+        .error-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #e74c3c;
+        }
+
+        .error-state p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .retry-btn {
+            background: #e74c3c;
             color: white;
             border: none;
-            border-radius: 4px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
             cursor: pointer;
-            display: inline-flex;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .retry-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Enhanced Member Card Styles */
+        .member-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 0;
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            overflow: hidden;
+        }
+
+        .member-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .member-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
+        }
+
+        .member-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .member-avatar img:hover {
+            transform: scale(1.05);
+        }
+
+        .member-avatar i {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .member-basic-info {
+            flex: 1;
+        }
+
+        .member-role {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-president {
+            background: #ffd700;
+            color: #333;
+        }
+
+        .role-vice-president {
+            background: #c0c0c0;
+            color: #333;
+        }
+
+        .role-member {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .member-name {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .member-status {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-active {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .member-details {
+            padding: 1.5rem;
+        }
+
+        .member-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .member-detail-item:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+
+        .member-detail-item i {
+            width: 20px;
+            color: #667eea;
             font-size: 0.9rem;
         }
 
-        .contact-btn:hover {
-            background: #2980b9;
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+            min-width: 80px;
+            font-size: 0.9rem;
         }
 
-        .phone-number {
-            margin-left: 1rem;
-            color: #2c3e50;
-            font-family: monospace;
+        .detail-value {
+            color: #333;
+            flex: 1;
+            font-size: 0.9rem;
+            word-break: break-word;
         }
 
-        .hidden {
-            display: none;
+        /* Responsive Grid */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
         }
 
-        .contact-btn i {
+        @media (max-width: 768px) {
+            .members-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .member-header {
+                padding: 1rem;
+            }
+            
+            .member-details {
+                padding: 1rem;
+            }
+            
+            .member-avatar {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        /* Loading and Error States */
+        .loading-state, .error-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .loading-spinner {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .error-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #e74c3c;
+        }
+
+        .retry-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .retry-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        /* Refresh Button */
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .refresh-btn:hover {
+            background: #5a6fd8;
+            transform: rotate(180deg);
+        }
+
+        .refresh-btn i {
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .refresh-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Member Actions */
+        .member-actions {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #f0f0f0;
+            background: #fafafa;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        .delete-btn i {
             font-size: 0.8rem;
         }
     </style>
