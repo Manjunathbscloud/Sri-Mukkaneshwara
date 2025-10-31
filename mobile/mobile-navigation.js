@@ -447,6 +447,19 @@ class MobileNavigation {
         `;
 
         try {
+            // Wait a moment for authentication to initialize
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            // Check if user is authenticated (optional - for admin features)
+            let userDetails = null;
+            try {
+                userDetails = window.AuthUtils ? window.AuthUtils.getCurrentUser() : window.MobileAuth.getCurrentUser();
+                console.log('Mobile: User details:', userDetails);
+            } catch (error) {
+                console.log('Mobile: No user logged in - showing public members list');
+                userDetails = null;
+            }
+            
             // Initialize SheetsAuth
             await window.SheetsAuth.init();
             
@@ -469,6 +482,14 @@ class MobileNavigation {
             
         } catch (error) {
             console.error('Mobile: Error loading members:', error);
+            let errorMessage = 'Failed to load members';
+            let errorIcon = 'fas fa-exclamation-triangle';
+            
+            if (error.message.includes('network') || error.message.includes('fetch')) {
+                errorMessage = 'Network error. Please check your connection and try again.';
+                errorIcon = 'fas fa-wifi';
+            }
+            
             content.innerHTML = `
                 <div class="mobile-members">
                     <div class="members-header">
@@ -477,9 +498,9 @@ class MobileNavigation {
                     </div>
                     <div class="members-list">
                         <div class="error-state">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <p>Failed to load members</p>
-                            <button class="retry-btn" onclick="window.MobileNavigation.loadMembers()">
+                            <i class="${errorIcon}"></i>
+                            <p>${errorMessage}</p>
+                            <button class="retry-btn" onclick="retryMobileMembers()">
                                 <i class="fas fa-redo"></i> Retry
                             </button>
                         </div>
@@ -489,16 +510,31 @@ class MobileNavigation {
         }
     }
 
+    // Retry function for mobile members
+    retryMobileMembers() {
+        console.log('=== MOBILE RETRY BUTTON CLICKED ===');
+        this.loadMembers();
+    }
+
     renderMobileMembers(members) {
         const content = document.getElementById('mobileContent');
         if (!content) return;
 
-        // Check if current user is President
-        const isPresident = window.AuthUtils && window.AuthUtils.getCurrentUser() && (
-            window.AuthUtils.getCurrentUser().name && window.AuthUtils.getCurrentUser().name.toLowerCase().includes('manjunath') ||
-            window.AuthUtils.getCurrentUser().role === 'president' ||
-            window.AuthUtils.getCurrentUser().isPresident === true
-        );
+        // Check if current user is President - with better error handling
+        let isPresident = false;
+        try {
+            const userDetails = window.AuthUtils ? window.AuthUtils.getCurrentUser() : window.MobileAuth.getCurrentUser();
+            if (userDetails) {
+                isPresident = (
+                    (userDetails.name && userDetails.name.toLowerCase().includes('manjunath')) ||
+                    userDetails.role === 'president' ||
+                    userDetails.isPresident === true
+                );
+            }
+        } catch (error) {
+            console.log('Mobile: Error checking president status:', error);
+            isPresident = false;
+        }
 
         const membersHTML = members.map((member, index) => {
             // Get data from various possible fields
@@ -3033,3 +3069,12 @@ class MobileNavigation {
 
 // Initialize mobile navigation
 window.MobileNavigation = new MobileNavigation();
+
+// Global retry function for mobile
+function retryMobileMembers() {
+    if (window.MobileNavigation) {
+        window.MobileNavigation.retryMobileMembers();
+    } else {
+        console.error('MobileNavigation not available');
+    }
+}
