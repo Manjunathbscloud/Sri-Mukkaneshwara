@@ -1069,9 +1069,12 @@
 
 /* Main App Styles */
 .mobile-main-app {
-    min-height: calc(100vh - 40px);
+    min-height: 100vh;
     background: var(--bg-secondary);
-    padding-bottom: 80px !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
 }
 
 /* Responsive Design */
@@ -3151,9 +3154,14 @@
 .mobile-content {
     flex: 1;
     padding: 20px;
+    padding-bottom: 100px !important; /* Extra padding for bottom nav */
     background: var(--bg-secondary);
     min-height: calc(100vh - 140px);
+    max-height: calc(100vh - 140px);
     overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
 }
 
 /* Bottom Navigation */
@@ -3684,6 +3692,10 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 .loans-summary {
@@ -3768,6 +3780,271 @@
 }
 
 .action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Loan Header and List Styles */
+.loans-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.loans-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.refresh-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.refresh-btn:hover {
+    transform: rotate(180deg);
+    box-shadow: var(--shadow-md);
+}
+
+.refresh-btn i {
+    font-size: 16px;
+}
+
+.loans-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+/* Loan Card Styles */
+.loan-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.loan-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.loan-card.active {
+    border-left: 4px solid var(--success-color);
+}
+
+.loan-card.pending {
+    border-left: 4px solid var(--warning-color);
+}
+
+.loan-card.closed {
+    border-left: 4px solid var(--text-secondary);
+}
+
+.loan-card-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.loan-id {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.loan-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.loan-status.active {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.loan-status.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.loan-status.closed {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.loan-status.other {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.loan-card-body {
+    padding: 16px;
+}
+
+.loan-detail-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.loan-detail-row:last-child {
+    border-bottom: none;
+}
+
+.loan-detail-row.highlight {
+    background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+    margin: 0 -16px 12px -16px;
+    padding: 16px;
+    border-bottom: 2px solid var(--success-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);
+}
+
+.loan-detail-row i {
+    width: 20px;
+    color: var(--primary-color);
+    font-size: 14px;
+    text-align: center;
+}
+
+.loan-detail-row.highlight i {
+    color: var(--success-color);
+    font-size: 18px;
+}
+
+.loan-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    min-width: 120px;
+}
+
+.loan-detail-row.highlight .loan-label {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.loan-value {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 600;
+    flex: 1;
+    text-align: right;
+}
+
+.loan-value.renewal-date {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--success-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* No Loans State */
+.no-loans {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.no-loans i {
+    font-size: 48px;
+    color: var(--text-light);
+    margin-bottom: 16px;
+}
+
+.no-loans p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+/* Loading and Error States */
+.loading-state,
+.error-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.loading-state i,
+.error-state i {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.loading-state i {
+    color: var(--primary-color);
+}
+
+.error-state i {
+    color: var(--danger-color);
+}
+
+.loading-state p,
+.error-state p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.retry-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.retry-btn:hover {
+    background: var(--primary-dark);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }

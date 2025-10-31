@@ -653,35 +653,232 @@ class MobileNavigation {
         }
     }
 
-    loadLoans() {
+    async loadLoans() {
         const content = document.getElementById('mobileContent');
         if (!content) return;
 
+        // Show loading state first
         content.innerHTML = `
             <div class="mobile-loans">
-                <div class="loans-summary">
-                    <h3>Loan Summary</h3>
-                    <div class="summary-card">
-                        <div class="summary-item">
-                            <span class="label">Total Active Loans</span>
-                            <span class="value">₹6,80,000</span>
+                <div class="loans-header">
+                    <h3><i class="fas fa-hand-holding-usd"></i> Loans</h3>
+                    <button class="refresh-btn" onclick="window.MobileNavigation.loadLoans()" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading loans...</p>
+                </div>
+            </div>
+        `;
+
+        try {
+            // Get current logged-in user
+            let userDetails = null;
+            try {
+                userDetails = window.AuthUtils ? window.AuthUtils.getCurrentUser() : window.MobileAuth.getCurrentUser();
+                console.log('Mobile Loans: Current user:', userDetails);
+            } catch (error) {
+                console.error('Mobile Loans: Error getting user:', error);
+            }
+
+            if (!userDetails || !userDetails.name) {
+                content.innerHTML = `
+                    <div class="mobile-loans">
+                        <div class="loans-header">
+                            <h3><i class="fas fa-hand-holding-usd"></i> Loans</h3>
                         </div>
-                        <div class="summary-item">
-                            <span class="label">Active Members</span>
-                            <span class="value">4</span>
+                        <div class="error-state">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <p>Please login to view your loans</p>
+                            <button class="action-btn primary" onclick="window.location.href='mobile-login.html'">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Fetch loans from Google Sheets
+            if (!window.SheetsUtils) {
+                throw new Error('SheetsUtils is not loaded. Please refresh the page.');
+            }
+            
+            if (!window.SHEETS_CONFIG || !window.SHEETS_CONFIG.loansCsvUrl) {
+                throw new Error('Loans CSV URL not configured');
+            }
+            
+            let allLoans = [];
+            const loansCsv = await window.SheetsUtils.fetchCsv(window.SHEETS_CONFIG.loansCsvUrl);
+            const loansRows = window.SheetsUtils.parseCsv(loansCsv);
+            allLoans = window.SheetsUtils.rowsToObjects(loansRows);
+            console.log('Mobile Loans: Fetched all loans:', allLoans.length);
+
+            // Calculate TOTAL active loans amount from ALL loans (all users)
+            const allActiveLoans = allLoans.filter(loan => {
+                const status = (loan.status || loan.Status || '').toLowerCase();
+                return status.includes('active') || status.includes('approved');
+            });
+
+            const totalActiveLoansAmount = allActiveLoans.reduce((sum, loan) => {
+                const amount = parseFloat((loan.amount || loan.Amount || '0').toString().replace(/[₹,]/g, '')) || 0;
+                return sum + amount;
+            }, 0);
+
+            console.log('Mobile Loans: Total active loans amount (all users):', totalActiveLoansAmount);
+
+            // Filter loans for current user - match by name or email
+            const userName = (userDetails.name || '').trim().toLowerCase();
+            const userEmail = (userDetails.email || '').trim().toLowerCase();
+
+            const userLoans = allLoans.filter(loan => {
+                const loanMember = (loan.member || loan.Member || '').trim().toLowerCase();
+                const loanEmail = (loan.email || loan.Email || '').trim().toLowerCase();
+                
+                // Match by name (exact or partial) or email
+                return (loanMember && (loanMember === userName || loanMember.includes(userName) || userName.includes(loanMember))) ||
+                       (loanEmail && loanEmail === userEmail);
+            });
+
+            console.log('Mobile Loans: Filtered user loans:', userLoans);
+
+            // Filter to show ONLY active loans for current user
+            const activeLoans = userLoans.filter(loan => {
+                const status = (loan.status || loan.Status || '').toLowerCase();
+                return status.includes('active') || status.includes('approved');
+            });
+
+            console.log('Mobile Loans: Active loans only:', activeLoans);
+
+            const userActiveAmount = activeLoans.reduce((sum, loan) => {
+                const amount = parseFloat((loan.amount || loan.Amount || '0').toString().replace(/[₹,]/g, '')) || 0;
+                return sum + amount;
+            }, 0);
+
+            // Render only active loans
+            this.renderUserLoans(content, activeLoans, {
+                totalActive: activeLoans.length,
+                userActiveAmount: userActiveAmount,
+                totalActiveLoansAmount: totalActiveLoansAmount,
+                userName: userDetails.name
+            });
+
+        } catch (error) {
+            console.error('Mobile Loans: Error loading loans:', error);
+            content.innerHTML = `
+                <div class="mobile-loans">
+                    <div class="loans-header">
+                        <h3><i class="fas fa-hand-holding-usd"></i> Loans</h3>
+                    </div>
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load loans: ${error.message}</p>
+                        <button class="retry-btn" onclick="window.MobileNavigation.loadLoans()">
+                            <i class="fas fa-redo"></i> Retry
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    renderUserLoans(content, loans, summary) {
+        const loansHTML = loans.length > 0 ? loans.map((loan, index) => {
+            const loanId = loan.loan_id || loan['Loan ID'] || loan['loan id'] || `#${index + 1}`;
+            const amount = loan.amount || loan.Amount || '0';
+            const interest = loan.interest || loan.Interest || '0';
+            const status = (loan.status || loan.Status || '').toLowerCase();
+            const renewalMonth = loan.renewal_or_return_month || loan['Renewal/Return Month'] || loan['renewal_or_return_month'] || '-';
+            const totalPaid = loan.total_paid || loan['Total Paid'] || loan['total paid'] || '0';
+            const fromDate = loan.from || loan.From || loan.date || loan.Date || '-';
+            
+            const statusClass = 'active'; // All loans shown are active
+
+            return `
+                <div class="loan-card ${statusClass}">
+                    <div class="loan-card-body">
+                        <div class="loan-detail-row highlight">
+                            <i class="fas fa-calendar-check"></i>
+                            <span class="loan-label">Renewal Date:</span>
+                            <span class="loan-value renewal-date">${renewalMonth}</span>
+                        </div>
+                        <div class="loan-detail-row">
+                            <i class="fas fa-rupee-sign"></i>
+                            <span class="loan-label">Amount:</span>
+                            <span class="loan-value">${window.SheetsUtils.currency(amount)}</span>
+                        </div>
+                        <div class="loan-detail-row">
+                            <i class="fas fa-percentage"></i>
+                            <span class="loan-label">Interest:</span>
+                            <span class="loan-value">${window.SheetsUtils.currency(interest)}</span>
+                        </div>
+                        <div class="loan-detail-row">
+                            <i class="fas fa-calendar"></i>
+                            <span class="loan-label">From Date:</span>
+                            <span class="loan-value">${fromDate}</span>
                         </div>
                     </div>
                 </div>
+            `;
+        }).join('') : `
+            <div class="no-loans">
+                <i class="fas fa-inbox"></i>
+                <p>You don't have any active loans</p>
+                <button class="action-btn primary" onclick="window.MobileNavigation.showLoanApplication()">
+                    <i class="fas fa-plus"></i>
+                    Apply for a Loan
+                </button>
+            </div>
+        `;
+
+        content.innerHTML = `
+            <div class="mobile-loans">
+                <div class="loans-header">
+                    <h3><i class="fas fa-hand-holding-usd"></i> Loans</h3>
+                    <button class="refresh-btn" onclick="window.MobileNavigation.loadLoans()" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+
+                ${loans.length > 0 ? `
+                <div class="loans-summary">
+                    <div class="summary-card">
+                        <div class="summary-item">
+                            <span class="label">Total Active Loans</span>
+                            <span class="value">${window.SheetsUtils.currency(summary.totalActiveLoansAmount)}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">My Active Loans</span>
+                            <span class="value">${summary.totalActive}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">My Loan Amount</span>
+                            <span class="value">${window.SheetsUtils.currency(summary.userActiveAmount)}</span>
+                        </div>
+                    </div>
+                </div>
+                ` : `
+                <div class="loans-summary">
+                    <div class="summary-card">
+                        <div class="summary-item">
+                            <span class="label">Total Active Loans</span>
+                            <span class="value">${window.SheetsUtils.currency(summary.totalActiveLoansAmount)}</span>
+                        </div>
+                    </div>
+                </div>
+                `}
 
                 <div class="loans-actions">
                     <button class="action-btn primary" onclick="window.MobileNavigation.showLoanApplication()">
                         <i class="fas fa-plus"></i>
                         <span>New Loan Application</span>
                     </button>
-                    <button class="action-btn secondary" onclick="window.MobileNavigation.showApplicationStatus()">
-                        <i class="fas fa-clipboard-check"></i>
-                        <span>My Application Status</span>
-                    </button>
+                </div>
+
+                <div class="loans-list">
+                    ${loansHTML}
                 </div>
 
                 <!-- Loan Application Form (Hidden by default) -->
@@ -724,120 +921,11 @@ class MobileNavigation {
                         </div>
                     </form>
                 </div>
-
-                <!-- Review Applications Section (Hidden by default) -->
-                <div class="review-applications" id="reviewApplications" style="display: none;">
-                    <div class="review-header">
-                        <h3><i class="fas fa-clipboard-check"></i> Review Applications</h3>
-                        <button class="close-btn" onclick="window.MobileNavigation.hideReviewApplications()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="applications-list" id="applicationsList">
-                        <div class="no-applications">
-                            <i class="fas fa-inbox"></i>
-                            <p>No applications to review yet</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Admin Panel (Hidden by default) -->
-                <div class="admin-panel" id="adminPanel" style="display: none;">
-                    <div class="admin-header">
-                        <h3><i class="fas fa-cog"></i> Admin Panel</h3>
-                        <button class="close-btn" onclick="window.MobileNavigation.hideAdminPanel()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="admin-sections">
-                        <!-- Financial Management -->
-                        <div class="admin-section">
-                            <h4><i class="fas fa-chart-line"></i> Financial Management</h4>
-                            <div class="admin-actions">
-                                <button class="admin-btn" onclick="window.MobileNavigation.showFinancialUpdate()">
-                                    <i class="fas fa-edit"></i>
-                                    <span>Update Financial Data</span>
-                                </button>
-                                <button class="admin-btn" onclick="window.MobileNavigation.showFinancialReports()">
-                                    <i class="fas fa-chart-bar"></i>
-                                    <span>Financial Reports</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Member Management -->
-                        <div class="admin-section">
-                            <h4><i class="fas fa-users"></i> Member Management</h4>
-                            <div class="admin-actions">
-                                <button class="admin-btn" onclick="window.MobileNavigation.showMemberApproval()">
-                                    <i class="fas fa-user-check"></i>
-                                    <span>Approve New Members</span>
-                                </button>
-                                <button class="admin-btn" onclick="window.MobileNavigation.showMemberManagement()">
-                                    <i class="fas fa-user-cog"></i>
-                                    <span>Manage Members</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Loan Management -->
-                        <div class="admin-section">
-                            <h4><i class="fas fa-credit-card"></i> Loan Management</h4>
-                            <div class="admin-actions">
-                                <button class="admin-btn" onclick="window.MobileNavigation.showReviewApplications()">
-                                    <i class="fas fa-clipboard-check"></i>
-                                    <span>Review Applications</span>
-                                </button>
-                                <button class="admin-btn" onclick="window.MobileNavigation.showLoanApproval()">
-                                    <i class="fas fa-hand-holding-usd"></i>
-                                    <span>Approve Loans</span>
-                                </button>
-                                <button class="admin-btn" onclick="window.MobileNavigation.showLoanReports()">
-                                    <i class="fas fa-file-invoice"></i>
-                                    <span>Loan Reports</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Meeting Management -->
-                        <div class="admin-section">
-                            <h4><i class="fas fa-calendar-alt"></i> Meeting Management</h4>
-                            <div class="admin-actions">
-                                <button class="admin-btn" onclick="window.MobileNavigation.showMeetingScheduler()">
-                                    <i class="fas fa-calendar-plus"></i>
-                                    <span>Schedule Meeting</span>
-                                </button>
-                                <button class="admin-btn" onclick="window.MobileNavigation.showMeetingMinutes()">
-                                    <i class="fas fa-file-alt"></i>
-                                    <span>Meeting Minutes</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- System Settings -->
-                        <div class="admin-section">
-                            <h4><i class="fas fa-cogs"></i> System Settings</h4>
-                            <div class="admin-actions">
-                                <button class="admin-btn" onclick="window.MobileNavigation.showSystemSettings()">
-                                    <i class="fas fa-sliders-h"></i>
-                                    <span>System Settings</span>
-                                </button>
-                                <button class="admin-btn" onclick="window.MobileNavigation.showBackupRestore()">
-                                    <i class="fas fa-database"></i>
-                                    <span>Backup & Restore</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         `;
 
         // Auto-fill user details in loan form
         this.autoFillLoanForm();
-        
-        // Admin access check removed - consolidated into President Access button
     }
 
     loadDeposits() {
@@ -3078,3 +3166,5 @@ function retryMobileMembers() {
         console.error('MobileNavigation not available');
     }
 }
+
+
