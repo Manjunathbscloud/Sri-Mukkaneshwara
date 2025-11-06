@@ -96,51 +96,39 @@
   </header>
 
   <main>
+    <script src="js/auth-utils.js"></script>
     <script>
       (function() {
         console.log('Loan Application - Checking authentication...');
         
-        // Check both sessionStorage and localStorage for authentication
-        var isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true' || localStorage.getItem('isAuthenticated') === 'true';
-        var hasUserDetails = sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails');
-        
-        console.log('Auth check (session + local):', { 
-          sessionAuth: sessionStorage.getItem('isAuthenticated'),
-          localAuth: localStorage.getItem('isAuthenticated'),
-          sessionUser: !!sessionStorage.getItem('userDetails'),
-          localUser: !!localStorage.getItem('userDetails'),
-          isAuthenticated,
-          hasUserDetails: !!hasUserDetails
-        });
-        
-        if (!isAuthenticated || !hasUserDetails) {
-          console.log('Not authenticated, redirecting to login');
-          // Store return URL
-          var returnUrl = window.location.href;
-          sessionStorage.setItem('returnUrl', returnUrl);
-          localStorage.setItem('returnUrl', returnUrl);
-          window.location.href = 'login.html';
-          return;
+        // Use AuthUtils for consistent session validation
+        if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
+          // Session is valid, sync data if needed
+          const user = window.AuthUtils.getCurrentUser();
+          if (user) {
+            // Ensure sessionStorage has the data
+            if (!sessionStorage.getItem('userDetails')) {
+              sessionStorage.setItem('userDetails', JSON.stringify(user));
+            }
+            // Initialize session tracking if missing
+            if (!sessionStorage.getItem('lastActivity')) {
+              sessionStorage.setItem('lastActivity', Date.now().toString());
+            }
+            if (!sessionStorage.getItem('sessionStartTime')) {
+              sessionStorage.setItem('sessionStartTime', Date.now().toString());
+            }
+            sessionStorage.setItem('isAuthenticated', 'true');
+            console.log('Authentication successful, allowing access');
+            return;
+          }
         }
         
-        // Sync session data if needed
-        if (sessionStorage.getItem('isAuthenticated') !== 'true' && localStorage.getItem('isAuthenticated') === 'true') {
-          console.log('Syncing session data from localStorage');
-          sessionStorage.setItem('isAuthenticated', 'true');
-          sessionStorage.setItem('userDetails', localStorage.getItem('userDetails'));
-          sessionStorage.setItem('role', localStorage.getItem('role'));
-          sessionStorage.setItem('isPresident', localStorage.getItem('isPresident'));
-        }
-        
-        // Initialize session data if missing
-        if (!sessionStorage.getItem('lastActivity')) {
-          sessionStorage.setItem('lastActivity', Date.now().toString());
-        }
-        if (!sessionStorage.getItem('sessionStartTime')) {
-          sessionStorage.setItem('sessionStartTime', Date.now().toString());
-        }
-        
-        console.log('Authentication successful, allowing access');
+        // Not authenticated, redirect to login
+        console.log('Not authenticated, redirecting to login');
+        var returnUrl = window.location.href;
+        sessionStorage.setItem('returnUrl', returnUrl);
+        localStorage.setItem('returnUrl', returnUrl);
+        window.location.href = 'login.html';
       })();
     </script>
     <section>

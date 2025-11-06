@@ -39,16 +39,46 @@
     <script src="js/auth-utils.js"></script>
     <script>
         (function() {
-            // Use new AuthUtils for session validation
-            if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
-                // Session is valid, continue
-                return;
-            } else {
-                // Clear all session data
-                sessionStorage.clear();
+            // Wait for AuthUtils to be available, check multiple times
+            function checkAuth() {
+                // Try to use AuthUtils if available
+                if (window.AuthUtils && typeof window.AuthUtils.isSessionValid === 'function') {
+                    if (window.AuthUtils.isSessionValid()) {
+                        // Sync sessionStorage if needed
+                        var user = window.AuthUtils.getCurrentUser();
+                        if (user && !sessionStorage.getItem('userDetails')) {
+                            sessionStorage.setItem('userDetails', JSON.stringify(user));
+                        }
+                        return; // Session is valid, continue
+                    }
+                } else {
+                    // AuthUtils not loaded yet, wait a bit and try again
+                    setTimeout(checkAuth, 100);
+                    return;
+                }
+                
+                // Fallback: Check both sessionStorage and localStorage manually
+                var userDetails = sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails');
+                if (userDetails) {
+                    try {
+                        var user = JSON.parse(userDetails);
+                        if (user && (user.name || user.email)) {
+                            // Valid user found, sync to sessionStorage
+                            sessionStorage.setItem('userDetails', userDetails);
+                            return; // Session is valid, continue
+                        }
+                    } catch(e) {
+                        console.error('Error parsing user details:', e);
+                    }
+                }
+                
+                // No valid session found, redirect to login
                 sessionStorage.setItem('returnUrl', window.location.href);
                 window.location.href = 'login.html';
             }
+            
+            // Start checking immediately
+            checkAuth();
         })();
     </script>
 </head>

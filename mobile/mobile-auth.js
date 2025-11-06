@@ -123,12 +123,14 @@ class MobileAuth {
 
     storeSession(rememberMe) {
         // Use the same session management as the main website
-        window.AuthUtils.setUserSession(this.userDetails);
+        // Pass rememberMe parameter to control localStorage persistence
+        window.AuthUtils.setUserSession(this.userDetails, rememberMe);
         
-        // Also set mobile-specific session data
-        const storage = rememberMe ? localStorage : sessionStorage;
-        storage.setItem('userDetails', JSON.stringify(this.userDetails));
-        storage.setItem('isAuthenticated', 'true');
+        // Also set mobile-specific session data (for backward compatibility)
+        if (rememberMe) {
+            localStorage.setItem('userDetails', JSON.stringify(this.userDetails));
+            localStorage.setItem('isAuthenticated', 'true');
+        }
     }
 
     showLoading() {
