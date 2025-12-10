@@ -6,20 +6,81 @@
   <title>Loans - Sri Mukkanneshwara Associate</title>
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <style>
+    /* Font adjustments for loan summary */
+    .summary-card .summary-label {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .summary-card .summary-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-top: 0.25rem;
+    }
+    
+    .summary-card h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    
+    @media screen and (max-width: 768px) {
+      .summary-card .summary-value {
+        font-size: 1.5rem;
+      }
+      
+      .summary-card .summary-label {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script src="js/auth-utils.js"></script>
   <script>
     (function() {
-      // Use new AuthUtils for session validation
-      if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
-        // Session is valid, continue
-        return;
-      } else {
-        // Clear all session data
-        sessionStorage.clear();
+      // Wait for AuthUtils to be available, check multiple times
+      function checkAuth() {
+        // Try to use AuthUtils if available
+        if (window.AuthUtils && typeof window.AuthUtils.isSessionValid === 'function') {
+          if (window.AuthUtils.isSessionValid()) {
+            // Sync sessionStorage if needed
+            var user = window.AuthUtils.getCurrentUser();
+            if (user && !sessionStorage.getItem('userDetails')) {
+              sessionStorage.setItem('userDetails', JSON.stringify(user));
+            }
+            return; // Session is valid, continue
+          }
+        } else {
+          // AuthUtils not loaded yet, wait a bit and try again
+          setTimeout(checkAuth, 100);
+          return;
+        }
+        
+        // Fallback: Check both sessionStorage and localStorage manually
+        var userDetails = sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails');
+        if (userDetails) {
+          try {
+            var user = JSON.parse(userDetails);
+            if (user && (user.name || user.email)) {
+              // Valid user found, sync to sessionStorage
+              sessionStorage.setItem('userDetails', userDetails);
+              return; // Session is valid, continue
+            }
+          } catch(e) {
+            console.error('Error parsing user details:', e);
+          }
+        }
+        
+        // No valid session found, redirect to login
         sessionStorage.setItem('returnUrl', window.location.href);
         window.location.href = 'login.html';
       }
+      
+      // Start checking immediately
+      checkAuth();
     })();
   </script>
 </head>
@@ -78,12 +139,16 @@
         <h3>Loan Summary 2025-26</h3>
         <div class="summary-grid">
           <div class="summary-item">
-            <span class="summary-label">Total Active Loans</span>
-            <span class="summary-value">₹6,80,000</span>
+            <span class="summary-label">Total Loan</span>
+            <span class="summary-value" id="totalLoanAmount">Loading...</span>
           </div>
           <div class="summary-item">
-            <span class="summary-label">Number of Members with Active Loans</span>
-            <span class="summary-value">4</span>
+            <span class="summary-label">Active Members</span>
+            <span class="summary-value" id="numberOfMembers">Loading...</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Interest</span>
+            <span class="summary-value" id="totalInterest">Loading...</span>
           </div>
         </div>
       </div>
@@ -133,11 +198,99 @@
   </footer>
   <script src="sheets-config.js"></script>
   <script src="sheets-utils.js"></script>
+  <script src="loans-render.js"></script>
   <script>
-    // Optionally preload to validate config; actual rendering is on year pages
-    (function(){ if(!window.SHEETS_CONFIG){ return; } })();
-
-
+    // Load loan summary data for 2025-26
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Loading loan summary data for 2025-26...');
+      
+      // Load loans data for 2025-26
+      if (window.LoansRender) {
+        // Fetch the data directly
+        async function loadLoanSummary() {
+          try {
+            if (!window.SHEETS_CONFIG || !window.SHEETS_CONFIG.loansCsvUrl) {
+              console.warn('Missing loansCsvUrl in SHEETS_CONFIG');
+              return;
+            }
+            
+            const csv = await window.SheetsUtils.fetchCsv(window.SHEETS_CONFIG.loansCsvUrl);
+            const rows = window.SheetsUtils.parseCsv(csv);
+            const items = window.SheetsUtils.rowsToObjects(rows);
+            const filtered = items.filter(r => String(r.year).trim() === '2025-26');
+            
+            // Calculate summary statistics
+            const activeLoans = filtered.filter(loan => {
+              const status = (loan.status || '').toLowerCase();
+              return status === 'active';
+            });
+            
+            // Helper function to parse currency values
+            function parseCurrency(value) {
+              if (!value) return 0;
+              const raw = value.toString().replace(/[,\s₹]/g, '');
+              const num = raw === '' ? NaN : Number(raw);
+              return Number.isFinite(num) ? num : 0;
+            }
+            
+            // Calculate total active loans amount
+            const totalActiveAmount = activeLoans.reduce((sum, loan) => {
+              return sum + parseCurrency(loan.amount);
+            }, 0);
+            
+            // Calculate total loan amount (all loans)
+            const totalLoanAmount = filtered.reduce((sum, loan) => {
+              return sum + parseCurrency(loan.amount);
+            }, 0);
+            
+            // Calculate total interest (all loans)
+            const totalInterest = filtered.reduce((sum, loan) => {
+              return sum + parseCurrency(loan.interest);
+            }, 0);
+            
+            // Calculate total amount paid (all loans)
+            const totalAmountPaid = filtered.reduce((sum, loan) => {
+              return sum + parseCurrency(loan.total_paid);
+            }, 0);
+            
+            // Get unique members with active loans
+            const uniqueMembers = [...new Set(activeLoans.map(loan => loan.member).filter(m => m && m.trim()))];
+            
+            // Update the summary display
+            const totalLoanAmountElement = document.getElementById('totalLoanAmount');
+            const numberOfMembersElement = document.getElementById('numberOfMembers');
+            const totalInterestElement = document.getElementById('totalInterest');
+            
+            if (totalLoanAmountElement) {
+              totalLoanAmountElement.textContent = window.SheetsUtils.currency(totalLoanAmount);
+            }
+            
+            if (numberOfMembersElement) {
+              numberOfMembersElement.textContent = uniqueMembers.length.toString();
+            }
+            
+            if (totalInterestElement) {
+              totalInterestElement.textContent = window.SheetsUtils.currency(totalInterest);
+            }
+            
+            console.log('Loan summary updated:', {
+              totalActiveAmount,
+              totalLoanAmount,
+              totalInterest,
+              totalAmountPaid,
+              numberOfMembers: uniqueMembers.length,
+              activeLoans: activeLoans.length,
+              totalLoans: filtered.length
+            });
+            
+          } catch (error) {
+            console.error('Error loading loan summary:', error);
+          }
+        }
+        
+        loadLoanSummary();
+      }
+    });
   </script>
   
   <!-- User Header Script -->

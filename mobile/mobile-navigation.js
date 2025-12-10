@@ -368,62 +368,158 @@ class MobileNavigation {
 
         content.innerHTML = `
             <div class="mobile-accounts">
-                <div class="account-balance">
-                    <h3>Account Balance</h3>
-                    <div class="balance-card">
-                        <div class="balance-amount" id="mobileBankBalance">Loading...</div>
-                        <div class="balance-label">Total Available</div>
-                    </div>
-                </div>
-
-                <div class="account-loan">
-                    <h3>Available Loan</h3>
-                    <div class="loan-card">
-                        <div class="loan-amount" id="mobileAvailableLoan">Loading...</div>
-                        <div class="loan-label">Maximum Loan Amount</div>
-                    </div>
-                </div>
-
-                <div class="account-details">
-                    <h3>Account Information</h3>
-                    <div class="info-card">
-                        <div class="info-item">
-                            <span class="label">Account Name</span>
-                            <span class="value">Sri Mukkaneshwara Associates</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="label">Bank</span>
-                            <span class="value">ICICI Bank Ltd</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="label">Account Number</span>
-                            <span class="value">437601000088</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="label">IFSC Code</span>
-                            <span class="value">ICIC0004376</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="last-updated">
-                    <p id="mobileLastUpdated">Last updated: Loading...</p>
-                </div>
-
-                <div class="account-actions">
-                    <button class="action-btn refresh" onclick="window.MobileNavigation.refreshFinancialData()">
+                <!-- Header Section -->
+                <div class="accounts-header">
+                    <h2><i class="fas fa-wallet"></i> Accounts</h2>
+                    <button class="refresh-btn-small" onclick="window.MobileNavigation.refreshFinancialData()" title="Refresh">
                         <i class="fas fa-sync-alt"></i>
-                        <span>Refresh Data</span>
                     </button>
+                </div>
+
+                <!-- Financial Summary Cards -->
+                <div class="financial-summary">
+                    <div class="summary-card balance-card-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-rupee-sign"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-label">Account Balance</div>
+                            <div class="card-value" id="mobileBankBalance">Loading...</div>
+                            <div class="card-subtitle">Total Available Funds</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-card loan-card-modern">
+                        <div class="card-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-label">Available Loan</div>
+                            <div class="card-value" id="mobileAvailableLoan">Loading...</div>
+                            <div class="card-subtitle">Maximum Loan Amount</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions-section">
+                    <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                    <div class="quick-actions-grid">
+                        <button class="quick-action-btn" onclick="window.MobileNavigation.loadDeposits()">
+                            <i class="fas fa-piggy-bank"></i>
+                            <span>Deposits</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="window.MobileNavigation.loadLoans()">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Loans</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="window.MobileNavigation.refreshFinancialData()">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Refresh</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="window.MobileNavigation.showBankingDetails()">
+                            <i class="fas fa-university"></i>
+                            <span>Bank Details</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Account Information -->
+                <div class="account-info-section">
+                    <h3><i class="fas fa-info-circle"></i> Account Information</h3>
+                    <div class="info-card-modern">
+                        <div class="info-row">
+                            <div class="info-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-label">Account Name</div>
+                                <div class="info-value">Sri Mukkaneshwara Associates</div>
+                            </div>
+                            <button class="copy-btn" onclick="copyToClipboard('Sri Mukkaneshwara Associates')" title="Copy">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-icon">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-label">Bank</div>
+                                <div class="info-value">ICICI Bank Ltd</div>
+                            </div>
+                            <button class="copy-btn" onclick="copyToClipboard('ICICI Bank Ltd')" title="Copy">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-icon">
+                                <i class="fas fa-hashtag"></i>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-label">Account Number</div>
+                                <div class="info-value">437601000088</div>
+                            </div>
+                            <button class="copy-btn" onclick="copyToClipboard('437601000088')" title="Copy">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-label">IFSC Code</div>
+                                <div class="info-value">ICIC0004376</div>
+                            </div>
+                            <button class="copy-btn" onclick="copyToClipboard('ICIC0004376')" title="Copy">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Last Updated -->
+                <div class="last-updated-modern">
+                    <i class="fas fa-clock"></i>
+                    <span id="mobileLastUpdated">Last updated: Loading...</span>
                 </div>
             </div>
         `;
+
+        // Add copy to clipboard function
+        if (typeof window.copyToClipboard === 'undefined') {
+            window.copyToClipboard = function(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    // Show toast notification
+                    const toast = document.createElement('div');
+                    toast.className = 'copy-toast';
+                    toast.textContent = 'Copied to clipboard!';
+                    document.body.appendChild(toast);
+                    setTimeout(() => {
+                        toast.classList.add('show');
+                    }, 10);
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy:', err);
+                    alert('Failed to copy to clipboard');
+                });
+            };
+        }
 
         // Load financial data from Google Sheets
         this.loadMobileFinancialData();
         
         // Setup event listeners for financial data updates
         this.setupMobileFinancialDataListeners();
+    }
+
+    showBankingDetails() {
+        // This can show a modal or navigate to banking details
+        alert('Banking Details:\n\nAccount Name: Sri Mukkaneshwara Associates\nBank: ICICI Bank Ltd\nAccount No: 437601000088\nIFSC: ICIC0004376');
     }
 
     async loadMembers() {

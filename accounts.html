@@ -11,57 +11,59 @@
     <script src="js/auth-utils.js"></script>
     <script>
         (function() {
-            function hasValidUser() {
-                var raw = sessionStorage.getItem('userDetails');
-                if (!raw) return false;
-                try { var u = JSON.parse(raw); return !!(u && u.id && u.name); } catch(e) { return false; }
-            }
-            
-            function checkSessionTimeout() {
-                var lastActivity = sessionStorage.getItem('lastActivity');
-                var sessionStartTime = sessionStorage.getItem('sessionStartTime');
-                
-                // If no session data, allow login (don't force logout)
-                if (!lastActivity || !sessionStartTime) {
-                    // Set current time as session start and last activity
-                    var now = Date.now();
-                    sessionStorage.setItem('lastActivity', now.toString());
-                    sessionStorage.setItem('sessionStartTime', now.toString());
-                    return true;
+            // Wait for AuthUtils to be available, check multiple times
+            function checkAuth() {
+                // Try to use AuthUtils if available
+                if (window.AuthUtils && typeof window.AuthUtils.isSessionValid === 'function') {
+                    if (window.AuthUtils.isSessionValid()) {
+                        // Sync sessionStorage if needed (for backward compatibility)
+                        var user = window.AuthUtils.getCurrentUser();
+                        if (user && !sessionStorage.getItem('userDetails')) {
+                            sessionStorage.setItem('userDetails', JSON.stringify(user));
+                        }
+                        if (!sessionStorage.getItem('lastActivity')) {
+                            sessionStorage.setItem('lastActivity', Date.now().toString());
+                        }
+                        if (!sessionStorage.getItem('sessionStartTime')) {
+                            sessionStorage.setItem('sessionStartTime', Date.now().toString());
+                        }
+                        return; // Session is valid, continue
+                    }
+                } else {
+                    // AuthUtils not loaded yet, wait a bit and try again
+                    setTimeout(checkAuth, 100);
+                    return;
                 }
                 
-                var now = Date.now();
-                var lastActivityTime = parseInt(lastActivity);
-                var sessionStart = parseInt(sessionStartTime);
-                
-                // Update last activity on every check
-                sessionStorage.setItem('lastActivity', now.toString());
-                
-                // Check for 60 minutes of inactivity (more lenient)
-                var inactivityTimeout = 60 * 60 * 1000; // 60 minutes in milliseconds
-                if (now - lastActivityTime > inactivityTimeout) {
-                    return false;
+                // Fallback: Check both sessionStorage and localStorage manually
+                var userDetails = sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails');
+                if (userDetails) {
+                    try {
+                        var user = JSON.parse(userDetails);
+                        if (user && (user.name || user.email)) {
+                            // Valid user found, sync to sessionStorage
+                            sessionStorage.setItem('userDetails', userDetails);
+                            if (!sessionStorage.getItem('lastActivity')) {
+                                sessionStorage.setItem('lastActivity', Date.now().toString());
+                            }
+                            if (!sessionStorage.getItem('sessionStartTime')) {
+                                sessionStorage.setItem('sessionStartTime', Date.now().toString());
+                            }
+                            return; // Session is valid, continue
+                        }
+                    } catch(e) {
+                        console.error('Error parsing user details:', e);
+                    }
                 }
                 
-                // Check for total session time (24 hours max - very lenient)
-                var totalSessionTimeout = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-                if (now - sessionStart > totalSessionTimeout) {
-                    return false;
-                }
-                
-                return true;
-            }
-            
-            // Use new AuthUtils for session validation
-            if (window.AuthUtils && window.AuthUtils.isSessionValid()) {
-                // Session is valid, continue
-                return;
-            } else {
-                // Clear all session data
-                sessionStorage.clear();
+                // No valid session found, redirect to login
+                console.log('No valid session found, redirecting to login');
                 sessionStorage.setItem('returnUrl', window.location.href);
                 window.location.href = 'login.html';
             }
+            
+            // Start checking immediately
+            checkAuth();
         })();
     </script>
 

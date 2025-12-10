@@ -740,17 +740,21 @@
             // Update the totals in the footer
             const totalRows = tfoot.querySelectorAll('tr');
             
-            // Update Total Interest (second row)
-            if (totalRows.length >= 2) {
-                const interestTd = totalRows[1].cells[1]; // Total Interest column
+            // Update Total Amount and Total Interest (first row - same row)
+            if (totalRows.length >= 1) {
+                const amountTd = totalRows[0].cells[3]; // Total Amount column (index 3)
+                if (amountTd) {
+                    amountTd.innerHTML = `<strong>₹${totalAmount.toLocaleString('en-IN')}</strong>`;
+                }
+                const interestTd = totalRows[0].cells[4]; // Total Interest column (index 4)
                 if (interestTd) {
                     interestTd.innerHTML = `<strong>₹${totalInterest.toLocaleString('en-IN')}</strong>`;
                 }
             }
             
-            // Update Total Amount Paid (third row)
-            if (totalRows.length >= 3) {
-                const totalPaidTd = totalRows[2].cells[1]; // Total Amount Paid column
+            // Update Total Amount Paid (second row)
+            if (totalRows.length >= 2) {
+                const totalPaidTd = totalRows[1].cells[7]; // Total Amount Paid column (index 7)
                 if (totalPaidTd) {
                     totalPaidTd.innerHTML = `<strong>₹${totalPaid.toLocaleString('en-IN')}</strong>`;
                 }

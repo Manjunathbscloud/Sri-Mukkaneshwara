@@ -107,14 +107,14 @@ class SheetsAuth {
             const result = await response.json();
             
             if (result.success && result.user) {
-                // Set user session
+                // Set user session (session-only by default - no persistence across tab closes)
                 window.AuthUtils.setUserSession({
                     id: result.user.id,
                     name: result.user.name,
                     email: result.user.email,
                     status: result.user.status,
                     lastLogin: new Date().toISOString()
-                });
+                }, false); // false = session-only, logout when tab closes
             }
 
             return result;
