@@ -84,36 +84,23 @@
                 return sum + (Number.isFinite(num) ? num : 0);
             }, 0);
 
-            // First row - Total Amount (hidden by default, shown only when filters are applied)
+            // First row - Total Amount and Total Interest in the same row
             const tr1 = document.createElement('tr');
             tr1.className = 'total-row total-amount-row';
-            tr1.style.display = 'none'; // Hidden by default
             const labelTd1 = document.createElement('td');
             labelTd1.colSpan = 3;
-            labelTd1.innerHTML = '<strong>Total Amount (Filtered)</strong>';
+            labelTd1.innerHTML = '<strong></strong>';
             const amountTd = document.createElement('td');
             amountTd.innerHTML = `<strong>${formatAmount(totalAmount)}</strong>`;
-            const emptyTd1 = document.createElement('td');
-            emptyTd1.colSpan = 4;
-            tr1.appendChild(labelTd1);
-            tr1.appendChild(amountTd);
-            tr1.appendChild(emptyTd1);
-            tfoot.appendChild(tr1);
-
-            // Second row - Total Interest
-            const tr2 = document.createElement('tr');
-            tr2.className = 'total-row';
-            const labelTd2 = document.createElement('td');
-            labelTd2.colSpan = 4;
-            labelTd2.innerHTML = '<strong></strong>';
             const interestTd = document.createElement('td');
             interestTd.innerHTML = `<strong>${formatAmount(totalInterest)}</strong>`;
-            const emptyTd2 = document.createElement('td');
-            emptyTd2.colSpan = 3;
-            tr2.appendChild(labelTd2);
-            tr2.appendChild(interestTd);
-            tr2.appendChild(emptyTd2);
-            tfoot.appendChild(tr2);
+            const emptyTd1 = document.createElement('td');
+            emptyTd1.colSpan = 3;
+            tr1.appendChild(labelTd1);
+            tr1.appendChild(amountTd);
+            tr1.appendChild(interestTd);
+            tr1.appendChild(emptyTd1);
+            tfoot.appendChild(tr1);
 
             // Third row - Total Amount Paid
             const tr3 = document.createElement('tr');

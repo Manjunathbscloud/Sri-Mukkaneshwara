@@ -69,15 +69,58 @@ class AuthUtils {
 
     /**
      * Check if user session is valid
+     * Prioritizes sessionStorage (current session)
+     * Only checks localStorage if sessionStorage is empty AND "Remember Me" was enabled
+     * This ensures old sessions without "Remember Me" don't persist
      */
     static isSessionValid() {
-        const userDetails = sessionStorage.getItem('userDetails');
+        // Check sessionStorage first (current session)
+        let userDetails = sessionStorage.getItem('userDetails');
+        let fromLocalStorage = false;
+        
+        // Only check localStorage if sessionStorage is empty AND "Remember Me" was enabled
+        // This prevents old sessions (without rememberMe flag) from persisting
+        if (!userDetails) {
+            // Only use localStorage if it has the "Remember Me" flag
+            const hasRememberMe = localStorage.getItem('rememberMe') === 'true';
+            if (hasRememberMe) {
+                userDetails = localStorage.getItem('userDetails');
+                fromLocalStorage = true;
+            } else {
+                // Clear old localStorage sessions that don't have rememberMe flag
+                localStorage.removeItem('userDetails');
+                localStorage.removeItem('isAuthenticated');
+            }
+        }
+        
         if (!userDetails) return false;
         
         try {
             const user = JSON.parse(userDetails);
-            return !!(user && user.id && user.name && user.status === 'approved');
+            // More flexible validation - just need name OR email (and status if present should not be 'rejected')
+            if (!user) return false;
+            if (!user.name && !user.email) return false;
+            // If status exists and is 'rejected', invalid session
+            if (user.status === 'rejected') return false;
+            
+            // If we found user in localStorage but not sessionStorage, sync it back to sessionStorage
+            // This handles the case where user closed tab and reopened (sessionStorage was cleared)
+            // Only sync if localStorage has the "Remember Me" session
+            if (fromLocalStorage && user) {
+                sessionStorage.setItem('userDetails', userDetails);
+                if (!sessionStorage.getItem('lastActivity')) {
+                    sessionStorage.setItem('lastActivity', Date.now().toString());
+                }
+                if (!sessionStorage.getItem('sessionStartTime')) {
+                    sessionStorage.setItem('sessionStartTime', Date.now().toString());
+                }
+                sessionStorage.setItem('isAuthenticated', 'true');
+            }
+            
+            // Session is valid if user has name or email
+            return true;
         } catch (e) {
+            console.error('Error parsing user details in isSessionValid:', e);
             return false;
         }
     }
@@ -86,7 +129,12 @@ class AuthUtils {
      * Get current user details
      */
     static getCurrentUser() {
-        const userDetails = sessionStorage.getItem('userDetails');
+        // Check sessionStorage first, then localStorage (for mobile compatibility)
+        let userDetails = sessionStorage.getItem('userDetails');
+        if (!userDetails) {
+            userDetails = localStorage.getItem('userDetails');
+        }
+        
         if (!userDetails) return null;
         
         try {
@@ -98,11 +146,30 @@ class AuthUtils {
 
     /**
      * Set user session
+     * @param {Object} user - User object
+     * @param {Boolean} rememberMe - If true, store in localStorage (persists across tab closes). If false, only sessionStorage (logout when tab closes).
      */
-    static setUserSession(user) {
-        sessionStorage.setItem('userDetails', JSON.stringify(user));
+    static setUserSession(user, rememberMe = false) {
+        const userData = JSON.stringify(user);
+        
+        // Always store in sessionStorage (for current tab session)
+        sessionStorage.setItem('userDetails', userData);
         sessionStorage.setItem('lastActivity', Date.now().toString());
         sessionStorage.setItem('sessionStartTime', Date.now().toString());
+        sessionStorage.setItem('isAuthenticated', 'true');
+        
+        // Only store in localStorage if "Remember Me" is enabled
+        if (rememberMe) {
+            localStorage.setItem('userDetails', userData);
+            localStorage.setItem('isAuthenticated', 'true');
+            // Add a flag to indicate this is a "Remember Me" session
+            localStorage.setItem('rememberMe', 'true');
+        } else {
+            // Clear localStorage if not remembering (including old sessions)
+            localStorage.removeItem('userDetails');
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('rememberMe');
+        }
     }
 
     /**
@@ -112,6 +179,9 @@ class AuthUtils {
         sessionStorage.removeItem('userDetails');
         sessionStorage.removeItem('lastActivity');
         sessionStorage.removeItem('sessionStartTime');
+        sessionStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('userDetails');
+        localStorage.removeItem('isAuthenticated');
     }
 
     /**

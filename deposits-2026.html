@@ -5,6 +5,199 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sixth Year Deposits (2026) - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* EMI Tracking Styles */
+        .emi-tracking-section {
+            padding: 1rem 0;
+        }
+        
+        .emi-summary {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .emi-summary h4 {
+            margin: 0 0 1rem 0;
+            color: #1e40af;
+        }
+        
+        .summary-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+        }
+        
+        .info-item .label {
+            font-weight: 500;
+            color: #64748b;
+        }
+        
+        .info-item .value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .emi-table {
+            margin-top: 1rem;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .status-badge.paid {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .members-emi-overview {
+            margin-bottom: 1.5rem;
+        }
+        
+        .emi-member-card {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .emi-member-card h4 {
+            margin: 0 0 1rem 0;
+            color: #1e40af;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 0.5rem;
+        }
+        
+        .emi-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+        }
+        
+        .detail-item .label {
+            font-weight: 500;
+            color: #64748b;
+        }
+        
+        .detail-item .value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .section-description {
+            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            border-radius: 4px;
+            color: #1e40af;
+        }
+        
+        .emi-summary-total {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: white;
+            border-radius: 6px;
+        }
+        
+        .summary-item.total {
+            background: #3b82f6;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .summary-item.total .label,
+        .summary-item.total .value {
+            color: white;
+        }
+        
+        .summary-item .label {
+            font-weight: 500;
+            color: #64748b;
+        }
+        
+        .summary-item .value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        /* Dropdown toggle styles */
+        .dropdown-toggle {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .dropdown-toggle:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .dropdown-toggle i {
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-content {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
     <script src="js/auth-utils.js"></script>
     <script>
         (function() {
@@ -74,13 +267,23 @@
                         </tr>
                         <tr>
                             <td>Monthly Deposits</td>
-                            <td>December 2025 (₹2,000 × 7 members + ₹1,250 VP)</td>
-                            <td>₹15,250</td>
+                            <td>December 2025 (6 members ₹2,000, 7th member ₹1,250, 8th member exempted)</td>
+                            <td>₹13,250</td>
                         </tr>
                         <tr>
                             <td>Monthly Deposits</td>
                             <td>January - November 2026 (₹2,000 × 8 members × 11 months)</td>
                             <td>₹1,76,000</td>
+                        </tr>
+                        <tr>
+                            <td>New Member EMI Deposits</td>
+                            <td>Appanna Banakar - Monthly EMI payments (₹7,445.38/month × 18 months)</td>
+                            <td>₹1,34,016.84</td>
+                        </tr>
+                        <tr>
+                            <td>Other Members EMI Deposits</td>
+                            <td>Interest-free EMI deposits (₹70,000 per member)</td>
+                            <td>₹TBD</td>
                         </tr>
                         <tr>
                             <td>Interest Earned</td>
@@ -101,24 +304,252 @@
                 </table>
             </div>
 
+            <!-- New Member EMI Payment Records -->
             <div class="info-card">
-                <h3>Special Payment Structure</h3>
-                <div class="payment-structure">
-                    <div class="structure-item">
-                        <h4><i class="fas fa-crown"></i> President (Manjunath Banakar)</h4>
-                        <p><strong>December Exemption:</strong> No payment required in December month</p>
-                        <p><strong>Other months:</strong> ₹2,000 per month</p>
+                <button class="dropdown-toggle" onclick="toggleDropdown('newMemberEMIContent', this)">
+                    <span><i class="fas fa-calendar-check"></i> New Member EMI Payment Records</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-content" id="newMemberEMIContent" style="display: none;">
+                    <div class="emi-tracking-section">
+                        <div class="emi-summary">
+                            <h4>Appanna Banakar - EMI Payment Details</h4>
+                            <div class="summary-info">
+                                <div class="info-item">
+                                    <span class="label">Total Amount:</span>
+                                    <span class="value">₹1,34,016.93</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Monthly EMI:</span>
+                                    <span class="value">₹7,445.38</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Duration:</span>
+                                    <span class="value">18 months</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Start Date:</span>
+                                    <span class="value">January 2026</span>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="member-table emi-table">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Date</th>
+                                    <th>Amount Paid</th>
+                                    <th>Remaining Balance</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>January 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹1,26,571.55</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>February 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹1,19,126.17</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>March 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹1,11,680.79</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>April 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹1,04,235.41</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>May 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹96,790.03</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>June 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹89,344.65</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>July 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹81,899.27</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>August 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹74,453.89</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>September 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹67,008.51</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>October 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹59,563.13</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>November 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹52,117.75</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>December 2026</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹44,672.37</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>January 2027</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹37,226.99</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>February 2027</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹29,781.61</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>March 2027</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹22,336.23</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>April 2027</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹14,890.85</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>May 2027</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹7,445.47</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>June 2027</td>
+                                    <td>-</td>
+                                    <td>₹7,445.38</td>
+                                    <td>₹0.00</td>
+                                    <td><span class="status-badge pending">Pending</span></td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td colspan="2"><strong>Total</strong></td>
+                                    <td><strong>₹1,34,016.84</strong></td>
+                                    <td><strong>₹0.00</strong></td>
+                                    <td><strong>18 installments</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="structure-item">
-                        <h4><i class="fas fa-user-tie"></i> Vice President (Pratap Banakar)</h4>
-                        <p><strong>December Concession:</strong> ₹1,250 (37.5% discount)</p>
-                        <p><strong>Concession Amount:</strong> ₹750 (₹2,000 - ₹1,250)</p>
-                        <p><strong>Other months:</strong> ₹2,000 per month</p>
+                </div>
+            </div>
+
+            <!-- Other Members EMI Deposit Records -->
+            <div class="info-card">
+                <button class="dropdown-toggle" onclick="toggleDropdown('otherMembersEMIContent', this)">
+                    <span><i class="fas fa-users"></i> Other Members EMI Deposit Records</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-content" id="otherMembersEMIContent" style="display: none;">
+                    <div class="emi-tracking-section">
+                        <p class="section-description">Interest-free EMI deposits of ₹70,000 by existing members</p>
+                        <div class="members-emi-overview">
+                            <div class="emi-member-card">
+                                <h4>Member Name</h4>
+                                <div class="emi-details">
+                                    <div class="detail-item">
+                                        <span class="label">Total Amount:</span>
+                                        <span class="value">₹70,000</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Monthly EMI:</span>
+                                        <span class="value">₹TBD</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Duration:</span>
+                                        <span class="value">TBD months</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="label">Start Date:</span>
+                                        <span class="value">TBD</span>
+                                    </div>
+                                </div>
+                                <table class="member-table emi-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Month</th>
+                                            <th>Date</th>
+                                            <th>Amount Paid</th>
+                                            <th>Remaining Balance</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="5" style="text-align: center; padding: 1rem;">
+                                                <em>Payment records will be updated as payments are received</em>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="emi-summary-total">
+                            <div class="summary-item">
+                                <span class="label">Total Members with ₹70,000 EMI:</span>
+                                <span class="value">TBD</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="label">Total EMI Amount:</span>
+                                <span class="value">₹TBD</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="label">Total Received:</span>
+                                <span class="value">₹TBD</span>
+                            </div>
+                            <div class="summary-item total">
+                                <span class="label">Total Remaining:</span>
+                                <span class="value">₹TBD</span>
+                            </div>
                     </div>
-                    <div class="structure-item">
-                        <h4><i class="fas fa-users"></i> Regular Members (6 members)</h4>
-                        <p><strong>All months:</strong> ₹2,000 per month</p>
-                        <p><strong>Members:</strong> Sarpabhushana, Mukkanna, Santosh, Pradeep, Praveen, Appanna</p>
                     </div>
                 </div>
             </div>
@@ -135,5 +566,31 @@
     <footer>
         <p>&copy; 2025 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
+    
+    <script>
+        // Generic dropdown toggle function
+        function toggleDropdown(contentId, buttonElement) {
+            const content = document.getElementById(contentId);
+            const button = buttonElement || document.querySelector(`button[onclick*="${contentId}"]`);
+            // Find the chevron icon (first icon with fa-chevron class)
+            const icon = button ? button.querySelector('i.fa-chevron-down, i.fa-chevron-up') : null;
+            
+            if (content) {
+                if (content.style.display === 'none' || content.style.display === '') {
+                    content.style.display = 'block';
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    }
+                } else {
+                    content.style.display = 'none';
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
