@@ -104,6 +104,51 @@ class MobileNavigation {
                     </div>
                 </div>
             </div>
+
+            <!-- Loan Application Modal -->
+            <div class="loan-modal-overlay" id="loanModalOverlay">
+                <div class="loan-modal-content">
+                    <div class="loan-modal-header">
+                        <h3><i class="fas fa-hand-holding-usd"></i> Loan Application</h3>
+                        <button class="close-modal-btn" onclick="window.MobileNavigation.hideLoanApplication()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="loan-modal-body">
+                        <form id="mobileLoanForm">
+                            <div class="form-group">
+                                <label for="loanName">Name:</label>
+                                <input type="text" id="loanName" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="loanEmail">Email:</label>
+                                <input type="email" id="loanEmail" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="loanPhone">Phone:</label>
+                                <input type="tel" id="loanPhone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="loanAmount">Loan Amount (₹):</label>
+                                <input type="number" id="loanAmount" name="loan_amount" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="loanReason">Reason for Loan:</label>
+                                <textarea id="loanReason" name="loan_reason" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn" id="loanSubmitBtn">
+                                <span id="loanBtnText">Submit Application</span>
+                                <div id="loanBtnLoader" style="display: none;">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </div>
+                            </button>
+                            <div class="success-message" id="loanSuccessMsg" style="display: none;">
+                                ✅ Your application has been submitted successfully!
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         `;
     }
 
@@ -306,33 +351,6 @@ class MobileNavigation {
                         <div class="bank-info-item">
                             <span class="label">IFSC Code</span>
                             <span class="value">ICIC0004376</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent Activity -->
-                <div class="recent-activity">
-                    <h3>Recent Activity</h3>
-                    <div class="activity-list">
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-plus-circle"></i>
-                            </div>
-                            <div class="activity-content">
-                                <h4>New Member Added</h4>
-                                <p>Appanna Banakar joined the association</p>
-                                <span class="activity-time">2 days ago</span>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-calendar-check"></i>
-                            </div>
-                            <div class="activity-content">
-                                <h4>5th Year Meeting</h4>
-                                <p>Annual meeting completed successfully</p>
-                                <span class="activity-time">1 week ago</span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -922,10 +940,6 @@ class MobileNavigation {
             <div class="no-loans">
                 <i class="fas fa-inbox"></i>
                 <p>You don't have any active loans</p>
-                <button class="action-btn primary" onclick="window.MobileNavigation.showLoanApplication()">
-                    <i class="fas fa-plus"></i>
-                    Apply for a Loan
-                </button>
             </div>
         `;
 
@@ -975,47 +989,6 @@ class MobileNavigation {
 
                 <div class="loans-list">
                     ${loansHTML}
-                </div>
-
-                <!-- Loan Application Form (Hidden by default) -->
-                <div class="loan-application-form" id="loanApplicationForm" style="display: none;">
-                    <div class="form-header">
-                        <h3><i class="fas fa-hand-holding-usd"></i> Loan Application</h3>
-                        <button class="close-btn" onclick="window.MobileNavigation.hideLoanApplication()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <form id="mobileLoanForm">
-                        <div class="form-group">
-                            <label for="loanName">Name:</label>
-                            <input type="text" id="loanName" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="loanEmail">Email:</label>
-                            <input type="email" id="loanEmail" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="loanPhone">Phone:</label>
-                            <input type="tel" id="loanPhone" name="phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="loanAmount">Loan Amount (₹):</label>
-                            <input type="number" id="loanAmount" name="loan_amount" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="loanReason">Reason for Loan:</label>
-                            <textarea id="loanReason" name="loan_reason" required></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn" id="loanSubmitBtn">
-                            <span id="loanBtnText">Submit Application</span>
-                            <div id="loanBtnLoader" style="display: none;">
-                                <i class="fas fa-spinner fa-spin"></i>
-                            </div>
-                        </button>
-                        <div class="success-message" id="loanSuccessMsg" style="display: none;">
-                            ✅ Your application has been submitted successfully!
-                        </div>
-                    </form>
                 </div>
             </div>
         `;
@@ -1588,22 +1561,33 @@ class MobileNavigation {
     }
 
     showLoanApplication() {
-        const form = document.getElementById('loanApplicationForm');
-        const review = document.getElementById('reviewApplications');
-        
-        if (form) {
-            form.style.display = 'block';
-            if (review) review.style.display = 'none';
-            
+        const modal = document.getElementById('loanModalOverlay');
+        if (modal) {
+            modal.classList.add('active');
+            // Auto-fill user details in loan form
+            this.autoFillLoanForm();
             // Setup form submission
             this.setupLoanFormSubmission();
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    this.hideLoanApplication();
+                }
+            });
         }
     }
 
     hideLoanApplication() {
-        const form = document.getElementById('loanApplicationForm');
-        if (form) {
-            form.style.display = 'none';
+        const modal = document.getElementById('loanModalOverlay');
+        if (modal) {
+            modal.classList.remove('active');
+            // Reset form
+            const form = document.getElementById('mobileLoanForm');
+            if (form) {
+                form.reset();
+                document.getElementById('loanSuccessMsg').style.display = 'none';
+            }
         }
     }
 
@@ -1631,12 +1615,13 @@ class MobileNavigation {
             return;
         }
 
-        const form = document.getElementById('loanApplicationForm');
         const review = document.getElementById('reviewApplications');
         
         if (review) {
             review.style.display = 'block';
-            if (form) form.style.display = 'none';
+            // Hide loan modal if open
+            const modal = document.getElementById('loanModalOverlay');
+            if (modal) modal.classList.remove('active');
             
             // Load applications from localStorage
             this.loadApplications();
@@ -1687,10 +1672,13 @@ class MobileNavigation {
                 successMsg.style.display = 'block';
                 form.reset();
                 
-                // Hide success message after 3 seconds
+                // Close modal after 2 seconds
                 setTimeout(() => {
                     successMsg.style.display = 'none';
-                }, 3000);
+                    window.MobileNavigation.hideLoanApplication();
+                    // Reload loans to show updated list
+                    window.MobileNavigation.loadLoans();
+                }, 2000);
 
             } catch (error) {
                 console.error('Error submitting loan application:', error);
