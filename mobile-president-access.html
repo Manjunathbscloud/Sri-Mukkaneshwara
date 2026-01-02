@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>President Access - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="sheets-config.js"></script>
     <style>
         * {
             margin: 0;
@@ -57,7 +59,7 @@
         /* Main Content */
         .main-content {
             padding: 20px;
-            padding-bottom: 100px;
+            padding-bottom: 40px;
         }
 
         /* Welcome Card */
@@ -129,47 +131,239 @@
             line-height: 1.5;
         }
 
-        /* Bottom Navigation */
-        .bottom-nav {
+        /* Financial Update Modal */
+        .modal-overlay {
+            display: none;
             position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
             bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 414px;
-            background: white;
-            border-top: 1px solid #e5e7eb;
-            padding: 8px 0;
-            display: flex;
-            justify-content: space-around;
-            z-index: 1000;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
             align-items: center;
-            gap: 4px;
-            padding: 8px 12px;
-            text-decoration: none;
-            color: #6b7280;
-            transition: all 0.3s ease;
-            border-radius: 8px;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .nav-item:hover,
-        .nav-item.active {
-            color: #10b981;
-            background: rgba(16, 185, 129, 0.1);
+        .modal-overlay.active {
+            display: flex;
         }
 
-        .nav-icon {
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: #10b981;
+            color: white;
+            padding: 20px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .close-modal {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 18px;
         }
 
-        .nav-label {
-            font-size: 10px;
+        .modal-body {
+            padding: 20px;
+        }
+
+        .current-data-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #10b981;
+        }
+
+        .current-data-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .data-label {
+            font-size: 14px;
+            color: #6b7280;
             font-weight: 500;
+        }
+
+        .data-value {
+            font-size: 14px;
+            color: #111827;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            display: none;
+            font-size: 14px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            display: none;
+            font-size: 14px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loader.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #10b981;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Responsive */
@@ -258,32 +452,83 @@
             </div>
         </div>
 
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <a href="mobile-simple.html" class="nav-item">
-                <i class="nav-icon fas fa-home"></i>
-                <span class="nav-label">Home</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="nav-icon fas fa-credit-card"></i>
-                <span class="nav-label">Accounts</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="nav-icon fas fa-hand-holding-usd"></i>
-                <span class="nav-label">Loans</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="nav-icon fas fa-users"></i>
-                <span class="nav-label">Members</span>
-            </a>
-            <a href="#" class="nav-item active">
-                <i class="nav-icon fas fa-user-shield"></i>
-                <span class="nav-label">Admin</span>
-            </a>
-        </nav>
+    </div>
+
+    <!-- Financial Update Modal -->
+    <div class="modal-overlay" id="financialUpdateModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Update Financial Data</h2>
+                <button class="close-modal" onclick="closeFinancialUpdateModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Current Data -->
+                <div class="current-data-card">
+                    <h3><i class="fas fa-info-circle"></i> Current Financial Data</h3>
+                    <div class="data-row">
+                        <span class="data-label">Bank Balance:</span>
+                        <span class="data-value" id="currentBankBalance">Loading...</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Available Loan Amount:</span>
+                        <span class="data-value" id="currentLoanAmount">Loading...</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Last Updated:</span>
+                        <span class="data-value" id="currentLastUpdated">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- Update Form -->
+                <form id="financialUpdateForm">
+                    <div class="form-group">
+                        <label for="bankBalance"><i class="fas fa-university"></i> Bank Balance (₹)</label>
+                        <input type="number" id="bankBalance" name="bankBalance" required placeholder="Enter new bank balance">
+                    </div>
+                    <div class="form-group">
+                        <label for="availableLoanAmount"><i class="fas fa-credit-card"></i> Available Loan Amount (₹)</label>
+                        <input type="number" id="availableLoanAmount" name="availableLoanAmount" required placeholder="Enter new available loan amount">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastUpdated"><i class="fas fa-calendar"></i> Last Updated Date</label>
+                        <input type="date" id="lastUpdated" name="lastUpdated" required>
+                    </div>
+                    
+                    <div class="loader" id="loader">
+                        <div class="spinner"></div>
+                        <p>Updating financial data...</p>
+                    </div>
+
+                    <div class="success-message" id="successMessage">
+                        <i class="fas fa-check-circle"></i> Financial data updated successfully! All members have been notified.
+                    </div>
+
+                    <div class="error-message" id="errorMessage">
+                        <i class="fas fa-exclamation-circle"></i> <span id="errorText">Error updating financial data. Please try again.</span>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeFinancialUpdateModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <i class="fas fa-save"></i> Update Data
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Initialize EmailJS
+        (function() {
+            emailjs.init("SzudKZaiAMaLDKRpt");
+        })();
+
+        let currentFinancialData = null;
+        let emailSendingInProgress = false;
+
         function goBack() {
             window.history.back();
         }
@@ -301,8 +546,246 @@
         }
 
         function openFinancialUpdate() {
-            alert('Opening Financial Update...\n\nThis will show:\n• Transaction Entry\n• Balance Updates\n• Financial Records\n• Audit Trail');
+            const modal = document.getElementById('financialUpdateModal');
+            modal.classList.add('active');
+            loadCurrentFinancialData();
         }
+
+        function closeFinancialUpdateModal() {
+            const modal = document.getElementById('financialUpdateModal');
+            modal.classList.remove('active');
+            // Reset form
+            document.getElementById('financialUpdateForm').reset();
+            document.getElementById('successMessage').classList.remove('show');
+            document.getElementById('errorMessage').classList.remove('show');
+        }
+
+        // Load current financial data
+        async function loadCurrentFinancialData() {
+            try {
+                const googleSheetsUrl = window.SHEETS_CONFIG?.financialCsvUrl || 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT0BPMTkSH8oDU7AYQLEcTxN-LHh86WLBMyfZH1eT4ABRCB8vwF2z7BBnzN0-SvaZZ0Apcwkkn08jyw/pub?output=csv';
+                
+                const response = await fetch(googleSheetsUrl, {
+                    method: 'GET',
+                    redirect: 'follow'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const csv = await response.text();
+                const rows = csv.split('\n');
+                
+                if (rows.length >= 2) {
+                    const data = rows[1].split(',');
+                    const bankBalance = parseFloat(data[0].replace(/"/g, '').trim()) || 0;
+                    const availableLoanAmount = parseFloat(data[1].replace(/"/g, '').trim()) || 0;
+                    const lastUpdated = data[2] ? data[2].replace(/"/g, '').trim() : new Date().toISOString().split('T')[0];
+                    
+                    // Store current data
+                    currentFinancialData = {
+                        bankBalance: bankBalance,
+                        availableLoanAmount: availableLoanAmount,
+                        lastUpdated: lastUpdated
+                    };
+                    
+                    // Display current data
+                    document.getElementById('currentBankBalance').textContent = `₹${bankBalance.toLocaleString('en-IN')}`;
+                    document.getElementById('currentLoanAmount').textContent = `₹${availableLoanAmount.toLocaleString('en-IN')}`;
+                    document.getElementById('currentLastUpdated').textContent = lastUpdated;
+                    
+                    // Set default date
+                    document.getElementById('lastUpdated').value = lastUpdated || new Date().toISOString().split('T')[0];
+                } else {
+                    // Use default values
+                    const defaultData = {
+                        bankBalance: 183790,
+                        availableLoanAmount: 175000,
+                        lastUpdated: new Date().toISOString().split('T')[0]
+                    };
+                    currentFinancialData = defaultData;
+                    displayCurrentData(defaultData);
+                }
+            } catch (error) {
+                console.error('Error loading financial data:', error);
+                // Use default values on error
+                const defaultData = {
+                    bankBalance: 183790,
+                    availableLoanAmount: 175000,
+                    lastUpdated: new Date().toISOString().split('T')[0]
+                };
+                currentFinancialData = defaultData;
+                displayCurrentData(defaultData);
+            }
+        }
+
+        function displayCurrentData(data) {
+            document.getElementById('currentBankBalance').textContent = `₹${data.bankBalance.toLocaleString('en-IN')}`;
+            document.getElementById('currentLoanAmount').textContent = `₹${data.availableLoanAmount.toLocaleString('en-IN')}`;
+            document.getElementById('currentLastUpdated').textContent = data.lastUpdated;
+            document.getElementById('lastUpdated').value = data.lastUpdated || new Date().toISOString().split('T')[0];
+        }
+
+        // Send email notification to all members
+        async function sendFinancialUpdateNotification(oldData, newData, adminName) {
+            if (emailSendingInProgress) {
+                console.log('Email sending already in progress, skipping...');
+                return;
+            }
+
+            try {
+                emailSendingInProgress = true;
+                console.log('Sending email notification to all members via EmailJS...');
+                
+                const templateParams = {
+                    admin_name: adminName,
+                    update_time: new Date().toLocaleString('en-IN'),
+                    old_balance: oldData.bankBalance.toLocaleString('en-IN'),
+                    new_balance: newData.bankBalance.toLocaleString('en-IN'),
+                    old_loan: oldData.availableLoanAmount.toLocaleString('en-IN'),
+                    new_loan: newData.availableLoanAmount.toLocaleString('en-IN'),
+                    website_url: 'https://manjunathbscloud.github.io/Sri-Mukkaneshwara/accounts.html'
+                };
+
+                await emailjs.send('service_xl1w3wq', 'template_5j2huil', templateParams);
+                console.log('Email notification sent successfully to all members via EmailJS');
+                
+            } catch (error) {
+                console.error('Error sending email notification:', error);
+                // Don't show error to user, just log it
+            } finally {
+                emailSendingInProgress = false;
+            }
+        }
+
+        // Update financial data
+        async function updateFinancialData(formData) {
+            const loader = document.getElementById('loader');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Show loader, hide messages
+            loader.classList.add('show');
+            successMessage.classList.remove('show');
+            errorMessage.classList.remove('show');
+            submitBtn.disabled = true;
+            
+            try {
+                // Get user details
+                const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails') || '{}');
+                const adminName = userDetails.name || 'Manjunath Banakar';
+                
+                // Capture old data
+                const oldData = currentFinancialData || {
+                    bankBalance: 183790,
+                    availableLoanAmount: 175000
+                };
+                
+                // Update Google Sheet via Google Apps Script
+                const params = new URLSearchParams({
+                    action: 'updateFinancialData',
+                    bankBalance: formData.bankBalance,
+                    availableLoanAmount: formData.availableLoanAmount,
+                    lastUpdated: formData.lastUpdated
+                });
+                
+                const updateUrl = window.SHEETS_CONFIG?.financialUpdateUrl || 'https://script.google.com/macros/s/AKfycbyMSWWzvoAdk4h0LEXuuB0GWiS_M-OjErpUMQqcDoyQlaEEgKQxWOu3tXHjcsNmzF7Y/exec';
+                
+                const response = await fetch(updateUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: params.toString()
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.success) {
+                        console.log('Financial data updated successfully in Google Sheet');
+                        
+                        // Send email notifications
+                        await sendFinancialUpdateNotification(oldData, formData, adminName);
+                        
+                        // Update current data
+                        currentFinancialData = {
+                            bankBalance: parseInt(formData.bankBalance),
+                            availableLoanAmount: parseInt(formData.availableLoanAmount),
+                            lastUpdated: formData.lastUpdated
+                        };
+                        
+                        // Reload current data display
+                        await loadCurrentFinancialData();
+                        
+                        // Show success message
+                        loader.classList.remove('show');
+                        successMessage.classList.add('show');
+                        
+                        // Reset form after 2 seconds
+                        setTimeout(() => {
+                            document.getElementById('financialUpdateForm').reset();
+                            document.getElementById('lastUpdated').value = formData.lastUpdated;
+                        }, 2000);
+                    } else {
+                        throw new Error(result.message || 'Failed to update financial data');
+                    }
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Error updating financial data:', error);
+                loader.classList.remove('show');
+                errorMessage.classList.add('show');
+                document.getElementById('errorText').textContent = error.message || 'Error updating financial data. Please try again.';
+            } finally {
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('financialUpdateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const bankBalance = parseInt(document.getElementById('bankBalance').value);
+            const availableLoanAmount = parseInt(document.getElementById('availableLoanAmount').value);
+            const lastUpdated = document.getElementById('lastUpdated').value;
+            
+            // Validate form data
+            if (!bankBalance || bankBalance <= 0) {
+                document.getElementById('errorText').textContent = 'Please enter a valid bank balance greater than 0';
+                document.getElementById('errorMessage').classList.add('show');
+                return;
+            }
+            
+            if (!availableLoanAmount || availableLoanAmount <= 0) {
+                document.getElementById('errorText').textContent = 'Please enter a valid available loan amount greater than 0';
+                document.getElementById('errorMessage').classList.add('show');
+                return;
+            }
+            
+            if (!lastUpdated) {
+                document.getElementById('errorText').textContent = 'Please select a valid date';
+                document.getElementById('errorMessage').classList.add('show');
+                return;
+            }
+            
+            const formData = {
+                bankBalance: bankBalance,
+                availableLoanAmount: availableLoanAmount,
+                lastUpdated: lastUpdated
+            };
+            
+            await updateFinancialData(formData);
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('financialUpdateModal').addEventListener('click', (e) => {
+            if (e.target.id === 'financialUpdateModal') {
+                closeFinancialUpdateModal();
+            }
+        });
 
         function openSystemSettings() {
             alert('Opening System Settings...\n\nThis will show:\n• System Configuration\n• Security Settings\n• User Permissions\n• System Maintenance');
@@ -311,19 +794,6 @@
         function openUserManagement() {
             alert('Opening User Management...\n\nThis will show:\n• User Accounts\n• Role Management\n• Permission Settings\n• User Activity');
         }
-
-        // Navigation functionality
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remove active class from all items
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                
-                // Add active class to clicked item
-                this.classList.add('active');
-            });
-        });
     </script>
 </body>
 </html>
