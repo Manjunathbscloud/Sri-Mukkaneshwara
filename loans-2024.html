@@ -466,20 +466,28 @@
                 const isVisible = row.style.display !== 'none';
                 
                 if (isVisible && row.cells.length >= 8) {
-                    // Calculate total interest (Total Paid column - index 7)
-                    const totalPaidCell = row.cells[7];
-                    if (totalPaidCell) {
-                        const totalPaidText = totalPaidCell.textContent.trim();
-                        const totalPaidValue = parseFloat(totalPaidText.replace(/[₹,\s]/g, '')) || 0;
-                        totalInterest += totalPaidValue;
-                    }
+                    // Check if status is Active (Status column - index 6)
+                    const statusCell = row.cells[6];
+                    const status = statusCell ? statusCell.textContent.trim().toLowerCase() : '';
+                    const isActive = status === 'active';
                     
-                    // Calculate total amount (Amount column - index 4)
-                    const amountCell = row.cells[4];
-                    if (amountCell) {
-                        const amountText = amountCell.textContent.trim();
-                        const amountValue = parseFloat(amountText.replace(/[₹,\s]/g, '')) || 0;
-                        totalAmount += amountValue;
+                    // Only calculate amount and interest for Active status loans
+                    if (isActive) {
+                        // Calculate total interest (Interest column - index 4)
+                        const interestCell = row.cells[4];
+                        if (interestCell) {
+                            const interestText = interestCell.textContent.trim();
+                            const interestValue = parseFloat(interestText.replace(/[₹,\s]/g, '')) || 0;
+                            totalInterest += interestValue;
+                        }
+                        
+                        // Calculate total amount (Amount column - index 3)
+                        const amountCell = row.cells[3];
+                        if (amountCell) {
+                            const amountText = amountCell.textContent.trim();
+                            const amountValue = parseFloat(amountText.replace(/[₹,\s]/g, '')) || 0;
+                            totalAmount += amountValue;
+                        }
                     }
                 }
             });

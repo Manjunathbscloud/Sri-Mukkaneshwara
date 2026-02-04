@@ -238,13 +238,13 @@
               return sum + parseCurrency(loan.amount);
             }, 0);
             
-            // Calculate total loan amount (all loans)
-            const totalLoanAmount = filtered.reduce((sum, loan) => {
+            // Calculate total loan amount (only active loans)
+            const totalLoanAmount = activeLoans.reduce((sum, loan) => {
               return sum + parseCurrency(loan.amount);
             }, 0);
             
-            // Calculate total interest (all loans)
-            const totalInterest = filtered.reduce((sum, loan) => {
+            // Calculate total interest (only active loans)
+            const totalInterest = activeLoans.reduce((sum, loan) => {
               return sum + parseCurrency(loan.interest);
             }, 0);
             

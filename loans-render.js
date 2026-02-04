@@ -72,13 +72,19 @@
                 return sum + (Number.isFinite(num) ? num : 0);
             }, 0);
             
-            const totalAmount = (items || []).reduce((sum, r) => {
+            // Filter for Active status loans only for amount and interest totals
+            const activeItems = (items || []).filter(r => {
+                const status = (r.status || '').toLowerCase();
+                return status === 'active';
+            });
+            
+            const totalAmount = activeItems.reduce((sum, r) => {
                 const raw = (r.amount || '').toString().replace(/[,\s]/g, '');
                 const num = raw === '' ? NaN : Number(raw);
                 return sum + (Number.isFinite(num) ? num : 0);
             }, 0);
 
-            const totalInterest = (items || []).reduce((sum, r) => {
+            const totalInterest = activeItems.reduce((sum, r) => {
                 const raw = (r.interest || '').toString().replace(/[,\s]/g, '');
                 const num = raw === '' ? NaN : Number(raw);
                 return sum + (Number.isFinite(num) ? num : 0);
