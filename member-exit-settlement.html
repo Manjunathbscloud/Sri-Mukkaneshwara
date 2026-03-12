@@ -6,6 +6,15 @@
     <title>Member Exit Settlement - Sri Mukkanneshwara Associate</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @media print {
+            body * { visibility: hidden; }
+            #printViewWrap, #printViewWrap * { visibility: visible; }
+            #printViewWrap { position: absolute; left: 0; top: 0; width: 100%; background: #fff; padding: 0; }
+            .no-print { display: none !important; }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -32,12 +41,20 @@
                 <div>
                     <h3>Summary</h3>
                     <p><strong>Member:</strong> Sarpabhushana Banakar</p>
-                    <p><strong>Settlement date:</strong> November 2025</p>
+                    <p><strong>Settlement date:</strong> 16/03/2026</p>
                     <p><strong>Outcome:</strong> Member pays the association <strong>₹25,166</strong> (net amount due from member at exit).</p>
                 </div>
-                <button type="button" onclick="downloadSettlementPDF()" class="modern-btn" style="white-space: nowrap;">
-                    <i class="fas fa-download"></i> Download PDF
-                </button>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-end;">
+                    <span style="font-size: 0.9rem; color: #555;">Download in:</span>
+                    <div id="pdfDownloadButtons" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button type="button" id="btnPdfEn" data-lang="en" class="modern-btn pdf-download-btn" style="white-space: nowrap;">
+                            <i class="fas fa-download"></i> English
+                        </button>
+                        <button type="button" id="btnPdfKn" data-lang="kn" class="modern-btn pdf-download-btn" style="white-space: nowrap;">
+                            <i class="fas fa-download"></i> ಕನ್ನಡ
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="info-card">
@@ -114,6 +131,7 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous"></script>
     <script>
         function getJsPDF() {
             try {
@@ -124,7 +142,7 @@
         }
 
         function loadJsPDFScript() {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function(resolve) {
                 if (getJsPDF()) {
                     resolve();
                     return;
@@ -133,26 +151,64 @@
                 s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
                 s.crossOrigin = 'anonymous';
                 s.onload = function() {
-                    if (typeof window.jspdf === 'undefined' && typeof window.jsPDF === 'undefined') {
-                        setTimeout(function() {
-                            if (getJsPDF()) resolve();
-                            else reject(new Error('jsPDF not found after load'));
-                        }, 100);
-                    } else {
+                    setTimeout(function() {
+                        if (!getJsPDF() && typeof window.jspdf !== 'undefined') {
+                            try { window.jsPDF = window.jspdf.jsPDF; } catch (e) {}
+                        }
                         resolve();
-                    }
+                    }, 150);
                 };
-                s.onerror = function() { reject(new Error('Failed to load jsPDF script')); };
+                s.onerror = function() { resolve(); };
                 document.head.appendChild(s);
             });
         }
 
-        async function downloadSettlementPDF() {
-            var btns = document.querySelectorAll('button[onclick="downloadSettlementPDF()"]');
-            btns.forEach(function(b) {
-                b.disabled = true;
-                b.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
-            });
+        function setButtonsLoading(loading) {
+            var en = document.getElementById('btnPdfEn');
+            var kn = document.getElementById('btnPdfKn');
+            if (en) {
+                en.disabled = loading;
+                en.innerHTML = loading ? '<i class="fas fa-spinner fa-spin"></i> ...' : '<i class="fas fa-download"></i> English';
+            }
+            if (kn) {
+                kn.disabled = loading;
+                kn.innerHTML = loading ? '<i class="fas fa-spinner fa-spin"></i> ...' : '<i class="fas fa-download"></i> ಕನ್ನಡ';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var container = document.getElementById('pdfDownloadButtons');
+            if (container) {
+                container.addEventListener('click', function(ev) {
+                    var btn = ev.target.closest('button.pdf-download-btn');
+                    if (!btn || btn.disabled) return;
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    ev.stopImmediatePropagation();
+                    var lang = btn.getAttribute('data-lang');
+                    if (lang !== 'en' && lang !== 'kn') lang = 'en';
+                    downloadSettlementPDF(lang);
+                });
+            }
+        });
+
+        async function downloadSettlementPDF(lang) {
+            if (lang !== 'en' && lang !== 'kn') lang = 'en';
+            setButtonsLoading(true);
+            if (lang === 'kn') {
+                try {
+                    await downloadKannadaPDF();
+                } catch (err) {
+                    console.error('Kannada PDF error:', err);
+                    showPrintView('kn');
+                }
+                setButtonsLoading(false);
+                return;
+            }
+            if (lang !== 'en') {
+                setButtonsLoading(false);
+                return;
+            }
             try {
                 await loadJsPDFScript();
                 var JsPDF = getJsPDF();
@@ -227,7 +283,8 @@
                     }
                     var isSubtotal = tableData[i][2];
                     var desc = tableData[i][0];
-                    var descLines = doc.splitTextToSize(desc, descMaxWidth);
+                    var descLines = (typeof doc.splitTextToSize === 'function') ? doc.splitTextToSize(desc, descMaxWidth) : [desc];
+                    if (!Array.isArray(descLines) || descLines.length === 0) descLines = [desc];
                     var cellH = Math.max(rowH + 2, descLines.length * 5 + 6);
                     if (i === 6) {
                         doc.setFillColor(254, 226, 226);
@@ -280,7 +337,8 @@
                     doc.setFillColor(253, 224, 71);
                     doc.circle(margin + 4, y + 1.5, 1, 'F');
                     doc.setTextColor(30, 30, 30);
-                    var lines = doc.splitTextToSize(notes[j], noteMaxW);
+                    var lines = (typeof doc.splitTextToSize === 'function') ? doc.splitTextToSize(notes[j], noteMaxW) : [notes[j]];
+                    if (!Array.isArray(lines) || lines.length === 0) lines = [notes[j]];
                     for (var k = 0; k < lines.length; k++) {
                         doc.text(lines[k], margin + 12, y + 3 + k * lineH);
                     }
@@ -348,14 +406,123 @@
                 doc.save('Member_Exit_Settlement_Nov2025.pdf');
             } catch (err) {
                 console.error('PDF error:', err);
-                if (confirm('PDF download failed. Open print dialog to save as PDF instead?')) {
-                    window.print();
+                try {
+                    showPrintView('en');
+                } catch (e2) {
+                    alert('Download failed. Please try the other language (e.g. Kannada) and use Print \u2192 Save as PDF.');
                 }
             }
-            btns.forEach(function(b) {
-                b.disabled = false;
-                b.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+            setButtonsLoading(false);
+        }
+
+        function loadHtml2Canvas() {
+            return new Promise(function(resolve) {
+                if (typeof html2canvas !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                var s = document.createElement('script');
+                s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                s.crossOrigin = 'anonymous';
+                s.onload = function() { setTimeout(resolve, 100); };
+                s.onerror = function() { resolve(); };
+                document.head.appendChild(s);
             });
+        }
+
+        async function downloadKannadaPDF() {
+            await loadJsPDFScript();
+            await loadHtml2Canvas();
+            if (typeof html2canvas === 'undefined') throw new Error('html2canvas not loaded');
+            var JsPDF = getJsPDF();
+            if (!JsPDF) throw new Error('jsPDF not loaded');
+
+            var wrap = document.createElement('div');
+            wrap.id = 'kannadaPdfSource';
+            wrap.style.cssText = 'position:absolute;left:-9999px;top:0;width:794px;background:#fff;padding:24px;box-sizing:border-box;';
+            wrap.innerHTML = getPrintViewHtml('kn');
+            document.body.appendChild(wrap);
+
+            await new Promise(function(r) { setTimeout(r, 500); });
+
+            var canvas = await html2canvas(wrap, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            });
+            wrap.remove();
+
+            var imgW = canvas.width;
+            var imgH = canvas.height;
+            var a4W = 210;
+            var a4H = 297;
+            var pdf = new JsPDF('p', 'mm', 'a4');
+            var w = a4W;
+            var h = (imgH / imgW) * w;
+            if (h > a4H) {
+                h = a4H;
+                w = (imgW / imgH) * h;
+            }
+            var x = (a4W - w) / 2;
+            pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', x, 0, w, h);
+            pdf.save('Member_Exit_Settlement_Kannada.pdf');
+        }
+
+        function showPrintView(lang) {
+            var wrap = document.getElementById('printViewWrap');
+            if (wrap) {
+                wrap.style.display = 'block';
+                var content = document.getElementById('printViewContent');
+                if (content) content.innerHTML = getPrintViewHtml(lang);
+                setTimeout(function() {
+                    window.print();
+                }, 300);
+                return;
+            }
+            wrap = document.createElement('div');
+            wrap.id = 'printViewWrap';
+            wrap.style.cssText = 'display:block;position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:99999;overflow:auto;padding:24px;';
+            wrap.innerHTML = '<div id="printViewContent">' + getPrintViewHtml(lang) + '</div>' +
+                '<div style="margin-top:20px;text-align:center;" class="no-print">' +
+                '<button type="button" onclick="document.getElementById(\'printViewWrap\').style.display=\'none\'" style="padding:12px 24px;font-size:16px;cursor:pointer;margin-right:8px;">Close</button>' +
+                '<button type="button" onclick="window.print()" style="padding:12px 24px;font-size:16px;cursor:pointer;">Print / Save as PDF</button></div>';
+            document.body.appendChild(wrap);
+            setTimeout(function() { window.print(); }, 300);
+        }
+
+        function getPrintViewHtml(lang) {
+            var isKn = lang === 'kn';
+            var sealSrc = 'images/official-seal.png';
+            if (isKn) {
+                return '<div style="font-family:\'Noto Sans Kannada\',Arial,sans-serif;max-width:700px;margin:0 auto;">' +
+                    '<h1 style="background:#1e40af;color:#fff;padding:12px;text-align:center;">ಸದಸ್ಯ ನಿರ್ಗಮನ ಉಪನಿವೇಶನ ಹೇಳಿಕೆ</h1>' +
+                    '<div style="background:#dbeafe;border:1px solid #3b82f6;padding:12px;margin:16px 0;"><p><strong>ಸದಸ್ಯರ ಹೆಸರು:</strong> ಸರ್ಪಭೂಷಣ ಬನಕರ್</p><p><strong>ಉಪನಿವೇಶನ ದಿನಾಂಕ:</strong> 16/03/2026</p></div>' +
+                    '<table style="width:100%;border-collapse:collapse;"><thead><tr><th style="background:#3b82f6;color:#fff;padding:8px;border:1px solid #ddd;">ವಿವರಣೆ</th><th style="background:#3b82f6;color:#fff;padding:8px;border:1px solid #ddd;">ಮೊತ್ತ (ರೂ)</th></tr></thead><tbody>' +
+                    '<tr><td style="padding:8px;border:1px solid #ddd;">ಸದಸ್ಯರ ಪಾಲು (ಸದಸ್ಯರಿಗೆ ಮರಳಿದ)</td><td style="padding:8px;border:1px solid #ddd;">1,21,833.57</td></tr>' +
+                    '<tr><td style="padding:8px;border:1px solid #ddd;">ಸೇರಿಸಿ: ಮಾಸಿಕ ಠೇವಣಿ (4 × ರೂ 2,000)</td><td style="padding:8px;border:1px solid #ddd;">8,000.00</td></tr>' +
+                    '<tr><td style="padding:8px;border:1px solid #ddd;">ಸೇರಿಸಿ: ನವೀಕರಣ ಶುಲ್ಕ (ನವೆಂಬರ್)</td><td style="padding:8px;border:1px solid #ddd;">3,000.00</td></tr>' +
+                    '<tr style="background:#dcfce7"><td style="padding:8px;border:1px solid #ddd;font-weight:bold">ಉಪಒಟ್ಟು (ಸದಸ್ಯರ ಶ್ರೇಯಕ್ಕೆ)</td><td style="padding:8px;border:1px solid #ddd;font-weight:bold">1,32,833.57</td></tr>' +
+                    '<tr><td style="padding:8px;border:1px solid #ddd;">ಕಡಿಮೆ: ರೂ 70,000 ಸಾಲದ ಬಾಕಿ</td><td style="padding:8px;border:1px solid #ddd;">58,000.00</td></tr>' +
+                    '<tr><td style="padding:8px;border:1px solid #ddd;">ಕಡಿಮೆ: ರೂ 1,00,000 ಸಾಲದ ಬಾಕಿ</td><td style="padding:8px;border:1px solid #ddd;">1,00,000.00</td></tr>' +
+                    '<tr style="background:#fecaca"><td style="padding:8px;border:1px solid #ddd;font-weight:bold">ನಿವ್ವಳ ಉಪನಿವೇಶನ</td><td style="padding:8px;border:1px solid #ddd;font-weight:bold">−25,166.43</td></tr></tbody></table>' +
+                    '<div style="margin-top:20px;"><h3 style="background:#1e40af;color:#fff;padding:6px 10px;">ಟಿಪ್ಪಣಿಗಳು</h3><ul style="padding-left:20px;"><li>ಅಕ್ಟೋಬರ್ 2025 ರಂತೆ ಪ್ರತಿ ಸದಸ್ಯರ ಪಾಲು: ರೂ 1,21,833.57.</li><li>ರೂ 70,000 ಬಡ್ಡಿ-ರಹಿತ ಸಾಲ: 4 ತಿಂಗಳು EMI ರೂ 3,000 ಪಾವತಿಸಿದ್ದು; ಬಾಕಿ ರೂ 58,000 ಕಡಿತ.</li><li>ರೂ 1,00,000 ಸಾಲ: ಅಸಲು ಕಡಿತ; ಬಡ್ಡಿ ಮರುಪಾವತಿಸಲಾಗುವುದಿಲ್ಲ.</li><li>ಶ್ರೇಯ: 4 ತಿಂಗಳ ಮಾಸಿಕ ಠೇವಣಿ ಮತ್ತು ನವೀಕರಣ ಶುಲ್ಕ ರೂ 3,000.</li></ul></div>' +
+                    '<div style="text-align:right;margin-top:32px;"><img src="' + sealSrc + '" alt="" style="width:80px;height:80px;" onerror="this.style.display=\'none\'"><p><strong>ಅಧಿಕೃತ ಮುದ್ರೆ</strong></p><p>ದಿನಾಂಕ: ' + new Date().toLocaleDateString('en-IN') + '</p><p>_________________________<br>ಅಧಿಕೃತ ಸಹಿ</p></div></div>';
+            }
+            return '<div style="max-width:700px;margin:0 auto;font-family:Arial,sans-serif;">' +
+                '<h1 style="background:#1e40af;color:#fff;padding:12px;text-align:center;">Member Exit Settlement Statement</h1>' +
+                '<div style="background:#dbeafe;border:1px solid #3b82f6;padding:12px;margin:16px 0;"><p><strong>Member Name:</strong> Sarpabhushana Banakar</p><p><strong>Settlement date:</strong> 16/03/2026</p></div>' +
+                '<table style="width:100%;border-collapse:collapse;"><thead><tr><th style="background:#3b82f6;color:#fff;padding:8px;border:1px solid #ddd;">Description</th><th style="background:#3b82f6;color:#fff;padding:8px;border:1px solid #ddd;">Amount (Rs)</th></tr></thead><tbody>' +
+                '<tr><td style="padding:8px;border:1px solid #ddd;">Member share (returned to member)</td><td style="padding:8px;border:1px solid #ddd;">1,21,833.57</td></tr>' +
+                '<tr><td style="padding:8px;border:1px solid #ddd;">Add: Monthly deposit (4 x Rs 2,000)</td><td style="padding:8px;border:1px solid #ddd;">8,000.00</td></tr>' +
+                '<tr><td style="padding:8px;border:1px solid #ddd;">Add: Renewal fee (November)</td><td style="padding:8px;border:1px solid #ddd;">3,000.00</td></tr>' +
+                '<tr style="background:#dcfce7"><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Subtotal (to member\'s credit)</td><td style="padding:8px;border:1px solid #ddd;font-weight:bold">1,32,833.57</td></tr>' +
+                '<tr><td style="padding:8px;border:1px solid #ddd;">Less: Outstanding on Rs 70,000 loan</td><td style="padding:8px;border:1px solid #ddd;">58,000.00</td></tr>' +
+                '<tr><td style="padding:8px;border:1px solid #ddd;">Less: Outstanding on Rs 1,00,000 loan</td><td style="padding:8px;border:1px solid #ddd;">1,00,000.00</td></tr>' +
+                '<tr style="background:#fecaca"><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Net settlement (payable by member)</td><td style="padding:8px;border:1px solid #ddd;font-weight:bold">−25,166.43</td></tr></tbody></table>' +
+                '<div style="margin-top:20px;"><h3 style="background:#1e40af;color:#fff;padding:6px 10px;">Notes</h3><ul style="padding-left:20px;"><li>Per member share as of Oct 2025: Rs 1,21,833.57.</li><li>Rs 70,000 interest-free loan: 4 months EMI paid; outstanding Rs 58,000 deducted.</li><li>Rs 1,00,000 loan: principal deducted; interest not refunded.</li><li>Credits: 4 months deposit and renewal fee Rs 3,000.</li></ul></div>' +
+                '<div style="text-align:right;margin-top:32px;"><img src="' + sealSrc + '" alt="" style="width:80px;height:80px;" onerror="this.style.display=\'none\'"><p><strong>OFFICIAL SEAL</strong></p><p>Date: ' + new Date().toLocaleDateString('en-IN') + '</p><p>_________________________<br>Authorized Signature</p></div></div>';
         }
     </script>
 </body>
