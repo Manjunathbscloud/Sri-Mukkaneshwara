@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Exit Settlement - Sri Mukkanneshwara Associate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Sri Mukkanneshwara Associate</h1>
+        <nav>
+            <ul>
+                <li><a href="main.html">Overview</a></li>
+                <li><a href="members.html">Members</a></li>
+                <li><a href="accounts.html">Accounts</a></li>
+                <li><a href="meetings.html">Meetings</a></li>
+                <li><a href="rules.html">Rules</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="meeting-section">
+            <h2 class="page-title" style="color: #ffffff !important; background: #1f2937 !important; border: 1px solid #1f2937 !important; display: block !important; visibility: visible !important; opacity: 1 !important; font-size: 2rem !important; font-weight: 700 !important; text-align: center !important; padding: 1rem 2rem !important; margin-bottom: 2rem !important; border-radius: 15px !important; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;">
+                <i class="fas fa-user-minus"></i>
+                Member Exit Settlement
+            </h2>
+
+            <div class="info-card" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+                <div>
+                    <h3>Summary</h3>
+                    <p><strong>Member:</strong> Sarpabhushana Banakar</p>
+                    <p><strong>Settlement date:</strong> November 2025</p>
+                    <p><strong>Outcome:</strong> Member pays the association <strong>₹25,166</strong> (net amount due from member at exit).</p>
+                </div>
+                <button type="button" onclick="downloadSettlementPDF()" class="modern-btn" style="white-space: nowrap;">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+            </div>
+
+            <div class="info-card">
+                <h3><i class="fas fa-calculator"></i> Settlement Calculation</h3>
+                <p>Member share is returned; loans taken are deducted. Credits include monthly deposits and renewal fee paid by the member.</p>
+                <div class="calculation-summary" style="margin-top: 1rem;">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 0.5rem;">
+                        <thead>
+                            <tr style="background: #f3f4f6;">
+                                <th style="text-align: left; padding: 0.75rem; border: 1px solid #e5e7eb;">Description</th>
+                                <th style="text-align: right; padding: 0.75rem; border: 1px solid #e5e7eb;">Amount (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Member share (returned to member)</td>
+                                <td style="text-align: right; padding: 0.75rem; border: 1px solid #e5e7eb;">1,21,833.57</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Add: Monthly deposit (4 × ₹2,000)</td>
+                                <td style="text-align: right; padding: 0.75rem; border: 1px solid #e5e7eb;">8,000.00</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Add: Renewal fee (November)</td>
+                                <td style="text-align: right; padding: 0.75rem; border: 1px solid #e5e7eb;">3,000.00</td>
+                            </tr>
+                            <tr style="background: #f9fafb;">
+                                <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>Subtotal (to member's credit)</strong></td>
+                                <td style="text-align: right; padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>1,32,833.57</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Less: Outstanding on ₹70,000 loan (after 4 × ₹3,000 EMI)</td>
+                                <td style="text-align: right; padding: 0.75rem; border: 1px solid #e5e7eb;">58,000.00</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">Less: Outstanding on ₹1,00,000 loan</td>
+                                <td style="text-align: right; padding: 0.75rem; border: 1px solid #e5e7eb;">1,00,000.00</td>
+                            </tr>
+                            <tr style="background: #fef2f2;">
+                                <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>Net settlement (amount payable by member to association)</strong></td>
+                                <td style="text-align: right; padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>−25,166.43</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="margin-top: 1rem;"><strong>Result:</strong> Sarpabhushana Banakar pays the association <strong>₹25,166</strong> (rounded) at exit.</p>
+            </div>
+
+            <div class="info-card">
+                <h3>Notes</h3>
+                <ul class="feature-list">
+                    <li>Per member share as of Oct 2025: ₹1,21,833.57 (Total balance ₹8,52,835 ÷ 7 members).</li>
+                    <li>₹70,000 interest-free loan: 4 months EMI of ₹3,000 paid; outstanding ₹58,000 deducted.</li>
+                    <li>₹1,00,000 loan: principal deducted; interest paid by member is not refunded.</li>
+                    <li>Credits: 4 months monthly deposit (₹2,000 × 4) and renewal fee ₹3,000 (November).</li>
+                </ul>
+            </div>
+
+            <div class="bottom-nav">
+                <a href="meeting-2025.html" class="back-button">
+                    <i class="fas fa-calendar-check"></i>
+                    5th Year Meeting
+                </a>
+                <a href="meetings.html" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Meetings
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Sri Mukkanneshwara Associate. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous"></script>
+    <script>
+        function getJsPDF() {
+            try {
+                if (typeof window.jspdf !== 'undefined' && window.jspdf.jsPDF) return window.jspdf.jsPDF;
+                if (typeof window.jsPDF !== 'undefined') return window.jsPDF;
+            } catch (e) {}
+            return null;
+        }
+
+        function loadJsPDFScript() {
+            return new Promise(function(resolve, reject) {
+                if (getJsPDF()) {
+                    resolve();
+                    return;
+                }
+                var s = document.createElement('script');
+                s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+                s.crossOrigin = 'anonymous';
+                s.onload = function() {
+                    if (typeof window.jspdf === 'undefined' && typeof window.jsPDF === 'undefined') {
+                        setTimeout(function() {
+                            if (getJsPDF()) resolve();
+                            else reject(new Error('jsPDF not found after load'));
+                        }, 100);
+                    } else {
+                        resolve();
+                    }
+                };
+                s.onerror = function() { reject(new Error('Failed to load jsPDF script')); };
+                document.head.appendChild(s);
+            });
+        }
+
+        async function downloadSettlementPDF() {
+            var btns = document.querySelectorAll('button[onclick="downloadSettlementPDF()"]');
+            btns.forEach(function(b) {
+                b.disabled = true;
+                b.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+            });
+            try {
+                await loadJsPDFScript();
+                var JsPDF = getJsPDF();
+                if (!JsPDF) throw new Error('PDF library not loaded');
+
+                var doc = new JsPDF('p', 'mm', 'a4');
+                var pageW = doc.internal.pageSize.getWidth();
+                var y = 20;
+                var lineH = 6;
+                var margin = 20;
+                var col1W = 115;
+                var descMaxWidth = col1W - 8;
+                var rowH = 8;
+
+                // Colourful header: Member Exit Settlement Statement
+                doc.setFillColor(30, 64, 175);
+                doc.rect(0, 0, pageW, 24, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(16);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Member Exit Settlement Statement', pageW / 2, 15, { align: 'center' });
+                doc.setTextColor(0, 0, 0);
+                y = 32;
+
+                // Member & date box (light blue) - more spacing
+                doc.setFillColor(219, 234, 254);
+                doc.rect(margin, y - 6, pageW - 2 * margin, 26, 'F');
+                doc.setDrawColor(59, 130, 246);
+                doc.setLineWidth(0.5);
+                doc.rect(margin, y - 6, pageW - 2 * margin, 26, 'S');
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(30, 64, 175);
+                doc.text('Member Name:', margin + 6, y + 3);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(0, 0, 0);
+                doc.text('Sarpabhushana Banakar', margin + 48, y + 3);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(30, 64, 175);
+                doc.text('Settlement date:', margin + 6, y + 12);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(0, 0, 0);
+                doc.text('16/03/2026', margin + 48, y + 12);
+                y += 28;
+
+                // Table header (blue)
+                doc.setFillColor(59, 130, 246);
+                doc.rect(margin, y - 5, col1W, 9, 'F');
+                doc.rect(margin + col1W, y - 5, pageW - margin - col1W - margin, 9, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Description', margin + 5, y + 2);
+                doc.text('Amount (Rs)', margin + col1W + 5, y + 2);
+                doc.setTextColor(0, 0, 0);
+                y += 10;
+
+                var tableData = [
+                    ['Member share (returned to member)', '1,21,833.57', false],
+                    ['Add: Monthly deposit (4 x Rs 2,000)', '8,000.00', false],
+                    ['Add: Renewal fee (November)', '3,000.00', false],
+                    ['Subtotal (to member\'s credit)', '1,32,833.57', true],
+                    ['Less: Outstanding on Rs 70,000 loan (after 4 x Rs 3,000 EMI)', '58,000.00', false],
+                    ['Less: Outstanding on Rs 1,00,000 loan', '1,00,000.00', false],
+                    ['Net settlement (payable by member to association)', '-25,166.43', false]
+                ];
+                doc.setFontSize(9);
+                for (var i = 0; i < tableData.length; i++) {
+                    if (y > 250) {
+                        doc.addPage();
+                        y = 25;
+                    }
+                    var isSubtotal = tableData[i][2];
+                    var desc = tableData[i][0];
+                    var descLines = doc.splitTextToSize(desc, descMaxWidth);
+                    var cellH = Math.max(rowH + 2, descLines.length * 5 + 6);
+                    if (i === 6) {
+                        doc.setFillColor(254, 226, 226);
+                        doc.rect(margin, y - 5, pageW - 2 * margin, cellH, 'F');
+                    } else if (isSubtotal) {
+                        doc.setFillColor(220, 252, 231);
+                        doc.rect(margin, y - 5, pageW - 2 * margin, cellH, 'F');
+                    } else if (i % 2 === 1) {
+                        doc.setFillColor(248, 250, 252);
+                        doc.rect(margin, y - 5, pageW - 2 * margin, cellH, 'F');
+                    }
+                    doc.setFont('helvetica', i === 6 || isSubtotal ? 'bold' : 'normal');
+                    doc.setTextColor(0, 0, 0);
+                    for (var d = 0; d < descLines.length; d++) {
+                        doc.text(descLines[d], margin + 5, y + 3 + d * 5);
+                    }
+                    doc.text(tableData[i][1], margin + col1W + 5, y + 3);
+                    y += cellH;
+                }
+                y += 10;
+
+                // Notes section (colourful heading + bullets)
+                if (y > 220) {
+                    doc.addPage();
+                    y = 25;
+                }
+                doc.setFillColor(30, 64, 175);
+                doc.rect(margin, y - 5, 45, 10, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(10);
+                doc.text('Notes', margin + 6, y + 2);
+                doc.setTextColor(0, 0, 0);
+                y += 14;
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8);
+                var notes = [
+                    'Per member share as of Oct 2025: Rs 1,21,833.57 (Total balance Rs 8,52,835 / 7 members).',
+                    'Rs 70,000 interest-free loan: 4 months EMI of Rs 3,000 paid; outstanding Rs 58,000 deducted.',
+                    'Rs 1,00,000 loan: principal deducted; interest paid by member is not refunded.',
+                    'Credits: 4 months monthly deposit (Rs 2,000 x 4) and renewal fee Rs 3,000 (November).'
+                ];
+                var noteMaxW = pageW - 2 * margin - 14;
+                for (var j = 0; j < notes.length; j++) {
+                    if (y > 255) {
+                        doc.addPage();
+                        y = 25;
+                    }
+                    doc.setFillColor(253, 224, 71);
+                    doc.circle(margin + 4, y + 1.5, 1, 'F');
+                    doc.setTextColor(30, 30, 30);
+                    var lines = doc.splitTextToSize(notes[j], noteMaxW);
+                    for (var k = 0; k < lines.length; k++) {
+                        doc.text(lines[k], margin + 12, y + 3 + k * lineH);
+                    }
+                    y += lines.length * lineH + 3;
+                }
+                y += 8;
+
+                // New page if content is too close to seal area so seal does not overlap
+                if (y > 230) {
+                    doc.addPage();
+                }
+
+                // Official seal (same as loan table download)
+                var pageH = doc.internal.pageSize.getHeight();
+                var sealX = 170;
+                var sealY = pageH - 50;
+                var sealImage = null;
+                try {
+                    sealImage = await new Promise(function(resolve) {
+                        var img = new Image();
+                        img.crossOrigin = 'anonymous';
+                        img.onload = function() {
+                            try {
+                                var canvas = document.createElement('canvas');
+                                var ctx = canvas.getContext('2d');
+                                canvas.width = img.width;
+                                canvas.height = img.height;
+                                ctx.drawImage(img, 0, 0);
+                                resolve(canvas.toDataURL('image/png'));
+                            } catch (e) {
+                                resolve(null);
+                            }
+                        };
+                        img.onerror = function() { resolve(null); };
+                        img.src = 'images/official-seal.png';
+                    });
+                } catch (e) {}
+                if (sealImage) {
+                    doc.addImage(sealImage, 'PNG', sealX - 20, sealY - 20, 40, 40);
+                } else {
+                    doc.setDrawColor(0, 0, 139);
+                    doc.setLineWidth(3);
+                    doc.circle(sealX, sealY, 20, 'S');
+                    doc.setFontSize(6);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(0, 0, 139);
+                    doc.text('SRI MUKKANESHWARA', sealX - 9, sealY - 14);
+                    doc.text('ASSOCIATES', sealX - 6, sealY + 14);
+                    doc.setFontSize(16);
+                    doc.text('MA', sealX - 4, sealY + 2);
+                }
+                doc.setFontSize(5);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(0, 0, 0);
+                doc.text('OFFICIAL SEAL', sealX - 5, sealY + 22);
+                doc.setFontSize(4);
+                doc.setFont('helvetica', 'normal');
+                doc.text('Date:', sealX - 6, sealY + 25);
+                doc.text(new Date().toLocaleDateString('en-IN'), sealX - 6, sealY + 27);
+                doc.setLineWidth(0.4);
+                doc.line(sealX - 12, sealY + 30, sealX + 12, sealY + 30);
+                doc.setFontSize(3.5);
+                doc.text('Authorized Signature', sealX - 5, sealY + 33);
+
+                doc.save('Member_Exit_Settlement_Nov2025.pdf');
+            } catch (err) {
+                console.error('PDF error:', err);
+                if (confirm('PDF download failed. Open print dialog to save as PDF instead?')) {
+                    window.print();
+                }
+            }
+            btns.forEach(function(b) {
+                b.disabled = false;
+                b.innerHTML = '<i class="fas fa-download"></i> Download PDF';
+            });
+        }
+    </script>
+</body>
+</html>
