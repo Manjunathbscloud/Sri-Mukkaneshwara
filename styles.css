@@ -8625,6 +8625,42 @@ body .meeting-section h2.page-title {
     border-left-color: #3b82f6 !important;
 }
 
+/* ---- Meeting compact card: force white text on blue gradient ---- */
+/* Global h3/h4 color rules override inherited white — fix explicitly */
+.meeting-compact-card,
+.meeting-compact-card h3,
+.meeting-compact-card h4,
+.meeting-compact-card .compact-title h3,
+.meeting-compact-card .compact-date,
+.meeting-compact-card .summary-item span,
+.meeting-compact-card p {
+    color: #ffffff !important;
+}
+
+.meeting-compact-card .summary-item i {
+    color: #fbbf24 !important;
+}
+
+/* ---- Login section: transparent background so gradient body shows through ---- */
+/* (Global section { background: white } would otherwise hide the gradient) */
+section.login-section {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+
+/* ---- Meetings section: transparent on mobile so glass cards work correctly ---- */
+@media (max-width: 768px) {
+    section.meetings-section {
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 1rem 0 !important;
+    }
+}
+
 /* ---- Info Card Polish ---- */
 @media (min-width: 769px) {
     .info-card {
@@ -8761,13 +8797,25 @@ body .meeting-section h2.page-title {
 
 /* ---- Modern Section Container ---- */
 @media (min-width: 769px) {
-    section {
+    /* Apply white card only to content sections, not special layout sections */
+    section:not(.login-section):not(.meetings-section):not(.meeting-section):not(.overview-section) {
         background: #fff !important;
         box-shadow: 0 2px 12px rgba(30,64,175,0.06) !important;
         padding: 2rem !important;
         border-radius: 16px !important;
         margin-bottom: 2rem !important;
         border: 1px solid #eef2ff !important;
+    }
+
+    /* Sections that should stay transparent/use their own backgrounds */
+    section.login-section,
+    section.meetings-section,
+    section.meeting-section,
+    section.overview-section {
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
     }
 
     main {
