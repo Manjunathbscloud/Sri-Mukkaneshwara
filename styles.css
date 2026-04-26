@@ -8413,3 +8413,513 @@ body .meeting-section h2.page-title * {
     opacity: 1 !important;
 }
 
+
+/* ============================================================
+   MODERN DESIGN SYSTEM - 2026 REFRESH
+   Applied as high-priority overrides to unify the design
+   ============================================================ */
+
+/* ---- Sticky Header ---- */
+header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+}
+
+/* ---- Fix Footer (non-overlapping on desktop) ---- */
+@media (min-width: 769px) {
+    footer {
+        position: static !important;
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
+        color: rgba(255,255,255,0.85) !important;
+        text-align: center !important;
+        padding: 1.5rem !important;
+        margin-top: 3rem !important;
+    }
+}
+
+/* ---- Desktop: Add bottom padding so footer doesn't clip content ---- */
+@media (min-width: 769px) {
+    body {
+        padding-bottom: 0 !important;
+    }
+}
+
+/* ---- Unified Table Design ---- */
+.member-table thead th,
+table.member-table th {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    padding: 0.9rem 1rem !important;
+    text-align: left !important;
+    border: none !important;
+    font-size: 0.875rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.4px !important;
+}
+
+.member-table tbody td {
+    padding: 0.85rem 1rem !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    color: var(--text) !important;
+    font-size: 0.925rem !important;
+}
+
+.member-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+.member-table tbody tr:hover {
+    background-color: #f0f7ff !important;
+    transition: background 0.15s ease !important;
+}
+
+.member-table {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07) !important;
+    border: 1px solid var(--border) !important;
+}
+
+.total-row td {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+}
+
+/* ---- Better Scrollable Tables on Mobile ---- */
+@media (max-width: 768px) {
+    .member-table {
+        display: block !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        white-space: nowrap !important;
+        border-radius: 12px !important;
+    }
+}
+
+/* ---- Modern Form Inputs ---- */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+select,
+textarea {
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important;
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    background: #fff !important;
+    color: var(--text) !important;
+    outline: none !important;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary-light) !important;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.15) !important;
+}
+
+/* ---- Modern Login Card ---- */
+.mobile-login-container {
+    max-width: 420px !important;
+    margin: 2rem auto !important;
+}
+
+.mobile-login-form {
+    background: #fff !important;
+    border-radius: 20px !important;
+    padding: 2.5rem !important;
+    box-shadow: 0 8px 40px rgba(30,64,175,0.12) !important;
+    border: 1px solid rgba(30,64,175,0.08) !important;
+}
+
+/* ---- Login page brand icon ---- */
+.login-section .page-title {
+    text-align: center !important;
+    justify-content: center !important;
+    font-size: 1.6rem !important;
+    color: var(--primary) !important;
+    margin-bottom: 0.25rem !important;
+}
+
+.login-footer {
+    text-align: center !important;
+    margin-top: 1.25rem !important;
+    color: var(--text-light) !important;
+    font-size: 0.9rem !important;
+}
+
+.login-footer a {
+    color: var(--primary-light) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+
+.login-footer a:hover {
+    text-decoration: underline !important;
+}
+
+/* ---- Modern Back Button ---- */
+.back-button,
+a.back-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.6rem 1.2rem !important;
+    background: var(--surface) !important;
+    color: var(--primary) !important;
+    border: 2px solid var(--border) !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+}
+
+.back-button:hover,
+a.back-button:hover {
+    background: var(--primary) !important;
+    color: #fff !important;
+    border-color: var(--primary) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(30,64,175,0.25) !important;
+}
+
+/* ---- Modern Page Title ---- */
+@media (min-width: 769px) {
+    .page-title {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        font-size: 1.75rem !important;
+        font-weight: 700 !important;
+        color: var(--text) !important;
+        padding: 1rem 1.5rem !important;
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+        border-left: 4px solid var(--primary-light) !important;
+        border-radius: 12px !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .page-title i {
+        color: var(--primary-light) !important;
+    }
+}
+
+/* ---- Info Card Polish ---- */
+@media (min-width: 769px) {
+    .info-card {
+        border-radius: 18px !important;
+        padding: 2.5rem !important;
+        box-shadow: 0 4px 24px rgba(30,64,175,0.08) !important;
+        border: 1px solid #e8f0fe !important;
+    }
+
+    .info-card h3 {
+        font-size: 1.15rem !important;
+        font-weight: 700 !important;
+        color: var(--primary) !important;
+        margin: 1.5rem 0 0.75rem 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+    }
+
+    .info-card h3:first-child {
+        margin-top: 0 !important;
+    }
+
+    .info-card h3 i {
+        color: var(--primary-light) !important;
+    }
+
+    .info-card p {
+        color: var(--text-light) !important;
+        line-height: 1.7 !important;
+        margin-bottom: 1rem !important;
+    }
+}
+
+/* ---- Banking Details Modern Design ---- */
+@media (min-width: 769px) {
+    .banking-details {
+        background: linear-gradient(135deg, #f0f7ff 0%, #e8f0fe 100%) !important;
+        border-radius: 16px !important;
+        padding: 1.75rem !important;
+        margin-top: 1.25rem !important;
+        border: 1px solid #dbeafe !important;
+    }
+
+    .banking-details table td {
+        padding: 0.65rem 0.5rem !important;
+        font-size: 0.95rem !important;
+        border-bottom: 1px solid rgba(30,64,175,0.08) !important;
+    }
+
+    .banking-details table td strong {
+        color: var(--primary) !important;
+    }
+}
+
+/* ---- Modern Stat Cards ---- */
+@media (min-width: 769px) {
+    .banking-stats {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+        gap: 1.5rem !important;
+        margin: 2rem 0 !important;
+    }
+
+    .stat-card {
+        background: #fff !important;
+        border-radius: 18px !important;
+        padding: 1.75rem !important;
+        box-shadow: 0 4px 20px rgba(30,64,175,0.08) !important;
+        border: 1px solid #e8f0fe !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 1.25rem !important;
+        transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    .stat-card::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 3px !important;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+        transform: scaleX(0) !important;
+        transform-origin: left !important;
+        transition: transform 0.3s ease !important;
+    }
+
+    .stat-card:hover::before {
+        transform: scaleX(1) !important;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 12px 35px rgba(30,64,175,0.14) !important;
+    }
+
+    .stat-card i {
+        font-size: 1.6rem !important;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+        color: #fff !important;
+        padding: 1rem !important;
+        border-radius: 14px !important;
+        width: 56px !important;
+        height: 56px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 4px 14px rgba(30,64,175,0.25) !important;
+        flex-shrink: 0 !important;
+    }
+
+    .stat-info h3 {
+        font-size: 0.8rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        color: var(--text-light) !important;
+        font-weight: 600 !important;
+        margin-bottom: 0.3rem !important;
+    }
+
+    .stat-info p {
+        font-size: 1.6rem !important;
+        font-weight: 800 !important;
+        color: var(--text) !important;
+        margin: 0 !important;
+        line-height: 1.2 !important;
+    }
+}
+
+/* ---- Modern Section Container ---- */
+@media (min-width: 769px) {
+    section {
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        margin-bottom: 2rem !important;
+    }
+
+    main {
+        max-width: 1280px !important;
+        margin: 2rem auto !important;
+        padding: 0 2rem !important;
+    }
+}
+
+/* ---- Better Nav Highlight ---- */
+@media (min-width: 769px) {
+    nav ul li a:focus {
+        outline: 2px solid rgba(255,255,255,0.6) !important;
+        outline-offset: 3px !important;
+    }
+}
+
+/* ---- Dropdown Toggle Buttons ---- */
+.dropdown-toggle {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+    border-radius: 14px !important;
+    font-size: 1rem !important;
+    padding: 0.9rem 1.5rem !important;
+    box-shadow: 0 4px 15px rgba(30,64,175,0.2) !important;
+}
+
+.dropdown-toggle:hover {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%) !important;
+    box-shadow: 0 6px 20px rgba(30,64,175,0.3) !important;
+}
+
+.dropdown-content {
+    border-radius: 14px !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1) !important;
+    border: 1px solid #e8f0fe !important;
+}
+
+/* ---- Modern Status Badges (table version) ---- */
+.status-badge.paid,
+span.status-badge.paid {
+    background: #d1fae5 !important;
+    color: #065f46 !important;
+    border-radius: 20px !important;
+    padding: 0.25rem 0.8rem !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+}
+
+.status-badge.pending,
+span.status-badge.pending {
+    background: #fef3c7 !important;
+    color: #92400e !important;
+    border-radius: 20px !important;
+    padding: 0.25rem 0.8rem !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+}
+
+.status-badge.active {
+    background: #dbeafe !important;
+    color: #1e40af !important;
+    border-radius: 20px !important;
+    padding: 0.25rem 0.8rem !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+}
+
+.status-badge.cleared {
+    background: #d1fae5 !important;
+    color: #065f46 !important;
+    border-radius: 20px !important;
+    padding: 0.25rem 0.8rem !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+}
+
+/* ---- Mobile Header Improvement ---- */
+@media (max-width: 768px) {
+    .mobile-header {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1000 !important;
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
+        padding: 1rem 1.25rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        box-shadow: 0 4px 20px rgba(30,64,175,0.25) !important;
+    }
+
+    .mobile-header h1 {
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
+        color: #fff !important;
+        margin: 0 !important;
+    }
+
+    .mobile-nav-toggle {
+        background: rgba(255,255,255,0.15) !important;
+        border: 1px solid rgba(255,255,255,0.25) !important;
+        color: #fff !important;
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 10px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        font-size: 1.1rem !important;
+    }
+
+    .mobile-nav-toggle:hover {
+        background: rgba(255,255,255,0.25) !important;
+    }
+}
+
+/* ---- Improved Year Link Cards ---- */
+.year-link {
+    background: #fff !important;
+    border-radius: 16px !important;
+    padding: 1.75rem !important;
+    border: 1px solid #e8f0fe !important;
+    box-shadow: 0 4px 18px rgba(30,64,175,0.07) !important;
+    transition: all 0.25s ease !important;
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.year-link:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 10px 30px rgba(30,64,175,0.15) !important;
+    border-color: var(--primary-light) !important;
+}
+
+.year-link .year {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    color: var(--primary) !important;
+}
+
+.year-link .details {
+    color: var(--text-light) !important;
+    font-size: 0.875rem !important;
+    margin-top: 0.35rem !important;
+}
+
+/* ---- Improved Mobile Dashboard Cards ---- */
+@media (max-width: 768px) {
+    .mobile-dashboard-card {
+        border-radius: 16px !important;
+        padding: 1.5rem !important;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.08) !important;
+        border: 1px solid #e8f0fe !important;
+    }
+}
+
+/* ---- Print: remove header sticky for printing ---- */
+@media print {
+    header {
+        position: static !important;
+    }
+    footer {
+        position: static !important;
+    }
+}

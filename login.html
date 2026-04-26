@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sri Mukkanneshwara Associate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -52,6 +55,132 @@
             font-weight: bold;
             margin-top: 0.5rem;
         }
+
+        /* Login page specific enhancements */
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: transparent !important;
+            box-shadow: none !important;
+            padding: 1.5rem 1rem 0 1rem !important;
+        }
+
+        header h1 {
+            font-size: 1.4rem !important;
+            opacity: 0.9;
+        }
+
+        .login-section {
+            min-height: calc(100vh - 120px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .mobile-login-container {
+            width: 100%;
+        }
+
+        .login-brand {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-brand .brand-icon {
+            width: 72px;
+            height: 72px;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+            font-size: 2rem;
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-brand h2 {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem 0;
+        }
+
+        .login-brand p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .mobile-login-form {
+            background: rgba(255,255,255,0.97) !important;
+            border-radius: 24px !important;
+            padding: 2.5rem !important;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25) !important;
+        }
+
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group label i {
+            color: #3b82f6;
+            font-size: 0.8rem;
+        }
+
+        .mobile-btn-primary {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
+            color: white !important;
+            border: none !important;
+            padding: 0.9rem 2rem !important;
+            border-radius: 14px !important;
+            font-size: 1rem !important;
+            font-weight: 700 !important;
+            cursor: pointer !important;
+            width: 100% !important;
+            transition: all 0.25s ease !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0.5rem !important;
+            box-shadow: 0 4px 18px rgba(30,64,175,0.35) !important;
+            letter-spacing: 0.3px !important;
+        }
+
+        .mobile-btn-primary:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 25px rgba(30,64,175,0.45) !important;
+        }
+
+        .mobile-btn-primary:active {
+            transform: translateY(0) !important;
+        }
+
+        .back-nav {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 10;
+        }
+
+        footer {
+            background: transparent !important;
+            color: rgba(255,255,255,0.5) !important;
+            padding: 1rem !important;
+            margin-top: 0 !important;
+        }
     </style>
 </head>
 <body>
@@ -78,10 +207,13 @@
             </div>
 
             <div class="mobile-login-container">
-                <h2 class="page-title">
-                    <i class="fas fa-user-lock"></i>
-                    Member Login
-                </h2>
+                <div class="login-brand">
+                    <div class="brand-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h2>Member Login</h2>
+                    <p>Sri Mukkanneshwara Associate</p>
+                </div>
                 <div class="mobile-login-form">
                     <!-- Login Form -->
                     <form id="loginForm">
@@ -116,7 +248,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 Sri Mukkanneshwara Associate. All rights reserved.</p>
+        <p>&copy; 2026 Sri Mukkanneshwara Associate. All rights reserved.</p>
     </footer>
 
     <!-- Authentication Scripts -->
