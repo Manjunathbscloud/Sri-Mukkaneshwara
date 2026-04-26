@@ -8462,7 +8462,8 @@ table.member-table th {
 .member-table tbody td {
     padding: 0.85rem 1rem !important;
     border-bottom: 1px solid #f1f5f9 !important;
-    color: var(--text) !important;
+    color: #1f2937 !important;
+    background-color: #fff !important;
     font-size: 0.925rem !important;
 }
 
@@ -8604,7 +8605,7 @@ a.back-button:hover {
         gap: 0.75rem !important;
         font-size: 1.75rem !important;
         font-weight: 700 !important;
-        color: var(--text) !important;
+        color: #1e3a8a !important;
         padding: 1rem 1.5rem !important;
         background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
         border-left: 4px solid var(--primary-light) !important;
@@ -8615,6 +8616,13 @@ a.back-button:hover {
     .page-title i {
         color: var(--primary-light) !important;
     }
+}
+
+/* Preserve white title text on dark-background sections (e.g. meeting page) */
+body .meeting-section h2.page-title {
+    color: #ffffff !important;
+    background: #1f2937 !important;
+    border-left-color: #3b82f6 !important;
 }
 
 /* ---- Info Card Polish ---- */
@@ -8629,7 +8637,7 @@ a.back-button:hover {
     .info-card h3 {
         font-size: 1.15rem !important;
         font-weight: 700 !important;
-        color: var(--primary) !important;
+        color: #1e3a8a !important;
         margin: 1.5rem 0 0.75rem 0 !important;
         display: flex !important;
         align-items: center !important;
@@ -8641,11 +8649,11 @@ a.back-button:hover {
     }
 
     .info-card h3 i {
-        color: var(--primary-light) !important;
+        color: #3b82f6 !important;
     }
 
     .info-card p {
-        color: var(--text-light) !important;
+        color: #374151 !important;
         line-height: 1.7 !important;
         margin-bottom: 1rem !important;
     }
@@ -8664,11 +8672,12 @@ a.back-button:hover {
     .banking-details table td {
         padding: 0.65rem 0.5rem !important;
         font-size: 0.95rem !important;
+        color: #1f2937 !important;
         border-bottom: 1px solid rgba(30,64,175,0.08) !important;
     }
 
     .banking-details table td strong {
-        color: var(--primary) !important;
+        color: #1e3a8a !important;
     }
 }
 
@@ -8736,7 +8745,7 @@ a.back-button:hover {
         font-size: 0.8rem !important;
         text-transform: uppercase !important;
         letter-spacing: 0.5px !important;
-        color: var(--text-light) !important;
+        color: #4b5563 !important;
         font-weight: 600 !important;
         margin-bottom: 0.3rem !important;
     }
@@ -8744,7 +8753,7 @@ a.back-button:hover {
     .stat-info p {
         font-size: 1.6rem !important;
         font-weight: 800 !important;
-        color: var(--text) !important;
+        color: #111827 !important;
         margin: 0 !important;
         line-height: 1.2 !important;
     }
@@ -8753,11 +8762,12 @@ a.back-button:hover {
 /* ---- Modern Section Container ---- */
 @media (min-width: 769px) {
     section {
-        background: transparent !important;
-        box-shadow: none !important;
-        padding: 0 !important;
-        border-radius: 0 !important;
+        background: #fff !important;
+        box-shadow: 0 2px 12px rgba(30,64,175,0.06) !important;
+        padding: 2rem !important;
+        border-radius: 16px !important;
         margin-bottom: 2rem !important;
+        border: 1px solid #eef2ff !important;
     }
 
     main {
